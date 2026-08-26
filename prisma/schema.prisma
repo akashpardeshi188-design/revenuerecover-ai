@@ -1,0 +1,250 @@
+// RevenueRecover AI Multi-Tenant PostgreSQL Schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  MANAGER
+  AGENT
+  VIEWER
+}
+
+enum PlanTier {
+  STARTER
+  GROWTH
+  PRO
+  ENTERPRISE
+}
+
+enum PlanStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum OpportunityType {
+  MISSED_LEAD
+  MISSED_CALL
+  UNCONTACTED_LEAD
+  UNRESPONSIVE_LEAD
+  ABANDONED_QUOTE
+  REJECTED_QUOTE
+  FAILED_PAYMENT
+  OVERDUE_INVOICE
+  CANCELLED_APPOINTMENT
+  NO_SHOW
+  DORMANT_CUSTOMER
+  LOST_CUSTOMER
+  UPSELL
+  CROSS_SELL
+  REPEAT_PURCHASE
+  HIGH_VALUE_RISK
+}
+
+enum OpportunityStatus {
+  DETECTED
+  IN_PROGRESS
+  AWAITING_APPROVAL
+  CONTACTED
+  RECOVERED
+  DISMISSED
+}
+
+enum Channel {
+  SMS
+  EMAIL
+  WEBCHAT
+  CALL
+}
+
+model Organization {
+  id                String         @id @default(cuid())
+  name              String
+  industry          String
+  ownerEmail        String
+  plan              PlanTier       @default(GROWTH)
+  planStatus        PlanStatus     @default(ACTIVE)
+  monthlyRecovered  Float          @default(0)
+  lifetimeRecovered Float          @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  members           OrganizationMember[]
+  customers         Customer[]
+  opportunities     Opportunity[]
+  campaigns         Campaign[]
+  integrations      Integration[]
+  referrals         Referral[]
+  auditLogs         AuditLog[]
+  events            SystemEvent[]
+}
+
+model User {
+  id             String               @id @default(cuid())
+  email          String               @unique
+  name           String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  memberships    OrganizationMember[]
+}
+
+model OrganizationMember {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           UserRole     @default(AGENT)
+  createdAt      DateTime     @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+}
+
+model Customer {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  name               String
+  email              String
+  phone              String
+  address            String?
+  lifetimeValue      Float          @default(0)
+  totalPurchases     Int            @default(0)
+  lastPurchaseDate   DateTime?
+  lastContactDate    DateTime?
+  status             String         @default("active")
+  tags               String[]
+  aiSummary          String?
+  nextAction         String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  opportunities      Opportunity[]
+  conversations      Conversation[]
+}
+
+model Opportunity {
+  id                 String            @id @default(cuid())
+  organizationId     String
+  customerId         String
+  type               OpportunityType
+  estimatedValue     Float
+  confidenceScore    Int               @default(80)
+  recoveryScore      Int               @default(80)
+  urgency            String            @default("medium")
+  recommendedAction  String
+  recommendedChannel Channel           @default(SMS)
+  status             OpportunityStatus @default(DETECTED)
+  source             String
+  scoreReasons       String[]
+  recoveredAmount    Float?
+  recoveredAt        DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  organization       Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer           Customer          @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model Campaign {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  name               String
+  type               String
+  status             String         @default("active")
+  stats              Json?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id                 String         @id @default(cuid())
+  customerId         String
+  channel            Channel        @default(SMS)
+  status             String         @default("ai_handling")
+  aiClassification   String?
+  aiSuggestedReply   String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  customer           Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  messages           ChatMessage[]
+}
+
+model ChatMessage {
+  id                 String         @id @default(cuid())
+  conversationId     String
+  sender             String
+  text               String
+  channel            Channel        @default(SMS)
+  status             String         @default("delivered")
+  timestamp          DateTime       @default(now())
+
+  conversation       Conversation   @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model Integration {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  provider           String
+  name               String
+  category           String
+  status             String         @default("connected")
+  mode               String         @default("demo")
+  lastSyncAt         DateTime?
+  syncCount          Int            @default(0)
+  createdAt          DateTime       @default(now())
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Referral {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  referralCode       String
+  referredBusiness   String
+  referredEmail      String
+  status             String         @default("invited")
+  reward             String
+  createdAt          DateTime       @default(now())
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  channel            Channel
+  recipient          String
+  consentBasis       String
+  messageSnippet     String
+  status             String
+  agent              String
+  timestamp          DateTime       @default(now())
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model SystemEvent {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  eventType          String
+  actorAgent         String?
+  payload            Json
+  timestamp          DateTime       @default(now())
+
+  organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
