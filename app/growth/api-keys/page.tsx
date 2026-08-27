@@ -218,21 +218,49 @@ export default function ApiKeysManagerPage() {
               </div>
             </div>
 
-            {/* 2. STRIPE PAYMENTS */}
+            {/* 2. PAYMENT GATEWAYS: STRIPE & RAZORPAY */}
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-purple-400" /> 2. Stripe Subscriptions & Billing
+                <CreditCard className="w-4 h-4 text-purple-400" /> 2. Payment Gateway (Razorpay & Stripe)
               </h3>
 
               <div className="space-y-4 text-xs">
-                <div className="space-y-1.5">
-                  <label className="font-semibold text-slate-300">Stripe Secret Key</label>
+                {/* Razorpay (Recommended for India) */}
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-cyan-400 text-sm">Razorpay (India & International USD Cards)</span>
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-semibold">Recommended for India</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-slate-300">Razorpay Key ID</label>
+                      <input
+                        type={showKeys ? 'text' : 'password'}
+                        placeholder="rzp_live_... or rzp_test_..."
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-semibold text-slate-300">Razorpay Key Secret</label>
+                      <input
+                        type={showKeys ? 'text' : 'password'}
+                        placeholder="Secret Key"
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stripe Global */}
+                <div className="space-y-1.5 pt-2">
+                  <label className="font-semibold text-slate-300">Stripe Secret Key (Optional Global)</label>
                   <div className="flex gap-2">
                     <input
                       type={showKeys ? 'text' : 'password'}
                       value={stripeSecretKey}
                       onChange={(e) => setStripeSecretKey(e.target.value)}
-                      placeholder="sk_test_..."
+                      placeholder="sk_test_... or sk_live_..."
                       className="flex-grow bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs"
                     />
                     <button
