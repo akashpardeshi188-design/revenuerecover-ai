@@ -18,6 +18,7 @@ import {
   LogOut,
   LayoutDashboard,
   Key,
+  Rocket,
 } from 'lucide-react';
 
 export function GrowthNav() {
@@ -25,6 +26,7 @@ export function GrowthNav() {
   const { state } = useAppStore();
 
   const navItems = [
+    { name: '🚀 650-Client Sprint ($77K)', href: '/growth/sprint-650', icon: Rocket },
     { name: 'Growth Command Center', href: '/growth', icon: BarChart3 },
     {
       name: 'AI Lead Generation',
