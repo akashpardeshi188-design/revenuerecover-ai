@@ -180,7 +180,7 @@ export default function Sprint650Page() {
 
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-1">
               <div className="flex items-center justify-between text-xs text-slate-400 font-semibold">
-                <span>7-DAY TRIALS (FAST ACTIVATION)</span>
+                <span>3-DAY TRIALS (72-HR FAST REVENUE)</span>
                 <Users className="w-4 h-4 text-purple-400" />
               </div>
               <div className="text-2xl sm:text-3xl font-black text-purple-400 font-mono mt-1">

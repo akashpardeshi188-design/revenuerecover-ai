@@ -34,7 +34,7 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: 'Start 7-Day Free Trial',
+      cta: 'Start 3-Day Instant Trial',
       ctaHref: '/onboarding?plan=starter',
     },
     {
@@ -54,7 +54,7 @@ export default function PricingPage() {
         'TCPA & CAN-SPAM Quiet Hours Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: 'Start 7-Day Free Trial',
+      cta: 'Start 3-Day Instant Trial',
       ctaHref: '/onboarding?plan=growth',
     },
     {
@@ -74,7 +74,7 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: 'Start 7-Day Free Trial',
+      cta: 'Start 3-Day Instant Trial',
       ctaHref: '/onboarding?plan=pro',
     },
   ];
@@ -94,7 +94,7 @@ export default function PricingPage() {
             Simple Pricing That Pays for Itself on Day One
           </h1>
           <p className="text-slate-400 text-sm sm:text-base">
-            Just one recovered HVAC replacement or water heater install covers your entire annual subscription. All plans include a 7-day free trial.
+            Just one recovered HVAC replacement or water heater install covers your entire annual subscription. All plans include a 3-day instant trial (72-hour ROI guarantee).
           </p>
 
           {/* Toggle */}
