@@ -19,6 +19,11 @@ import {
   LayoutDashboard,
   Key,
   Rocket,
+  Brain,
+  FileText,
+  FlaskConical,
+  BookOpen,
+  Share2,
 } from 'lucide-react';
 
 export function GrowthNav() {
@@ -27,6 +32,11 @@ export function GrowthNav() {
 
   const navItems = [
     { name: '🚀 650-Client Sprint ($77K)', href: '/growth/sprint-650', icon: Rocket },
+    { name: '🧠 AI Growth Brain', href: '/growth/brain', icon: Brain },
+    { name: '📋 Daily AI CEO Report', href: '/growth/ceo-report', icon: FileText },
+    { name: '🔬 A/B Testing Lab (CRO)', href: '/growth/experiments', icon: FlaskConical },
+    { name: '📚 Product Intelligence', href: '/growth/knowledge-base', icon: BookOpen },
+    { name: '📢 Content & Social Media', href: '/growth/content-marketing', icon: Share2 },
     { name: 'Growth Command Center', href: '/growth', icon: BarChart3 },
     {
       name: 'AI Lead Generation',
@@ -37,7 +47,6 @@ export function GrowthNav() {
     { name: 'Sales Pipeline (CRM)', href: '/growth/pipeline', icon: Users },
     { name: 'Outreach Sequencer', href: '/growth/outreach', icon: Send },
     { name: 'AI Sales SDR Simulator', href: '/growth/sales-agent', icon: Bot },
-    { name: 'Growth Analyst AI', href: '/growth/analyst', icon: TrendingUp },
     { name: 'Viral Referral Engine', href: '/growth/referrals', icon: Gift },
     { name: 'Live API Keys & Models', href: '/growth/api-keys', icon: Key },
     { name: 'Compliance & Audit Logs', href: '/growth/security-audit', icon: ShieldAlert },
