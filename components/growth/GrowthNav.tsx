@@ -24,6 +24,7 @@ import {
   FlaskConical,
   BookOpen,
   Share2,
+  DollarSign,
 } from 'lucide-react';
 
 export function GrowthNav() {
@@ -31,6 +32,7 @@ export function GrowthNav() {
   const { state } = useAppStore();
 
   const navItems = [
+    { name: '💰 $2,095/Day Engine (₹1.75L)', href: '/growth/daily-revenue', icon: DollarSign },
     { name: '🚀 650-Client Sprint ($77K)', href: '/growth/sprint-650', icon: Rocket },
     { name: '🧠 AI Growth Brain', href: '/growth/brain', icon: Brain },
     { name: '📋 Daily AI CEO Report', href: '/growth/ceo-report', icon: FileText },
