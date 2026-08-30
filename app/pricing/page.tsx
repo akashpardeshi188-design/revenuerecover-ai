@@ -12,6 +12,8 @@ import {
   HelpCircle,
   Zap,
   TrendingUp,
+  CreditCard,
+  Lock,
 } from 'lucide-react';
 
 export default function PricingPage() {
@@ -34,7 +36,7 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: 'Start 3-Day Instant Trial',
+      cta: 'Start 1-Day Trial ($0 Today)',
       ctaHref: '/onboarding?plan=starter',
     },
     {
@@ -43,7 +45,7 @@ export default function PricingPage() {
       monthlyPrice: 149,
       annualPrice: 119,
       highlight: true,
-      badge: 'MOST POPULAR (78% of Customers)',
+      badge: 'MOST POPULAR (78% of US Contractors)',
       features: [
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
@@ -54,7 +56,7 @@ export default function PricingPage() {
         'TCPA & CAN-SPAM Quiet Hours Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: 'Start 3-Day Instant Trial',
+      cta: 'Start 1-Day Trial ($0 Today)',
       ctaHref: '/onboarding?plan=growth',
     },
     {
@@ -74,7 +76,7 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: 'Start 3-Day Instant Trial',
+      cta: 'Start 1-Day Trial ($0 Today)',
       ctaHref: '/onboarding?plan=pro',
     },
   ];
@@ -87,14 +89,14 @@ export default function PricingPage() {
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full space-y-16">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" /> 100% Guaranteed ROI
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5" /> 24-Hour Instant Card Pilot
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
             Simple Pricing That Pays for Itself on Day One
           </h1>
           <p className="text-slate-400 text-sm sm:text-base">
-            Just one recovered HVAC replacement or water heater install covers your entire annual subscription. All plans include a 3-day instant trial (72-hour ROI guarantee).
+            Recover your first $1,500 missed call in 24 hours. Enter credit card to begin, $119 auto-bills on Day 1. Cancel anytime with 1-click.
           </p>
 
           {/* Toggle */}
@@ -171,7 +173,7 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              <div className="pt-8">
+              <div className="pt-8 space-y-2">
                 <Link
                   href={plan.ctaHref}
                   className={`w-full py-3.5 px-4 rounded-xl font-bold text-center text-sm flex items-center justify-center gap-2 transition active:scale-98 shadow-md ${
@@ -182,12 +184,34 @@ export default function PricingPage() {
                 >
                   {plan.cta} <ArrowRight className="w-4 h-4" />
                 </Link>
-                <div className="text-center text-[10px] text-slate-400 mt-2">
-                  No credit card required for 14 days
+                <div className="text-center text-[10px] text-slate-400">
+                  $0 charged today • Auto-bills on Day 1
                 </div>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* US Credit Cards Accepted Strip */}
+        <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 max-w-4xl mx-auto shadow-xl">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              <Lock className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-bold text-white text-sm">Accepted US Payment Methods</div>
+              <div className="text-xs text-slate-400">Instant 24-Hour Card Pilot • 256-Bit Bank Grade Encryption</div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold">
+            <span className="px-3 py-1 rounded-lg bg-blue-600/20 text-blue-300 border border-blue-500/30">VISA</span>
+            <span className="px-3 py-1 rounded-lg bg-orange-600/20 text-orange-300 border border-orange-500/30">Mastercard</span>
+            <span className="px-3 py-1 rounded-lg bg-cyan-600/20 text-cyan-300 border border-cyan-500/30">AMEX</span>
+            <span className="px-3 py-1 rounded-lg bg-amber-600/20 text-amber-300 border border-amber-500/30">Discover</span>
+            <span className="px-3 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Apple Pay</span>
+            <span className="px-3 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Google Pay</span>
+          </div>
         </div>
 
         {/* Guarantee Banner */}
