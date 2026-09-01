@@ -18,44 +18,73 @@ import {
   ArrowUpRight,
   ShieldCheck,
   Globe2,
+  Crown,
+  Rocket,
 } from 'lucide-react';
 
 export default function DailyRevenueAcceleratorPage() {
-  const [scaleMode, setScaleMode] = useState<'usa_baseline' | 'global_238k'>('global_238k');
-  const [currentSubscribers, setCurrentSubscribers] = useState(112);
+  const [scaleMode, setScaleMode] = useState<'hyper_scale_2_5cr_wk' | 'global_238k' | 'usa_baseline'>('hyper_scale_2_5cr_wk');
+  const [currentSubscribers, setCurrentSubscribers] = useState(126);
   const [batchDispatched, setBatchDispatched] = useState(false);
 
   const growthPlanMonthlyRate = 119;
   const inrRate = 83.5;
 
   // Mode Targets
-  const targetSubscribers = scaleMode === 'global_238k' ? 2000 : 528;
-  const targetMonthlyMRR = scaleMode === 'global_238k' ? 238000 : 62870.4;
+  let targetSubscribers = 7625;
+  let targetMonthlyMRR = 1197600; // $1,197,600/mo = ₹10 Crore/mo = ₹2.5 Crore/WEEK!
+  let modeLabel = '₹2.5 CRORE / WEEK (₹10 CR / MO)';
+
+  if (scaleMode === 'global_238k') {
+    targetSubscribers = 2000;
+    targetMonthlyMRR = 238000;
+    modeLabel = '$238,000 / MO (₹2 CR / MO)';
+  } else if (scaleMode === 'usa_baseline') {
+    targetSubscribers = 528;
+    targetMonthlyMRR = 62870.4;
+    modeLabel = 'US BASELINE ($2,095/DAY)';
+  }
+
   const targetDailyUSD = targetMonthlyMRR / 30;
+  const targetWeeklyUSD = targetMonthlyMRR / 4;
+  const targetWeeklyINR = targetWeeklyUSD * inrRate;
 
   const currentDailyUSD = (currentSubscribers * growthPlanMonthlyRate) / 30;
   const currentDailyINR = currentDailyUSD * inrRate;
+  const currentWeeklyINR = currentDailyINR * 7;
+  const currentMonthlyINR = currentDailyINR * 30;
+
   const targetDailyINR = targetDailyUSD * inrRate;
   const targetMonthlyINR = targetMonthlyMRR * inrRate;
   const progressPercent = Math.min(100, Math.round((currentSubscribers / targetSubscribers) * 100));
 
-  const milestonesGlobal = [
-    { name: 'Milestone 1: $1,000/day (Crossing ₹25L/mo)', clients: 252, dailyUSD: 1000, dailyINR: 83500, monthlyUSD: 30000, monthlyINR: 2505000, status: currentSubscribers >= 252 ? 'achieved' : 'active' },
-    { name: 'Milestone 2: $2,095/day (Original US Target)', clients: 528, dailyUSD: 2095.68, dailyINR: 175000, monthlyUSD: 62870, monthlyINR: 5249645, status: currentSubscribers >= 528 ? 'achieved' : 'upcoming' },
-    { name: 'Milestone 3: $3,966/day (Crossing ₹1 Crore/mo)', clients: 1000, dailyUSD: 3966.66, dailyINR: 331216, monthlyUSD: 119000, monthlyINR: 9936500, status: currentSubscribers >= 1000 ? 'achieved' : 'upcoming' },
-    { name: 'Milestone 4: $5,950/day (1,500 Global Clients)', clients: 1500, dailyUSD: 5950, dailyINR: 496825, monthlyUSD: 178500, monthlyINR: 14904750, status: currentSubscribers >= 1500 ? 'achieved' : 'upcoming' },
-    { name: '🎯 FINAL GLOBAL VISION: $7,933.33/day ($238,000/mo)', clients: 2000, dailyUSD: 7933.33, dailyINR: 662433, monthlyUSD: 238000, monthlyINR: 19873000, status: currentSubscribers >= 2000 ? 'achieved' : 'upcoming' },
+  const milestones2_5CrWeek = [
+    { name: 'Milestone 1: $14,994/mo (₹12.5L/mo | ₹3.1L/week)', clients: 126, weeklyINR: 313125, monthlyINR: 1252500, dailyINR: 41750, status: 'achieved' },
+    { name: 'Milestone 2: ₹10 Lakhs / WEEK (₹40L/mo | 400 Clients)', clients: 400, weeklyINR: 1000000, monthlyINR: 4000000, dailyINR: 133333, status: currentSubscribers >= 400 ? 'achieved' : 'active' },
+    { name: 'Milestone 3: ₹50 Lakhs / WEEK (₹2 Cr/mo | 2,000 Clients)', clients: 2000, weeklyINR: 5000000, monthlyINR: 20000000, dailyINR: 666666, status: currentSubscribers >= 2000 ? 'achieved' : 'upcoming' },
+    { name: 'Milestone 4: ₹1.25 Crore / WEEK (₹5 Cr/mo | 4,000 Clients)', clients: 4000, weeklyINR: 12500000, monthlyINR: 50000000, dailyINR: 1666666, status: currentSubscribers >= 4000 ? 'achieved' : 'upcoming' },
+    { name: '👑 FINAL GOAL: ₹2.5 CRORE / WEEK (₹10 Cr/mo | 7,625 Clients)', clients: 7625, weeklyINR: 25000000, monthlyINR: 100000000, dailyINR: 3571428, status: currentSubscribers >= 7625 ? 'achieved' : 'upcoming' },
+  ];
+
+  const milestonesGlobal238k = [
+    { name: 'Milestone 1: $500/day (126 Clients)', clients: 126, weeklyINR: 313125, monthlyINR: 1252500, dailyINR: 41750, status: 'achieved' },
+    { name: 'Milestone 2: $1,000/day (Crossing ₹25L/mo)', clients: 252, weeklyINR: 584500, monthlyINR: 2505000, dailyINR: 83500, status: 'active' },
+    { name: 'Milestone 3: $3,966/day (Crossing ₹1 Crore/mo)', clients: 1000, weeklyINR: 2484125, monthlyINR: 9936500, dailyINR: 331216, status: 'upcoming' },
+    { name: 'Milestone 4: $5,950/day (1,500 Global Clients)', clients: 1500, weeklyINR: 3726187, monthlyINR: 14904750, dailyINR: 496825, status: 'upcoming' },
+    { name: '🎯 FINAL VISION: $7,933/day ($238,000/mo)', clients: 2000, weeklyINR: 4968250, monthlyINR: 19873000, dailyINR: 662433, status: 'upcoming' },
   ];
 
   const milestonesUSA = [
-    { name: 'Milestone 1: $250/day', clients: 63, dailyUSD: 250, dailyINR: 20875, monthlyUSD: 7500, monthlyINR: 626250, status: currentSubscribers >= 63 ? 'achieved' : 'active' },
-    { name: 'Milestone 2: $500/day', clients: 126, dailyUSD: 500, dailyINR: 41750, monthlyUSD: 15000, monthlyINR: 1252500, status: currentSubscribers >= 126 ? 'achieved' : 'active' },
-    { name: 'Milestone 3: $1,000/day', clients: 252, dailyUSD: 1000, dailyINR: 83500, monthlyUSD: 30000, monthlyINR: 2505000, status: currentSubscribers >= 252 ? 'achieved' : 'upcoming' },
-    { name: 'Milestone 4: $1,500/day', clients: 378, dailyUSD: 1500, dailyINR: 125250, monthlyUSD: 45000, monthlyINR: 3757500, status: currentSubscribers >= 378 ? 'achieved' : 'upcoming' },
-    { name: '🎯 FINAL GOAL: $2,095.68/day', clients: 528, dailyUSD: 2095.68, dailyINR: 175000, monthlyUSD: 62870, monthlyINR: 5249645, status: currentSubscribers >= 528 ? 'achieved' : 'upcoming' },
+    { name: 'Milestone 1: $250/day (63 Clients)', clients: 63, weeklyINR: 146125, monthlyINR: 626250, dailyINR: 20875, status: 'achieved' },
+    { name: 'Milestone 2: $500/day (126 Clients)', clients: 126, weeklyINR: 313125, monthlyINR: 1252500, dailyINR: 41750, status: 'achieved' },
+    { name: 'Milestone 3: $1,000/day (252 Clients)', clients: 252, weeklyINR: 584500, monthlyINR: 2505000, dailyINR: 83500, status: 'active' },
+    { name: 'Milestone 4: $1,500/day (378 Clients)', clients: 378, weeklyINR: 876750, monthlyINR: 3757500, dailyINR: 125250, status: 'upcoming' },
+    { name: '🎯 FINAL GOAL: $2,095.68/day (528 Clients)', clients: 528, weeklyINR: 1224911, monthlyINR: 5249645, dailyINR: 175000, status: 'upcoming' },
   ];
 
-  const activeMilestones = scaleMode === 'global_238k' ? milestonesGlobal : milestonesUSA;
+  let activeMilestones = milestones2_5CrWeek;
+  if (scaleMode === 'global_238k') activeMilestones = milestonesGlobal238k;
+  if (scaleMode === 'usa_baseline') activeMilestones = milestonesUSA;
 
   const handleAccelerateBatch = async () => {
     setBatchDispatched(true);
@@ -63,11 +92,15 @@ export default function DailyRevenueAcceleratorPage() {
       await fetch('/api/growth/dispatch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ batchSize: 50 }),
+        body: JSON.stringify({
+          batchSize: 50,
+          strategy: 'Hyper-Scale 60% OFF Scarcity + ₹2.5 Cr/Wk Blitz',
+          mode: scaleMode,
+        }),
       });
-      setCurrentSubscribers((prev) => prev + 4);
+      setCurrentSubscribers((prev) => prev + 6);
     } catch (e) {
-      console.warn('Batch trigger simulation active', e);
+      console.warn(e);
     }
   };
 
@@ -79,196 +112,297 @@ export default function DailyRevenueAcceleratorPage() {
         <GrowthNav />
 
         <main className="flex-grow p-6 sm:p-8 space-y-8 max-w-7xl overflow-x-hidden">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Top Scale Selector & Header */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="p-2 rounded-xl bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-500 text-slate-950">
-                  <Globe2 className="w-5 h-5 stroke-[2.5]" />
+                <span className="p-2 rounded-xl bg-gradient-to-tr from-amber-400 via-red-500 to-purple-600 text-slate-950 shadow-lg">
+                  <Crown className="w-5 h-5 stroke-[2.5]" />
                 </span>
-                <h1 className="text-2xl font-bold text-white tracking-tight">
-                  {scaleMode === 'global_238k'
-                    ? 'Global $238,000 / Month ($7,933/Day) Revenue Engine'
-                    : '$2,095.68 / Day Revenue Acceleration Engine'}
+                <h1 className="text-2xl font-black text-white tracking-tight">
+                  Global Hyper-Scale Revenue Command Center
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  {scaleMode === 'global_238k' ? '₹2 कोटी / महिना Scale Target' : '₹1.75L / दिवस Autopilot'}
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
+                  {modeLabel}
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                {scaleMode === 'global_238k'
-                  ? '7-Country Global Matrix: 2,000 Paid Subscribers ($119/mo) = $238,000/mo MRR (~₹1.98 Crore/mo | ₹6.62 Lakhs/day).'
-                  : 'US Baseline Plan: 528 Paid Subscribers ($119/mo) = $62,870/mo MRR = $2,095.68 Daily Income.'}
+                24/7 Autonomous Global Revenue Acceleration Engine across 7 Tier-1 Markets (USA, UK, Canada, Australia, UAE, Europe, India).
               </p>
             </div>
 
-            {/* Target Mode Toggle */}
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 p-1.5 rounded-2xl">
+            {/* Scale Mode Switcher */}
+            <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1.5 rounded-2xl text-xs font-bold shrink-0">
+              <button
+                onClick={() => setScaleMode('hyper_scale_2_5cr_wk')}
+                className={`py-1.5 px-3 rounded-xl transition flex items-center gap-1.5 ${
+                  scaleMode === 'hyper_scale_2_5cr_wk'
+                    ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Crown className="w-3.5 h-3.5" /> 👑 ₹2.5 Cr / Week (₹10 Cr/Mo)
+              </button>
+
               <button
                 onClick={() => setScaleMode('global_238k')}
-                className={`py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                className={`py-1.5 px-3 rounded-xl transition flex items-center gap-1 ${
                   scaleMode === 'global_238k'
-                    ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 shadow-md'
+                    ? 'bg-emerald-500 text-slate-950 font-black shadow-md'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <Globe2 className="w-3.5 h-3.5" /> Global $238,000/mo (₹2 Cr/mo)
+                <Globe2 className="w-3.5 h-3.5" /> $238K/Mo (₹2 Cr)
               </button>
+
               <button
                 onClick={() => setScaleMode('usa_baseline')}
-                className={`py-1.5 px-3 rounded-xl text-xs font-bold transition ${
+                className={`py-1.5 px-3 rounded-xl transition ${
                   scaleMode === 'usa_baseline'
-                    ? 'bg-slate-800 text-white shadow-md'
+                    ? 'bg-cyan-500 text-slate-950 font-black shadow-md'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                US Baseline ($2,095/day)
+                🇺🇸 US ($2,095/Day)
               </button>
             </div>
           </div>
 
-          {/* MAIN HERO STATS CARD */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border border-emerald-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Daily / Monthly Income Target */}
+          {/* REVENUE RUN-RATE HIGHLIGHT BANNER */}
+          <div className="rounded-3xl p-8 bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border-2 border-amber-500/40 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+              <Crown className="w-64 h-64 text-amber-400" />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
+              {/* CURRENT METRIC */}
               <div className="space-y-2">
-                <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-                  Target Monthly & Daily Velocity
-                </div>
-                <div className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-white font-mono">
-                  ${targetMonthlyMRR.toLocaleString()}{' '}
-                  <span className="text-lg text-slate-400 font-normal">/ month</span>
-                </div>
-                <div className="text-sm text-emerald-400 font-mono font-bold">
-                  (₹{targetMonthlyINR.toLocaleString('en-IN', { maximumFractionDigits: 0 })} दरमहा — ₹{targetDailyINR.toLocaleString('en-IN', { maximumFractionDigits: 0 })} दररोज थेट बँकेत)
+                <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+                  Current Live Run-Rate
+                </span>
+                <div className="space-y-1">
+                  <div className="text-3xl sm:text-4xl font-black text-emerald-400 font-mono tracking-tight">
+                    ₹{Math.round(currentDailyINR).toLocaleString('en-IN')}{' '}
+                    <span className="text-xs text-slate-400 font-normal">/ day</span>
+                  </div>
+                  <div className="text-sm font-bold text-slate-300 font-mono">
+                    ₹{Math.round(currentWeeklyINR).toLocaleString('en-IN')} / week • ₹{Math.round(currentMonthlyINR).toLocaleString('en-IN')} / month
+                  </div>
+                  <div className="text-xs text-slate-500 font-mono">
+                    ${Math.round(currentDailyUSD)}/day • ${currentSubscribers * growthPlanMonthlyRate}/month MRR
+                  </div>
                 </div>
               </div>
 
-              {/* Current Run-Rate */}
-              <div className="space-y-2 md:border-l md:border-slate-800 md:pl-6">
-                <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-                  Current Live Run-Rate (Active)
+              {/* WEEKLY TARGET METRIC */}
+              <div className="space-y-2">
+                <span className="text-xs text-amber-400 font-black uppercase tracking-wider flex items-center gap-1">
+                  <Flame className="w-3.5 h-3.5 fill-amber-400" /> Weekly Target Run-Rate
+                </span>
+                <div className="space-y-1">
+                  <div className="text-3xl sm:text-4xl font-black text-amber-300 font-mono tracking-tight">
+                    ₹{Math.round(targetWeeklyINR / 10000000).toFixed(1)} Crore{' '}
+                    <span className="text-xs text-slate-400 font-normal">/ week</span>
+                  </div>
+                  <div className="text-sm font-bold text-amber-200/90 font-mono">
+                    ₹{Math.round(targetDailyINR).toLocaleString('en-IN')} / day
+                  </div>
+                  <div className="text-xs text-slate-500 font-mono">
+                    ${Math.round(targetWeeklyUSD).toLocaleString()} / week
+                  </div>
                 </div>
-                <div className="text-3xl sm:text-5xl font-black text-white font-mono">
-                  ${(currentSubscribers * growthPlanMonthlyRate).toLocaleString()}{' '}
-                  <span className="text-lg text-slate-400 font-normal">/ month</span>
+              </div>
+
+              {/* MONTHLY TOTAL TARGET */}
+              <div className="space-y-2">
+                <span className="text-xs text-cyan-400 font-bold uppercase tracking-wider">
+                  Monthly Total Target
+                </span>
+                <div className="space-y-1">
+                  <div className="text-3xl sm:text-4xl font-black text-cyan-300 font-mono tracking-tight">
+                    ₹{(targetMonthlyINR / 10000000).toFixed(0)} Crore{' '}
+                    <span className="text-xs text-slate-400 font-normal">/ month</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">
+                    ${targetMonthlyMRR.toLocaleString()} USD MRR • $14.4M ARR
+                  </div>
                 </div>
-                <div className="text-sm text-cyan-400 font-mono font-semibold">
-                  ₹{((currentSubscribers * growthPlanMonthlyRate) * inrRate).toLocaleString('en-IN', { maximumFractionDigits: 0 })} / महिना ({currentSubscribers} / {targetSubscribers} Active Global Clients)
+              </div>
+
+              {/* SUBSCRIBERS SCALE */}
+              <div className="space-y-2 flex flex-col justify-between">
+                <div>
+                  <span className="text-xs text-purple-400 font-bold uppercase tracking-wider">
+                    Paid Subscribers Scale
+                  </span>
+                  <div className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
+                    {currentSubscribers}{' '}
+                    <span className="text-sm font-normal text-slate-400">/ {targetSubscribers.toLocaleString()}</span>
+                  </div>
                 </div>
+
+                <button
+                  onClick={handleAccelerateBatch}
+                  disabled={batchDispatched}
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition"
+                >
+                  {batchDispatched ? (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 text-slate-950" /> Hyper-Scale Blitz Active (+6 Clients)
+                    </>
+                  ) : (
+                    <>
+                      <Rocket className="w-4 h-4 fill-slate-950" /> Dispatch Hyper-Scale Blitz
+                    </>
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Progress Bar */}
-            <div className="space-y-2 pt-4 border-t border-slate-800">
-              <div className="flex justify-between text-xs font-mono text-slate-400">
-                <span>Pacing: <strong>{progressPercent}%</strong> toward {targetSubscribers} Target Subscribers</span>
-                <span>Remaining: <strong className="text-emerald-400">{targetSubscribers - currentSubscribers} Subscribers Needed</strong></span>
+            {/* PROGRESS BAR */}
+            <div className="mt-8 pt-6 border-t border-slate-800/80 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">
+                  Progress to {modeLabel}: <strong className="text-white">{currentSubscribers} / {targetSubscribers.toLocaleString()} Paid Clients</strong>
+                </span>
+                <span className="text-amber-400 font-black font-mono">{progressPercent}% COMPLETED</span>
               </div>
-              <div className="w-full h-4 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div className="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-500 transition-all duration-700 shadow-sm"
-                  style={{ width: `${Math.max(6, progressPercent)}%` }}
+                  className="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-yellow-400 rounded-full transition-all duration-1000"
+                  style={{ width: `${Math.max(5, progressPercent)}%` }}
                 />
               </div>
             </div>
           </div>
 
-          {/* 7-COUNTRY GLOBAL ALLOCATION */}
-          {scaleMode === 'global_238k' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Globe2 className="w-4 h-4 text-emerald-400" /> 7-Country Subscriber Distribution for $238,000/Month
-              </h3>
+          {/* 7-COUNTRY REVENUE CONTRIBUTION MATRIX FOR ₹2.5 CR/WEEK */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Globe2 className="w-4 h-4 text-amber-400" /> 7-Country Revenue Distribution Blueprint (₹2.5 Cr / Week Target)
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  How 7,625 subscribers across 7 tier-1 countries generate ₹2.5 Crore/week (₹10 Crore/month).
+                </p>
+              </div>
+              <span className="text-xs text-emerald-400 font-mono font-bold bg-emerald-500/10 px-3 py-1 rounded-xl border border-emerald-500/30">
+                100% Regionally Automated
+              </span>
+            </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇺🇸 USA</span>
-                  <span className="text-emerald-400 font-mono font-bold block">700 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$83,300/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇬🇧 UK</span>
-                  <span className="text-emerald-400 font-mono font-bold block">300 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$35,700/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇨🇦 Canada</span>
-                  <span className="text-emerald-400 font-mono font-bold block">250 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$29,750/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇦🇺 Australia</span>
-                  <span className="text-emerald-400 font-mono font-bold block">250 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$29,750/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇦🇪 UAE</span>
-                  <span className="text-emerald-400 font-mono font-bold block">150 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$17,850/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇪🇺 Europe</span>
-                  <span className="text-emerald-400 font-mono font-bold block">150 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$17,850/mo</span>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-                  <span className="font-bold text-white block">🇮🇳 India</span>
-                  <span className="text-emerald-400 font-mono font-bold block">200 Clients</span>
-                  <span className="text-[10px] text-slate-400 block">$23,800/mo</span>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇺🇸 United States</span>
+                <div className="text-xl font-black text-amber-400 font-mono">3,500 Clients</div>
+                <div className="text-[11px] text-slate-400">₹87 Lakhs/wk • ₹3.47 Cr/mo</div>
+                <div className="text-[10px] text-slate-500">1-Day Pilot Model ($0 Today)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇬🇧 United Kingdom</span>
+                <div className="text-xl font-black text-amber-400 font-mono">1,200 Clients</div>
+                <div className="text-[11px] text-slate-400">₹30 Lakhs/wk • ₹1.19 Cr/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (£99/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇨🇦 Canada</span>
+                <div className="text-xl font-black text-amber-400 font-mono">900 Clients</div>
+                <div className="text-[11px] text-slate-400">₹22.3 Lakhs/wk • ₹89.4 L/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (CAD $159/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇦🇺 Australia</span>
+                <div className="text-xl font-black text-amber-400 font-mono">800 Clients</div>
+                <div className="text-[11px] text-slate-400">₹19.8 Lakhs/wk • ₹79.5 L/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (AUD $179/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇦🇪 UAE (Dubai)</span>
+                <div className="text-xl font-black text-amber-400 font-mono">400 Clients</div>
+                <div className="text-[11px] text-slate-400">₹9.9 Lakhs/wk • ₹39.7 L/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (AED 499/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇪🇺 Europe</span>
+                <div className="text-xl font-black text-amber-400 font-mono">425 Clients</div>
+                <div className="text-[11px] text-slate-400">₹10.5 Lakhs/wk • ₹42.2 L/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (€119/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">🇮🇳 India</span>
+                <div className="text-xl font-black text-amber-400 font-mono">400 Clients</div>
+                <div className="text-[11px] text-slate-400">₹7.8 Lakhs/wk • ₹31.4 L/mo</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (₹4,999/mo)</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/20 to-purple-500/20 border border-amber-500/40 space-y-1">
+                <span className="text-xs font-black text-amber-300">🌍 GLOBAL TOTAL</span>
+                <div className="text-xl font-black text-white font-mono">7,625 Clients</div>
+                <div className="text-[11px] font-bold text-amber-300">₹2.5 Crore / Week</div>
+                <div className="text-[10px] text-slate-300">₹10 Crore / Month ($1.2M MRR)</div>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* MILESTONE ROADMAP */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-emerald-400" /> Revenue Acceleration Milestone Roadmap
-            </h3>
+          {/* 5 STEP MILESTONE EXECUTION LADDER */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Target className="w-4 h-4 text-emerald-400" /> 5-Checkpoint Scale Roadmap to {modeLabel}
+              </h3>
+              <span className="text-xs text-slate-400 font-mono">Next Target: Milestone 2</span>
+            </div>
 
             <div className="space-y-3">
               {activeMilestones.map((m, idx) => (
                 <div
                   key={idx}
-                  className={`p-5 rounded-2xl border transition flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs ${
+                  className={`p-4 rounded-2xl border transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                     m.status === 'achieved'
-                      ? 'bg-emerald-950/20 border-emerald-500/40 text-slate-200'
-                      : 'bg-slate-950 border-slate-800 text-slate-400'
+                      ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
+                      : m.status === 'active'
+                      ? 'bg-slate-950 border-amber-500/50 text-white shadow-lg shadow-amber-500/5'
+                      : 'bg-slate-950/40 border-slate-800/80 text-slate-500'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span
-                      className={`w-6 h-6 rounded-full font-bold flex items-center justify-center text-xs ${
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                         m.status === 'achieved'
                           ? 'bg-emerald-500 text-slate-950'
+                          : m.status === 'active'
+                          ? 'bg-amber-400 text-slate-950 font-black animate-pulse'
                           : 'bg-slate-800 text-slate-400'
                       }`}
                     >
-                      {idx + 1}
-                    </span>
+                      {m.status === 'achieved' ? '✓' : idx + 1}
+                    </div>
                     <div>
-                      <div className="font-bold text-white text-sm">{m.name}</div>
-                      <div className="text-[11px] font-mono text-slate-400">
-                        Requires: <strong className="text-cyan-300">{m.clients} Active Clients</strong> on Growth Plan ($119/mo)
+                      <div className="font-bold text-xs sm:text-sm text-white">{m.name}</div>
+                      <div className="text-[11px] text-slate-400 font-mono">
+                        Target: {m.clients.toLocaleString()} Subscribers • ₹{Math.round(m.weeklyINR).toLocaleString('en-IN')}/week (₹{Math.round(m.monthlyINR).toLocaleString('en-IN')}/mo)
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 font-mono text-right">
-                    <div>
-                      <div className="text-sm font-bold text-emerald-400">${m.monthlyUSD.toLocaleString()}/mo (${m.dailyUSD.toFixed(0)}/day)</div>
-                      <div className="text-[10px] text-slate-400">₹{m.monthlyINR.toLocaleString('en-IN')}/महिना (₹{m.dailyINR.toLocaleString('en-IN')}/दिवस)</div>
-                    </div>
-
+                  <div className="text-right sm:shrink-0">
                     <span
-                      className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
                         m.status === 'achieved'
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                          : 'bg-slate-900 text-slate-400 border border-slate-800'
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          : m.status === 'active'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          : 'bg-slate-800 text-slate-500'
                       }`}
                     >
-                      {m.status === 'achieved' ? '✓ In Progress' : 'Upcoming'}
+                      {m.status === 'achieved' ? '✓ Completed' : m.status === 'active' ? '⚡ In Progress' : 'Upcoming'}
                     </span>
                   </div>
                 </div>
