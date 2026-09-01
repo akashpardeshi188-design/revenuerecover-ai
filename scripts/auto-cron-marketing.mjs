@@ -1,26 +1,25 @@
 /**
- * RevenueRecover AI — 24/7 Hyper-Velocity Autonomous Recurring Marketing Engine
- * Fires automated global outreach dispatches every 30 Minutes (३० मिनिटे) continuously
- * Sends Automated WhatsApp Updates to CEO Phone: +91 8208057237
- * Target: ₹2.5 Crore / Week (₹10 Crore/mo MRR | $1.2M MRR | 7,625 Global Subscribers)
+ * RevenueRecover AI — Autonomous Recurring Marketing & CEO Performance Reporter
+ * Schedule: Executes every 90 Minutes (१ तास ३० मिनिटे)
+ * Customer Marketing: Dispatched strictly to verified global business prospects (USA, UK, CA, AU, UAE, EU, IN)
+ * CEO Phone (+91 8208057237): Receives STRICTLY the 90-Minute Executive Revenue & Subscriber Performance Report
  */
 
 import { spawn } from 'child_process';
 import path from 'path';
 import { sendWhatsAppUpdateToCEO } from '../lib/whatsapp-notifier.mjs';
 
-const INTERVAL_MINUTES = 30; // 30 Minutes Ultra-Frequency (३० मिनिटे)
-const INTERVAL_MS = INTERVAL_MINUTES * 60 * 1000; // 30 mins in ms (1,800,000 ms)
+const INTERVAL_MINUTES = 90; // 90 Minutes (१ तास ३० मिनिटे)
+const INTERVAL_MS = INTERVAL_MINUTES * 60 * 1000; // 90 mins in ms (5,400,000 ms)
 
 console.log(`
 ========================================================================
-🚀 REVENUERECOVER AI — 24/7 ULTRA-VELOCITY 30-MINUTE GLOBAL RUNNER
+🚀 REVENUERECOVER AI — 24/7 90-MINUTE GLOBAL ENGINE & CEO REPORTER
 ========================================================================
-Schedule: Every ${INTERVAL_MINUTES} Minutes (दर ३० मिनिटांनी अविरत 24/7/365)
-WhatsApp Alerts: Active & Connected to +91 8208057237
-Global Markets: 🇺🇸 USA, 🇬🇧 UK, 🇨🇦 Canada, 🇦🇺 Australia, 🇦🇪 UAE, 🇪🇺 Europe, 🇮🇳 India
+Schedule: Every 90 Minutes (दर ९० मिनिटांनी अविरत 24/7/365)
+Customer Outreach: Strictly to Verified Global Contractors (USA, UK, CA, AU, UAE, EU, IN)
+CEO Executive Reports Only: +91 8208057237 (Zero Marketing / Only Business Reports)
 Target: ₹2.5 Crore / Week (₹10 Crore/mo MRR | $1.2M MRR | 7,625 Subscribers)
-Compliance: TCPA, CAN-SPAM, GDPR, CASL, SPAM ACT Fully Active
 ========================================================================
 `);
 
@@ -31,18 +30,19 @@ async function executeCycle() {
   const timestampUK = new Date().toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
   const timestampIST = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-  console.log(`\n⏰ [${new Date().toISOString()}] TRIGGERING 30-MINUTE ULTRA-CYCLE #${cycleCount}`);
+  console.log(`\n⏰ [${new Date().toISOString()}] TRIGGERING 90-MINUTE CYCLE #${cycleCount}`);
   console.log(`    → Global Time Snapshot: US Central: ${timestampUS} | London: ${timestampUK} | India: ${timestampIST}`);
 
   try {
+    // Run customer outreach strictly to external business targets
     const dispatchProcess = spawn('node', ['scripts/dispatch-outreach.mjs'], {
       stdio: 'inherit',
     });
 
     dispatchProcess.on('close', async (code) => {
-      console.log(`✓ Global 30-Minute Cycle #${cycleCount} completed with exit code: ${code}`);
+      console.log(`✓ External Global Outreach Cycle #${cycleCount} completed with exit code: ${code}`);
 
-      // Dispatch real-time WhatsApp report to CEO Phone: 8208057237
+      // Send STRICTLY the CEO Executive Performance Report to +91 8208057237
       try {
         await sendWhatsAppUpdateToCEO(cycleCount, {
           subscribers: 126,
@@ -51,19 +51,19 @@ async function executeCycle() {
           targetWeeklyINR: '2.5 Crore',
         });
       } catch (errWhatsApp) {
-        console.warn('WhatsApp payload logged:', errWhatsApp);
+        console.warn('CEO Report payload logged:', errWhatsApp);
       }
 
-      console.log(`⏳ Next automated 30-minute marketing cycle will execute in exactly 30 minutes (${new Date(Date.now() + INTERVAL_MS).toLocaleTimeString()})...\n`);
+      console.log(`⏳ Next automated 90-minute cycle & CEO report will trigger in exactly 90 minutes (${new Date(Date.now() + INTERVAL_MS).toLocaleTimeString()})...\n`);
       cycleCount++;
     });
   } catch (err) {
-    console.error(`❌ Global 30-Minute Cycle #${cycleCount} error:`, err);
+    console.error(`❌ Cycle #${cycleCount} error:`, err);
   }
 }
 
 // Execute first cycle immediately
 executeCycle();
 
-// Set recurring 30-minute timer
+// Set recurring 90-minute timer
 setInterval(executeCycle, INTERVAL_MS);
