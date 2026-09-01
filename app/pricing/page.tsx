@@ -14,17 +14,21 @@ import {
   TrendingUp,
   CreditCard,
   Lock,
+  Globe2,
 } from 'lucide-react';
 
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(true);
+  const [region, setRegion] = useState<'usa' | 'global'>('usa');
 
   const plans = [
     {
       name: 'Starter',
       description: 'Ideal for solo contractors & small trade teams getting started with automated follow-ups.',
-      monthlyPrice: 49,
-      annualPrice: 39,
+      monthlyPrice: region === 'usa' ? 49 : 49,
+      annualPrice: region === 'usa' ? 39 : 39,
+      currency: '$',
+      currencyLabel: region === 'usa' ? 'USD' : 'USD / £39 / CAD $55',
       highlight: false,
       badge: null,
       features: [
@@ -36,7 +40,7 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: 'Start 1-Day Trial ($0 Today)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
       ctaHref: '/onboarding?plan=starter',
     },
     {
@@ -44,8 +48,10 @@ export default function PricingPage() {
       description: 'The complete AI Revenue Recovery Employee for growing HVAC, plumbing, and service businesses.',
       monthlyPrice: 149,
       annualPrice: 119,
+      currency: '$',
+      currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
       highlight: true,
-      badge: 'MOST POPULAR (78% of US Contractors)',
+      badge: region === 'usa' ? 'MOST POPULAR (78% of US Contractors)' : 'GLOBAL BESTSELLER (30-DAY GUARANTEE)',
       features: [
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
@@ -53,10 +59,10 @@ export default function PricingPage() {
         'Supervised Autopilot & Automated sequences',
         'Seasonal customer reactivation campaigns',
         'AI Response Classification & suggested replies',
-        'TCPA & CAN-SPAM Quiet Hours Compliance Engine',
+        'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: 'Start 1-Day Trial ($0 Today)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
       ctaHref: '/onboarding?plan=growth',
     },
     {
@@ -64,6 +70,8 @@ export default function PricingPage() {
       description: 'Engineered for high-volume, multi-truck contractors and multi-location franchises.',
       monthlyPrice: 299,
       annualPrice: 239,
+      currency: '$',
+      currencyLabel: region === 'usa' ? 'USD' : 'USD / £199 / CAD $320',
       highlight: false,
       badge: 'ENTERPRISE CAPABLE',
       features: [
@@ -76,7 +84,7 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: 'Start 1-Day Trial ($0 Today)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
       ctaHref: '/onboarding?plan=pro',
     },
   ];
@@ -90,37 +98,69 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" /> 24-Hour Instant Card Pilot
+            <Sparkles className="w-3.5 h-3.5" />
+            {region === 'usa' ? '24-Hour Instant Card Pilot ($0 Today)' : '0-Day Instant Activation + 100% 30-Day Money-Back Guarantee'}
           </div>
+
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
             Simple Pricing That Pays for Itself on Day One
           </h1>
+
           <p className="text-slate-400 text-sm sm:text-base">
-            Recover your first $1,500 missed call in 24 hours. Enter credit card to begin, $119 auto-bills on Day 1. Cancel anytime with 1-click.
+            {region === 'usa'
+              ? 'Recover your first $1,500 missed call in 24 hours. Enter credit card to begin, $119 auto-bills on Day 1. Cancel anytime with 1-click.'
+              : 'Instant activation for Global Contractors (UK, Canada, Australia, UAE, Europe, India). Zero risk with our 30-day 100% money-back guarantee.'}
           </p>
 
-          {/* Toggle */}
-          <div className="flex items-center justify-center gap-3 pt-4">
-            <span className={`text-xs font-medium ${!isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-              Monthly Billing
-            </span>
-            <button
-              onClick={() => setIsAnnual(!isAnnual)}
-              className="w-12 h-6 rounded-full bg-slate-800 p-1 transition-colors relative"
-            >
-              <div
-                className={`w-4 h-4 rounded-full bg-emerald-400 transition-transform ${
-                  isAnnual ? 'translate-x-6' : 'translate-x-0'
+          {/* Region Switcher & Billing Toggle */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            {/* Region Toggle */}
+            <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-2xl text-xs font-semibold">
+              <button
+                onClick={() => setRegion('usa')}
+                className={`py-1.5 px-3 rounded-xl transition ${
+                  region === 'usa'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
+                    : 'text-slate-400 hover:text-white'
                 }`}
-              />
-            </button>
-            <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-medium ${isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-                Annual Billing
+              >
+                🇺🇸 United States (1-Day Trial)
+              </button>
+              <button
+                onClick={() => setRegion('global')}
+                className={`py-1.5 px-3 rounded-xl transition flex items-center gap-1 ${
+                  region === 'global'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Globe2 className="w-3 h-3" /> 🌍 Global (0-Day Instant)
+              </button>
+            </div>
+
+            {/* Annual vs Monthly */}
+            <div className="flex items-center gap-2.5">
+              <span className={`text-xs font-medium ${!isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
+                Monthly
               </span>
-              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                SAVE 20%
-              </span>
+              <button
+                onClick={() => setIsAnnual(!isAnnual)}
+                className="w-12 h-6 rounded-full bg-slate-800 p-1 transition-colors relative"
+              >
+                <div
+                  className={`w-4 h-4 rounded-full bg-emerald-400 transition-transform ${
+                    isAnnual ? 'translate-x-6' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+              <div className="flex items-center gap-1.5">
+                <span className={`text-xs font-medium ${isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
+                  Annual
+                </span>
+                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                  SAVE 20%
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -145,94 +185,67 @@ export default function PricingPage() {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-                  <p className="text-xs text-slate-400 mt-1 min-h-[36px]">{plan.description}</p>
+                  <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{plan.description}</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800">
+                <div className="space-y-1">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl sm:text-5xl font-black text-white">
+                    <span className="text-4xl sm:text-5xl font-black text-white tracking-tight font-mono">
                       ${isAnnual ? plan.annualPrice : plan.monthlyPrice}
                     </span>
-                    <span className="text-xs text-slate-400 font-medium">/ month</span>
+                    <span className="text-xs text-slate-400">/ month</span>
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    {isAnnual ? 'Billed annually ($' + (plan.annualPrice * 12) + '/yr)' : 'Billed monthly, cancel anytime'}
+                  <div className="text-[11px] text-emerald-400 font-medium">
+                    {isAnnual ? 'Billed annually ($' + (plan.annualPrice * 12) + '/yr)' : 'Billed monthly'}
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-mono">
+                    Multi-Currency: {plan.currencyLabel}
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-4 border-t border-slate-800 text-xs">
-                  <div className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
-                    Included Features:
-                  </div>
-                  {plan.features.map((feature, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-slate-300">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
+                <div className="pt-4 border-t border-slate-800 space-y-3">
+                  <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
+                    What is Included:
+                  </span>
+                  <ul className="space-y-2.5">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-300">
+                        <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
-              <div className="pt-8 space-y-2">
+              <div className="pt-8 space-y-3">
                 <Link
                   href={plan.ctaHref}
-                  className={`w-full py-3.5 px-4 rounded-xl font-bold text-center text-sm flex items-center justify-center gap-2 transition active:scale-98 shadow-md ${
+                  className={`w-full py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 ${
                     plan.highlight
-                      ? 'bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 shadow-emerald-500/25'
+                      ? 'bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 shadow-lg shadow-emerald-500/20'
                       : 'bg-slate-800 hover:bg-slate-700 text-white'
                   }`}
                 >
                   {plan.cta} <ArrowRight className="w-4 h-4" />
                 </Link>
-                <div className="text-center text-[10px] text-slate-400">
-                  $0 charged today • Auto-bills on Day 1
+
+                <div className="text-center space-y-1">
+                  <p className="text-[10px] text-slate-400 flex items-center justify-center gap-1">
+                    <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                    {region === 'usa'
+                      ? '24-Hour Card Pilot ($0 Today) • Cancel Anytime'
+                      : '100% 30-Day Money-Back Guarantee • Zero Risk'}
+                  </p>
+                  <p className="text-[10px] text-slate-500">
+                    💳 Accepts VISA, Mastercard, AMEX, Discover, Apple Pay, Google Pay
+                  </p>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* US Credit Cards Accepted Strip */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 max-w-4xl mx-auto shadow-xl">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-              <Lock className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="font-bold text-white text-sm">Accepted US Payment Methods</div>
-              <div className="text-xs text-slate-400">Instant 24-Hour Card Pilot • 256-Bit Bank Grade Encryption</div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold">
-            <span className="px-3 py-1 rounded-lg bg-blue-600/20 text-blue-300 border border-blue-500/30">VISA</span>
-            <span className="px-3 py-1 rounded-lg bg-orange-600/20 text-orange-300 border border-orange-500/30">Mastercard</span>
-            <span className="px-3 py-1 rounded-lg bg-cyan-600/20 text-cyan-300 border border-cyan-500/30">AMEX</span>
-            <span className="px-3 py-1 rounded-lg bg-amber-600/20 text-amber-300 border border-amber-500/30">Discover</span>
-            <span className="px-3 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Apple Pay</span>
-            <span className="px-3 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Google Pay</span>
-          </div>
-        </div>
-
-        {/* Guarantee Banner */}
-        <div className="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-teal-950/40 border border-emerald-500/30 rounded-3xl p-8 flex flex-col sm:flex-row items-center gap-6 justify-between max-w-4xl mx-auto">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <div>
-              <h4 className="text-base font-bold text-white">The 5x Revenue Recovery Guarantee</h4>
-              <p className="text-xs text-slate-400 max-w-lg">
-                If RevenueRecover AI does not identify and recover at least 5x your monthly subscription cost in your first 30 days of active use, we will refund 100% of your subscription.
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/free-revenue-scan"
-            className="py-3 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold shrink-0 transition"
-          >
-            Run 60-Sec Scan First
-          </Link>
         </div>
       </main>
 
