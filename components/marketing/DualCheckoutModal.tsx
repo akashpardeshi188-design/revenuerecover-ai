@@ -104,14 +104,14 @@ export function DualCheckoutModal({
           <>
             {/* Header */}
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-black uppercase">
-                <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> 60% OFF FOUNDING DISCOUNT LOCKED
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-black uppercase">
+                <Sparkles className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" /> 1-CLICK TRIAL • 150–200 LEADS UNLOCKED ON DAY 1
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">
-                Secure Checkout: {planName}
+                1-Click Trial Activation: {planName}
               </h3>
-              <p className="text-xs text-slate-400">
-                Instant 1-Click Digital Cloud Activation • Cancel Anytime with 1-Click
+              <p className="text-xs text-slate-300">
+                1-Click to activate. Instantly unlocks <strong>150–200 verified customer leads & missed-call recoveries</strong> in your local service area. Cancel anytime with 1-click.
               </p>
             </div>
 
@@ -198,8 +198,7 @@ export function DualCheckoutModal({
                   </span>
                 ) : (
                   <>
-                    <Lock className="w-4 h-4" /> Complete Payment with{' '}
-                    {selectedGateway === 'razorpay' ? 'Cards / Razorpay' : 'PayPal'} ($
+                    <Zap className="w-4 h-4 fill-slate-950" /> Start 1-Click Trial & Unlock 150–200 Leads ($
                     {amountUSD}/mo)
                   </>
                 )}
@@ -210,7 +209,7 @@ export function DualCheckoutModal({
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
                 </span>
                 <span>•</span>
-                <span>No Long-Term Contracts • Keep 100% of Revenue</span>
+                <span>150–200 Leads Ingested on Day 1 • Cancel Anytime</span>
               </div>
             </div>
           </>

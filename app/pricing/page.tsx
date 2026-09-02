@@ -62,7 +62,7 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
+      cta: 'Start 1-Click Trial ($0 Today)',
       ctaHref: '/onboarding?plan=starter',
     },
     {
@@ -76,8 +76,9 @@ export default function PricingPage() {
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
       discountBadge: '🔥 60% OFF SPECIAL',
       highlight: true,
-      badge: region === 'usa' ? 'MOST POPULAR (78% of US Contractors)' : 'GLOBAL BESTSELLER (INSTANT ACCESS)',
+      badge: '🔥 1-CLICK TRIAL • 150–200 LEADS UNLOCKED',
       features: [
+        '🎁 150–200 Verified Local Contractor Leads Ingested on Day 1',
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
         'Stripe & QuickBooks past-due payment recovery',
@@ -87,7 +88,7 @@ export default function PricingPage() {
         'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
+      cta: 'Start 1-Click Trial (150–200 Leads Included)',
       ctaHref: '/onboarding?plan=growth',
     },
     {
@@ -104,6 +105,7 @@ export default function PricingPage() {
       badge: 'ENTERPRISE CAPABLE',
       features: [
         'Everything in Growth Plan',
+        '🎁 500+ Verified Commercial & Residential Leads',
         'Multi-location & Multi-brand management',
         'Full Autonomous Autopilot mode with safeguards',
         'Custom AI Voice / Webhook integrations',
@@ -112,7 +114,7 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
+      cta: 'Start 1-Click Trial (500+ Leads)',
       ctaHref: '/onboarding?plan=pro',
     },
   ];
