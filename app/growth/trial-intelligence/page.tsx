@@ -149,6 +149,47 @@ export default function TrialIntelligencePage() {
           </div>
         </div>
 
+        {/* 30-DAY 25% DECAYING TRIAL QUOTA ENGINE BREAKDOWN */}
+        <div className="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-500/30 space-y-4 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold uppercase">
+                <Sparkles className="w-3 h-3" /> Founder Innovation: 30-Day 25% Decaying Quota Engine
+              </span>
+              <h3 className="text-base font-bold text-white mt-1">
+                Dynamic Urgency & Progressive Trial Monetization Model
+              </h3>
+            </div>
+            <span className="text-xs text-slate-400">Enforced Server-Side</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-emerald-500/40 space-y-1">
+              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Month 1 (Days 1–30)</span>
+              <div className="text-xl font-black text-white font-mono">200 Leads <span className="text-xs text-emerald-400 font-normal">(100% Quota)</span></div>
+              <p className="text-[10px] text-slate-400 leading-tight">Full initial introductory trial capacity unlocked on 1-click.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/40 space-y-1">
+              <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Month 2 (Days 31–60)</span>
+              <div className="text-xl font-black text-white font-mono">150 Leads <span className="text-xs text-amber-400 font-normal">(25% Decayed)</span></div>
+              <p className="text-[10px] text-slate-400 leading-tight">Capacity naturally reduces by 25% if not upgraded to $119/mo.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-orange-500/40 space-y-1">
+              <span className="text-[10px] text-orange-400 font-bold uppercase tracking-wider">Month 3 (Days 61–90)</span>
+              <div className="text-xl font-black text-white font-mono">100 Leads <span className="text-xs text-orange-400 font-normal">(50% Decayed)</span></div>
+              <p className="text-[10px] text-slate-400 leading-tight">Contractor sees diminishing capacity; high urgency to upgrade.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-red-500/40 space-y-1">
+              <span className="text-[10px] text-red-400 font-bold uppercase tracking-wider">Month 4 (Days 91–120)</span>
+              <div className="text-xl font-black text-white font-mono">50 Leads <span className="text-xs text-red-400 font-normal">(75% Decayed)</span></div>
+              <p className="text-[10px] text-slate-400 leading-tight">Final 50 leads before full trial expiration (Day 121+: 0 leads).</p>
+            </div>
+          </div>
+        </div>
+
         {/* Manual Review Queue Section */}
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">

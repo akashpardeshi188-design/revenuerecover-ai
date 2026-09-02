@@ -53,10 +53,14 @@ export interface TrialEntitlement {
   id: string;
   businessId: string;
   status: TrialStatus;
-  leadQuota: number; // e.g. 200 leads
+  baseLeadQuota: number; // e.g. 200 leads initial
+  currentDecayCycle: number; // 1 = Days 1-30 (100%), 2 = Days 31-60 (75%), 3 = Days 61-90 (50%), 4 = Days 91-120 (25%)
+  decayPercentage: number; // 0%, 25%, 50%, 75%, 100%
+  leadQuota: number; // Effective quota after decay e.g. 200 -> 150 -> 100 -> 50
   leadsUsed: number;
   leadsRemaining: number;
   startedAt?: string;
+  nextDecayDate?: string;
   expiredAt?: string;
   usedAt?: string;
   source: 'web_signup' | 'scanner_inbound' | 'sdr_invite' | 'referral';
