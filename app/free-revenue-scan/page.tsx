@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
 import { ModeBanner } from '@/components/shared/ModeBanner';
+import { DualCheckoutModal } from '@/components/marketing/DualCheckoutModal';
 import {
   Sparkles,
   ArrowRight,
@@ -23,6 +24,8 @@ import {
   Zap,
   Home,
   Building,
+  Lock,
+  Globe2,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -44,6 +47,7 @@ export default function FreeRevenueScanPage() {
 
   const [scanResult, setScanResult] = useState<ReturnType<typeof runRevenueScanner> | null>(null);
   const [isScanning, setIsScanning] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const handleRunScan = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,104 +102,129 @@ export default function FreeRevenueScanPage() {
         </div>
 
         {/* Scan Wizard */}
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-          {/* Progress Ribbon */}
-          <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-800 text-xs font-semibold text-slate-400">
-            <div className={`flex items-center gap-2 ${step >= 1 ? 'text-emerald-400' : ''}`}>
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step >= 1 ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
-                1
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 relative overflow-hidden">
+          {/* Stepper Header */}
+          <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                {step}
               </span>
-              <span>Business Profile</span>
+              <div>
+                <h2 className="text-lg font-bold text-white">
+                  {step === 1 && 'Company Profile & Primary Trade'}
+                  {step === 2 && 'Lead Volume & Current Operations'}
+                  {step === 3 && 'Diagnostic Breakdown & Action Plan'}
+                </h2>
+                <span className="text-xs text-slate-400">Step {step} of 3</span>
+              </div>
             </div>
-            <div className="w-12 h-0.5 bg-slate-800" />
-            <div className={`flex items-center gap-2 ${step >= 2 ? 'text-emerald-400' : ''}`}>
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step >= 2 ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
-                2
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-emerald-400 hidden sm:inline">
+                {step === 3 ? 'Diagnostic Complete' : 'Estimated Time: 60 Seconds'}
               </span>
-              <span>Volume & Workflow</span>
-            </div>
-            <div className="w-12 h-0.5 bg-slate-800" />
-            <div className={`flex items-center gap-2 ${step >= 3 ? 'text-emerald-400' : ''}`}>
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step >= 3 ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
-                3
-              </span>
-              <span>Recovery Report</span>
             </div>
           </div>
 
-          {/* STEP 1 */}
+          {/* STEP 1: BUSINESS PROFILE */}
           {step === 1 && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <h3 className="text-xl font-bold text-white">Step 1: Tell us about your service business</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStep(2);
+              }}
+              className="space-y-6"
+            >
+              <h3 className="text-xl font-bold text-white">Step 1: Tell Us About Your Business</h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Business Name</label>
+                  <label className="text-xs font-semibold text-slate-300">Business / Trade Name</label>
                   <input
                     type="text"
+                    required
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
-                    placeholder="e.g. Austin Premier Plumbing"
+                    placeholder="e.g. Apex Mechanical Pros"
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Website URL</label>
-                  <input
-                    type="text"
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    placeholder="e.g. austinpremierplumbing.com"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Industry / Primary Trade</label>
+                  <label className="text-xs font-semibold text-slate-300">Primary Trade / Industry</label>
                   <select
                     value={industry}
                     onChange={(e) => setIndustry(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
                   >
-                    <option value="HVAC & AC Repair">HVAC & AC Repair</option>
-                    <option value="Plumbing">Plumbing Services</option>
-                    <option value="Electrical">Electrical Contractors</option>
-                    <option value="Roofing">Roofing & Solar</option>
-                    <option value="General Contractor">General Contractors / Remodeling</option>
-                    <option value="Dental">Dental Clinic</option>
-                    <option value="Med Spa">Med Spa & Aesthetic</option>
-                    <option value="Auto Repair">Auto Repair & Collision</option>
-                    <option value="Cleaning">Commercial / Residential Cleaning</option>
-                    <option value="Other Service">Other Local Service Business</option>
+                    <option value="HVAC & AC Repair">HVAC & Air Conditioning</option>
+                    <option value="Plumbing Services">Plumbing & Drain Services</option>
+                    <option value="Electrical Contractors">Electrical & Solar</option>
+                    <option value="Roofing & Siding">Roofing & Storm Restoration</option>
+                    <option value="Dental & Medical Spa">Dental & Healthcare</option>
+                    <option value="General Home Services">Other Service Contracting</option>
                   </select>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">City & State</label>
+                  <label className="text-xs font-semibold text-slate-300">Website or Google Maps URL</label>
+                  <input
+                    type="url"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    placeholder="https://yourcontractorwebsite.com"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Primary Operating City / State</label>
                   <input
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="e.g. Dallas, TX"
+                    placeholder="e.g. Dallas-Fort Worth, TX"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Owner / Manager Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="owner@yourcompany.com"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Dispatch / Mobile Phone</label>
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(555) 000-0000"
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4">
+              <div className="pt-4 flex justify-end">
                 <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  className="py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold flex items-center gap-2 transition"
+                  type="submit"
+                  className="py-3 px-8 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition active:scale-95"
                 >
-                  Continue to Volume & Workflow <ArrowRight className="w-4 h-4" />
+                  Continue to Step 2 <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-            </div>
+            </form>
           )}
 
-          {/* STEP 2 */}
+          {/* STEP 2: LEAD VOLUME & ESTIMATES */}
           {step === 2 && (
             <form onSubmit={handleRunScan} className="space-y-6 animate-in fade-in duration-200">
               <h3 className="text-xl font-bold text-white">Step 2: Monthly Lead Volume & Follow-up Details</h3>
@@ -258,58 +287,32 @@ export default function FreeRevenueScanPage() {
                     <option value="Jobber">Jobber</option>
                     <option value="QuickBooks Online">QuickBooks Online</option>
                     <option value="HubSpot">HubSpot</option>
-                    <option value="None / Paper / Spreadsheets">None / Paper / Spreadsheets</option>
+                    <option value="Other / Spreadsheets">Other / Spreadsheets</option>
                   </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Your Email Address</label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="owner@yourbusiness.com"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
-                  />
-                  <div className="text-[11px] text-slate-400">Where to send your confidential report</div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Your Mobile Phone</label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="(555) 000-0000"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
-                  />
-                  <div className="text-[11px] text-slate-400">For SMS report link notification</div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+              <div className="pt-4 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-xs text-slate-400 hover:text-white"
+                  className="py-2.5 px-5 rounded-xl text-slate-400 hover:text-white text-xs font-semibold transition"
                 >
-                  ← Back to Step 1
+                  Back to Step 1
                 </button>
 
                 <button
                   type="submit"
                   disabled={isScanning}
-                  className="py-3.5 px-8 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition disabled:opacity-50"
+                  className="py-3 px-8 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition active:scale-95"
                 >
                   {isScanning ? (
-                    <>
-                      <Sparkles className="w-4 h-4 animate-spin" />
-                      Analyzing Revenue Leakage...
-                    </>
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 animate-spin" /> AI Diagnosing Revenue Leaks...
+                    </span>
                   ) : (
                     <>
-                      Run Free Revenue Scan <Sparkles className="w-4 h-4" />
+                      Run Instant Diagnostic <Sparkles className="w-4 h-4" />
                     </>
                   )}
                 </button>
@@ -317,64 +320,58 @@ export default function FreeRevenueScanPage() {
             </form>
           )}
 
-          {/* STEP 3: SCAN RESULTS */}
+          {/* STEP 3: SCAN RESULTS & DIAGNOSTIC REPORT */}
           {step === 3 && scanResult && (
-            <div className="space-y-8 animate-in zoom-in-95 duration-200">
-              <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold border border-emerald-500/30">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> AI Diagnostic Complete
+            <div className="space-y-8 animate-in zoom-in-95 duration-300">
+              {/* Top Banner Metric */}
+              <div className="p-8 rounded-3xl bg-gradient-to-br from-red-950/40 via-slate-900 to-slate-950 border-2 border-red-500/30 text-center space-y-3 relative overflow-hidden shadow-2xl">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-bold uppercase tracking-wider">
+                  <AlertCircle className="w-4 h-4" /> Identified Revenue Leakage for {businessName}
+                </span>
+
+                <div className="space-y-1">
+                  <div className="text-4xl sm:text-6xl font-black text-red-400 font-mono tracking-tight">
+                    ${scanResult.estimated_monthly_leakage.toLocaleString()}{' '}
+                    <span className="text-lg sm:text-2xl text-slate-400 font-sans font-normal">/ month</span>
+                  </div>
+                  <div className="text-sm font-semibold text-slate-300">
+                    Annual Leakage: ${(scanResult.estimated_monthly_leakage * 12).toLocaleString()} / year
+                  </div>
                 </div>
-                <h2 className="text-2xl sm:text-4xl font-extrabold text-white">
-                  {scanResult.business_name} May Have{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
-                    ${scanResult.total_estimated_leakage.toLocaleString()}/Month
-                  </span>{' '}
-                  in Recoverable Revenue
-                </h2>
+
                 <p className="text-xs text-slate-400 max-w-xl mx-auto">
-                  *This diagnostic is an engineering estimate based on {scanResult.monthly_leads} monthly inquiries in {scanResult.industry} at an average ticket of ${scanResult.avg_job_value.toLocaleString()}.
+                  Based on {monthlyLeads} monthly leads at ${avgJobValue} avg ticket in the {industry} sector with {currentProcess.toLowerCase()}.
                 </p>
               </div>
 
-              {/* Opportunity Breakdown Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+              {/* 4 Pillars Breakdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
                   <div className="flex items-center justify-between text-slate-400 text-xs">
-                    <span>Missed Leads</span>
+                    <span>Missed Calls Loss</span>
                     <PhoneCall className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div className="text-xl font-bold text-white">
-                    ${scanResult.breakdown.missed_leads.toLocaleString()}
+                    ${scanResult.breakdown.missed_call_loss.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-slate-400">Unanswered calls & forms</div>
+                  <div className="text-[10px] text-slate-400">Unanswered caller drop-off</div>
                 </div>
 
                 <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
                   <div className="flex items-center justify-between text-slate-400 text-xs">
-                    <span>Abandoned Quotes</span>
+                    <span>Unclosed Quotes</span>
                     <FileText className="w-4 h-4 text-cyan-400" />
                   </div>
                   <div className="text-xl font-bold text-white">
-                    ${scanResult.breakdown.abandoned_quotes.toLocaleString()}
+                    ${scanResult.breakdown.unclosed_quote_loss.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-slate-400">Unaccepted estimates</div>
+                  <div className="text-[10px] text-slate-400">Pending estimates with no follow-up</div>
                 </div>
 
                 <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
                   <div className="flex items-center justify-between text-slate-400 text-xs">
-                    <span>Dormant Clients</span>
-                    <Flame className="w-4 h-4 text-amber-400" />
-                  </div>
-                  <div className="text-xl font-bold text-white">
-                    ${scanResult.breakdown.dormant_customers.toLocaleString()}
-                  </div>
-                  <div className="text-[10px] text-slate-400">Due for annual service</div>
-                </div>
-
-                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                  <div className="flex items-center justify-between text-slate-400 text-xs">
-                    <span>Failed Payments</span>
-                    <CreditCard className="w-4 h-4 text-rose-400" />
+                    <span>Overdue Payments</span>
+                    <CreditCard className="w-4 h-4 text-amber-400" />
                   </div>
                   <div className="text-xl font-bold text-white">
                     ${scanResult.breakdown.failed_payments.toLocaleString()}
@@ -414,34 +411,75 @@ export default function FreeRevenueScanPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="bg-gradient-to-r from-emerald-950/40 to-teal-950/40 border border-emerald-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                  <h4 className="font-bold text-white text-lg">Ready to Recover This Revenue?</h4>
-                  <p className="text-xs text-slate-400">
-                    Activate your 14-day free trial on RevenueRecover AI. Setup takes less than 3 minutes.
-                  </p>
+              {/* DUAL CHECKOUT ACTION CALLOUT */}
+              <div className="bg-gradient-to-r from-emerald-950/50 via-slate-900 to-teal-950/50 border-2 border-emerald-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-black uppercase mb-1">
+                      <Flame className="w-3.5 h-3.5 fill-amber-400" /> 60% FOUNDING DISCOUNT APPLIED
+                    </div>
+                    <h4 className="font-extrabold text-white text-xl sm:text-2xl">
+                      Recover ${scanResult.estimated_monthly_leakage.toLocaleString()}/mo with AI Autopilot
+                    </h4>
+                    <p className="text-xs text-slate-300 mt-1">
+                      Setup your pre-configured AI employee in 3 minutes. Zero risk 30-day money-back guarantee.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-end shrink-0">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs text-slate-500 line-through font-mono">$297.50</span>
+                      <span className="text-3xl font-black text-emerald-400 font-mono">$119</span>
+                      <span className="text-xs text-slate-400">/ mo</span>
+                    </div>
+                    <span className="text-[10px] text-emerald-400 font-semibold">Save $178.50/mo forever</span>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3 w-full sm:w-auto">
-                  <Link
-                    href="/onboarding"
-                    className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition active:scale-95"
+                {/* Instant Checkout Trigger Buttons */}
+                <div className="pt-2 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsCheckoutOpen(true)}
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 hover:from-emerald-300 hover:to-teal-200 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/20 active:scale-95 transition"
                   >
-                    Recover My Revenue <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    href="/demo"
-                    className="w-full sm:w-auto py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-center text-xs transition"
+                    <CreditCard className="w-4 h-4" /> 1-Click Checkout with Razorpay / Cards ($119/mo)
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsCheckoutOpen(true)}
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 hover:from-cyan-300 hover:to-blue-300 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/20 active:scale-95 transition"
                   >
-                    Watch Simulation
-                  </Link>
+                    <Globe2 className="w-4 h-4" /> 1-Click Checkout with PayPal ($119/mo)
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-400">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> ✓ Razorpay Live Gateway Verified
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> ✓ PayPal 1-Click Instant Active
+                  </span>
+                  <span>•</span>
+                  <span>✓ 100% 30-Day Money Back Guarantee</span>
                 </div>
               </div>
             </div>
           )}
         </div>
       </main>
+
+      {/* Dual Checkout Modal */}
+      <DualCheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        planName="Growth Plan"
+        amountUSD={119}
+        businessName={businessName}
+      />
 
       <Footer />
     </div>
