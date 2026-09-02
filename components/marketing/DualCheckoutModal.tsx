@@ -111,7 +111,7 @@ export function DualCheckoutModal({
                 Secure Checkout: {planName}
               </h3>
               <p className="text-xs text-slate-400">
-                100% Zero-Risk 30-Day Money Back Guarantee • 24-Hour Card Pilot ($0 Today)
+                Instant 1-Click Digital Cloud Activation • Cancel Anytime with 1-Click
               </p>
             </div>
 
@@ -210,7 +210,7 @@ export function DualCheckoutModal({
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
                 </span>
                 <span>•</span>
-                <span>30-Day 100% Refund Policy</span>
+                <span>No Long-Term Contracts • Keep 100% of Revenue</span>
               </div>
             </div>
           </>

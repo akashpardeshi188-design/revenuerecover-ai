@@ -62,7 +62,7 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
       ctaHref: '/onboarding?plan=starter',
     },
     {
@@ -76,7 +76,7 @@ export default function PricingPage() {
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
       discountBadge: '🔥 60% OFF SPECIAL',
       highlight: true,
-      badge: region === 'usa' ? 'MOST POPULAR (78% of US Contractors)' : 'GLOBAL BESTSELLER (30-DAY GUARANTEE)',
+      badge: region === 'usa' ? 'MOST POPULAR (78% of US Contractors)' : 'GLOBAL BESTSELLER (INSTANT ACCESS)',
       features: [
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
@@ -87,7 +87,7 @@ export default function PricingPage() {
         'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
       ctaHref: '/onboarding?plan=growth',
     },
     {
@@ -112,7 +112,7 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation (Risk-Free)',
+      cta: region === 'usa' ? 'Start 1-Day Trial ($0 Today)' : 'Instant 0-Day Activation',
       ctaHref: '/onboarding?plan=pro',
     },
   ];
@@ -137,7 +137,7 @@ export default function PricingPage() {
           <p className="text-slate-300 text-sm sm:text-base">
             {region === 'usa'
               ? 'Start your 24-hour test flight ($0 Today). After 24 hours, locks in at the discounted 60% OFF rate. Cancel anytime.'
-              : 'Direct instant activation with 100% 30-day money-back guarantee. Zero risk — recover your first $1,500 in 7 days or 100% full refund.'}
+              : 'Direct instant cloud activation. Keep 100% of all recovered missed calls and invoice revenue. Cancel anytime with 1-click.'}
           </p>
 
           {/* Live Countdown Box on Header */}
@@ -303,10 +303,10 @@ export default function PricingPage() {
                       <ShieldCheck className="w-3 h-3 text-emerald-400" />
                       {region === 'usa'
                         ? '24-Hour Card Pilot ($0 Today) • Lock-in 60% OFF'
-                        : '100% 30-Day Money-Back Guarantee • Zero Risk'}
+                        : 'Instant License • Keep 100% of Recovered Revenue • Cancel Anytime'}
                     </p>
                     <p className="text-[10px] text-slate-500">
-                      💳 Accepts VISA, Mastercard, AMEX, Discover, Apple Pay, Google Pay
+                      💳 Accepts VISA, Mastercard, AMEX, Discover, Apple Pay, PayPal
                     </p>
                   </div>
                 </div>

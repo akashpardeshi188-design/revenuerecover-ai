@@ -422,7 +422,7 @@ export default function FreeRevenueScanPage() {
                       Recover ${scanResult.total_estimated_leakage.toLocaleString()}/mo with AI Autopilot
                     </h4>
                     <p className="text-xs text-slate-300 mt-1">
-                      Setup your pre-configured AI employee in 3 minutes. Zero risk 30-day money-back guarantee.
+                      Setup your pre-configured AI employee in 3 minutes. Instant license access with 1-click activation.
                     </p>
                   </div>
 
@@ -464,7 +464,7 @@ export default function FreeRevenueScanPage() {
                     <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> ✓ PayPal 1-Click Instant Active
                   </span>
                   <span>•</span>
-                  <span>✓ 100% 30-Day Money Back Guarantee</span>
+                  <span>✓ Instant 1-Click Setup • Cancel Anytime</span>
                 </div>
               </div>
             </div>
