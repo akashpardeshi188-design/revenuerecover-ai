@@ -331,11 +331,11 @@ export default function FreeRevenueScanPage() {
 
                 <div className="space-y-1">
                   <div className="text-4xl sm:text-6xl font-black text-red-400 font-mono tracking-tight">
-                    ${scanResult.estimated_monthly_leakage.toLocaleString()}{' '}
+                    ${scanResult.total_estimated_leakage.toLocaleString()}{' '}
                     <span className="text-lg sm:text-2xl text-slate-400 font-sans font-normal">/ month</span>
                   </div>
                   <div className="text-sm font-semibold text-slate-300">
-                    Annual Leakage: ${(scanResult.estimated_monthly_leakage * 12).toLocaleString()} / year
+                    Annual Leakage: ${(scanResult.total_estimated_leakage * 12).toLocaleString()} / year
                   </div>
                 </div>
 
@@ -352,7 +352,7 @@ export default function FreeRevenueScanPage() {
                     <PhoneCall className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div className="text-xl font-bold text-white">
-                    ${scanResult.breakdown.missed_call_loss.toLocaleString()}
+                    ${scanResult.breakdown.missed_leads.toLocaleString()}
                   </div>
                   <div className="text-[10px] text-slate-400">Unanswered caller drop-off</div>
                 </div>
@@ -363,7 +363,7 @@ export default function FreeRevenueScanPage() {
                     <FileText className="w-4 h-4 text-cyan-400" />
                   </div>
                   <div className="text-xl font-bold text-white">
-                    ${scanResult.breakdown.unclosed_quote_loss.toLocaleString()}
+                    ${scanResult.breakdown.abandoned_quotes.toLocaleString()}
                   </div>
                   <div className="text-[10px] text-slate-400">Pending estimates with no follow-up</div>
                 </div>
@@ -419,7 +419,7 @@ export default function FreeRevenueScanPage() {
                       <Flame className="w-3.5 h-3.5 fill-amber-400" /> 60% FOUNDING DISCOUNT APPLIED
                     </div>
                     <h4 className="font-extrabold text-white text-xl sm:text-2xl">
-                      Recover ${scanResult.estimated_monthly_leakage.toLocaleString()}/mo with AI Autopilot
+                      Recover ${scanResult.total_estimated_leakage.toLocaleString()}/mo with AI Autopilot
                     </h4>
                     <p className="text-xs text-slate-300 mt-1">
                       Setup your pre-configured AI employee in 3 minutes. Zero risk 30-day money-back guarantee.
