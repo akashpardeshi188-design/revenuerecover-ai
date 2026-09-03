@@ -30,7 +30,7 @@ export function DualCheckoutModal({
   amountUSD = 119,
   businessName = 'Your Business',
 }: DualCheckoutModalProps) {
-  const [selectedGateway, setSelectedGateway] = useState<'razorpay' | 'paypal' | 'skydo'>('razorpay');
+  const [selectedGateway, setSelectedGateway] = useState<'paypal' | 'skydo' | 'razorpay'>('paypal');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [skydoInvoice, setSkydoInvoice] = useState<any>(null);
