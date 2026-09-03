@@ -71,11 +71,25 @@ export function DualCheckoutModal({
           setIsSuccess(true);
         }, 1200);
       } else {
-        // PayPal Instant Redirection / Auth
-        setTimeout(() => {
+        // Live PayPal Order Creation & Auth
+        const res = await fetch('/api/checkout/paypal/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            planId: planName.toLowerCase().replace(' ', '_'),
+            amountUSD,
+            businessName,
+          }),
+        });
+        const orderData = await res.json();
+        
+        const approvalLink = orderData.links?.find((l: any) => l.rel === 'approve')?.href;
+        if (approvalLink) {
+          window.location.href = approvalLink;
+        } else {
           setIsProcessing(false);
           setIsSuccess(true);
-        }, 1200);
+        }
       }
     } catch (e) {
       console.warn(e);
