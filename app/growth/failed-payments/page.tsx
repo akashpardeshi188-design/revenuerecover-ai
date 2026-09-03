@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Navbar } from '@/components/layout/Navbar';
+import { Navbar } from '@/components/marketing/Navbar';
 import { GrowthNav } from '@/components/growth/GrowthNav';
 import {
   AlertOctagon,
