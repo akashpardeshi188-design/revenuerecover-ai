@@ -1,0 +1,64 @@
+================================================================================
+                    B2B SOFTWARE-AS-A-SERVICE (SaaS) AGREEMENT
+                    REVENUERECOVER AI • CLIENT SERVICE ORDER
+================================================================================
+
+DATE: August 28, 2026
+CONTRACT ID: RRAI-USA-2026-0882
+
+1. PARTIES:
+-----------
+SERVICE PROVIDER:
+RevenueRecover AI (Akash Bhagwansingh Pardeshi)
+Website: https://revenuerecover-ai.vercel.app
+Contact: contact@revenuerecover-ai.com
+Registered Address: Maharashtra, India
+
+CLIENT / SUBSCRIBER:
+Lone Star Heating & Air Conditioning LLC
+Authorized Representative: David Miller (Managing Partner)
+Business Address: 4820 Commercial Blvd, Fort Worth, Texas 76102, USA
+Phone: +1 (817) 555-0192
+Email: owner@lonestarheating.example.com
+Primary Trade: HVAC & Mechanical Trade Contracting
+
+2. SCOPE OF SERVICES & DELIVERABLES:
+------------------------------------
+Provider grants Client access to RevenueRecover AI B2B Cloud Software platform:
+- Automated AI missed-call instant text-back & appointment re-engagement.
+- Automated estimate and pending quote follow-up recovery sequences.
+- Inactive customer reactivation campaigns.
+- Past-due invoice recovery & payment reminder automation.
+- Cloud web dashboard, ServiceTitan/Housecall Pro CRM webhook integration.
+- 100% digital cloud delivery with 99.9% platform availability.
+
+3. SUBSCRIPTION FEES & PAYMENT TERMS:
+-------------------------------------
+Plan: RevenueRecover AI Growth Tier (Enterprise Scale)
+Recurring Fee: $119.00 USD / month (or $990.00 USD Annual Prepaid)
+Payment Mode: International Wire / ACH Bank Transfer / Credit Card via Virtual Account
+Billing Term: Ongoing subscription, cancellable with 30-day notice.
+
+4. INTELLECTUAL PROPERTY & COMPLIANCE:
+--------------------------------------
+All software, algorithms, and AI workflows remain the exclusive property of 
+RevenueRecover AI. Client retains 100% ownership of customer data. All automated 
+communications strictly adhere to US TCPA and CAN-SPAM regulations.
+
+5. SIGNATURES & ACCEPTANCE:
+---------------------------
+
+FOR SERVICE PROVIDER:
+RevenueRecover AI
+By: Akash Bhagwansingh Pardeshi
+Title: Founder & CEO
+Signature: [Akash B. Pardeshi]
+Date: August 28, 2026
+
+FOR CLIENT:
+Lone Star Heating & Air Conditioning LLC (Texas, USA)
+By: David Miller
+Title: Managing Partner / Owner
+Signature: [David Miller]
+Date: August 28, 2026
+================================================================================
