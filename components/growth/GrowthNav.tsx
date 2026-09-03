@@ -33,6 +33,7 @@ export function GrowthNav() {
 
   const navItems = [
     { name: '💰 $2,095/Day Engine (₹1.75L)', href: '/growth/daily-revenue', icon: DollarSign },
+    { name: '⚠️ Failed Payments & Recovery', href: '/growth/failed-payments', icon: ShieldAlert },
     { name: '🛡️ Trial Anti-Abuse Hub', href: '/growth/trial-intelligence', icon: ShieldAlert },
     { name: '🎯 Demo Retargeting (1.8K)', href: '/growth/demo-leads', icon: Target },
     { name: '🚀 650-Client Sprint ($77K)', href: '/growth/sprint-650', icon: Rocket },
