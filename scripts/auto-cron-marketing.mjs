@@ -1,22 +1,22 @@
 /**
  * RevenueRecover AI — Autonomous Recurring Marketing & CEO Performance Reporter
- * Schedule: Executes every 90 Minutes (१ तास ३० मिनिटे)
+ * Schedule: Executes every 30 Minutes (दर ३० मिनिटांनी)
  * Customer Marketing: Dispatched strictly to verified global business prospects (USA, UK, CA, AU, UAE, EU, IN)
- * CEO Phone (+91 8208057237): Receives STRICTLY the 90-Minute Executive Revenue & Subscriber Performance Report
+ * CEO Phone (+91 8208057237): Receives STRICTLY the 30-Minute Executive Revenue & Subscriber Performance Report
  */
 
 import { spawn } from 'child_process';
 import path from 'path';
 import { sendWhatsAppUpdateToCEO } from '../lib/whatsapp-notifier.mjs';
 
-const INTERVAL_MINUTES = 90; // 90 Minutes (१ तास ३० मिनिटे)
-const INTERVAL_MS = INTERVAL_MINUTES * 60 * 1000; // 90 mins in ms (5,400,000 ms)
+const INTERVAL_MINUTES = 30; // 30 Minutes (दर ३० मिनिटांनी)
+const INTERVAL_MS = INTERVAL_MINUTES * 60 * 1000; // 30 mins in ms (1,800,000 ms)
 
 console.log(`
 ========================================================================
-🚀 REVENUERECOVER AI — 24/7 90-MINUTE GLOBAL ENGINE & CEO REPORTER
+🚀 REVENUERECOVER AI — 24/7 30-MINUTE GLOBAL ENGINE & CEO REPORTER
 ========================================================================
-Schedule: Every 90 Minutes (दर ९० मिनिटांनी अविरत 24/7/365)
+Schedule: Every 30 Minutes (दर ३० मिनिटांनी अविरत 24/7/365)
 Customer Outreach: Strictly to Verified Global Contractors (USA, UK, CA, AU, UAE, EU, IN)
 CEO Executive Reports Only: +91 8208057237 (Zero Marketing / Only Business Reports)
 Target: ₹2.5 Crore / Week (₹10 Crore/mo MRR | $1.2M MRR | 7,625 Subscribers)
