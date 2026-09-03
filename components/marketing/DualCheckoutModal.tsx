@@ -71,25 +71,14 @@ export function DualCheckoutModal({
           setIsSuccess(true);
         }, 1200);
       } else {
-        // Live PayPal Order Creation & Auth
-        const res = await fetch('/api/checkout/paypal/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            planId: planName.toLowerCase().replace(' ', '_'),
-            amountUSD,
-            businessName,
-          }),
-        });
-        const orderData = await res.json();
-        
-        const approvalLink = orderData.links?.find((l: any) => l.rel === 'approve')?.href;
-        if (approvalLink) {
-          window.location.href = approvalLink;
-        } else {
-          setIsProcessing(false);
-          setIsSuccess(true);
-        }
+        // Direct PayPal Payment Links — REAL INSTANT PAYMENTS
+        // Annual ($990): https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J
+        // Monthly ($119): https://www.paypal.com/ncp/payment/GFXAWMG4S227E
+        const paypalLink = amountUSD >= 239
+          ? 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J'  // $990 Annual
+          : 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E'; // $119 Monthly
+        window.open(paypalLink, '_blank');
+        setIsProcessing(false);
       }
     } catch (e) {
       console.warn(e);

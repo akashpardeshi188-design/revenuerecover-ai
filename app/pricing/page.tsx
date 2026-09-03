@@ -62,8 +62,8 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: 'Start 1-Click Trial ($0 Today)',
-      ctaHref: '/onboarding?plan=starter',
+      cta: '⚡ Pay Now with PayPal ($59/mo)',
+      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Growth',
@@ -88,8 +88,8 @@ export default function PricingPage() {
         'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: 'Start 1-Click Trial (150–200 Leads Included)',
-      ctaHref: '/onboarding?plan=growth',
+      cta: '⚡ Pay Now with PayPal ($119/mo)',
+      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Pro',
@@ -114,8 +114,8 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: 'Start 1-Click Trial (500+ Leads)',
-      ctaHref: '/onboarding?plan=pro',
+      cta: '⚡ Pay Now with PayPal ($990/yr)',
+      ctaHref: 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J',
     },
   ];
 
