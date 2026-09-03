@@ -177,52 +177,32 @@ export function DualCheckoutModal({
               </div>
             </div>
 
-            {/* GATEWAY SELECTOR (RAZORPAY VS PAYPAL VS SKYDO) */}
+            {/* GATEWAY SELECTOR (PAYPAL #1 VS SKYDO VS OTHER) */}
             <div className="space-y-3">
-              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
-                Select Your Preferred Payment Gateway:
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block flex items-center justify-between">
+                <span>Select Your Preferred Payment Method:</span>
+                <span className="text-[10px] text-amber-400 font-bold">★ INSTANT ACTIVATION</span>
               </span>
 
               <div className="grid grid-cols-3 gap-2">
-                {/* Razorpay Card Gateway */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedGateway('razorpay')}
-                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 ${
-                    selectedGateway === 'razorpay'
-                      ? 'bg-emerald-500/10 border-emerald-500 shadow-lg shadow-emerald-500/10'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[11px] text-white flex items-center gap-1">
-                      <CreditCard className="w-3.5 h-3.5 text-emerald-400" /> Razorpay
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  </div>
-                  <span className="text-[9px] text-slate-400 leading-tight">
-                    AMEX, Visa, Apple Pay
-                  </span>
-                </button>
-
-                {/* PayPal International */}
+                {/* PayPal International #1 FEATURED */}
                 <button
                   type="button"
                   onClick={() => setSelectedGateway('paypal')}
-                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 ${
+                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 relative overflow-hidden ${
                     selectedGateway === 'paypal'
-                      ? 'bg-cyan-500/10 border-cyan-400 shadow-lg shadow-cyan-500/10'
+                      ? 'bg-gradient-to-br from-amber-500/20 via-cyan-500/10 to-slate-900 border-amber-400 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400'
                       : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[11px] text-cyan-300 flex items-center gap-1">
-                      <Globe2 className="w-3.5 h-3.5 text-cyan-400" /> PayPal
+                    <span className="font-bold text-[11px] text-amber-300 flex items-center gap-1">
+                      <Globe2 className="w-3.5 h-3.5 text-amber-400" /> PayPal 1-Click
                     </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
                   </div>
-                  <span className="text-[9px] text-slate-400 leading-tight">
-                    1-Click Global Balance
+                  <span className="text-[9px] text-amber-200/80 font-medium leading-tight">
+                    🇺🇸 USA / 🇬🇧 UK Cards & Balance (Recommended)
                   </span>
                 </button>
 
@@ -243,7 +223,28 @@ export function DualCheckoutModal({
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
                   </div>
                   <span className="text-[9px] text-slate-400 leading-tight">
-                    🇺🇸 US ACH & Wire
+                    🇺🇸 US ACH & Wire (Zero Fee)
+                  </span>
+                </button>
+
+                {/* Direct Card Gateway */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedGateway('razorpay')}
+                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 ${
+                    selectedGateway === 'razorpay'
+                      ? 'bg-emerald-500/10 border-emerald-500 shadow-lg shadow-emerald-500/10'
+                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-[11px] text-white flex items-center gap-1">
+                      <CreditCard className="w-3.5 h-3.5 text-emerald-400" /> Cards
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  </div>
+                  <span className="text-[9px] text-slate-400 leading-tight">
+                    AMEX, Visa, Apple Pay
                   </span>
                 </button>
               </div>
