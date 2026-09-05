@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevenueRecover AI — Official Shopify High-Trust Storefront Page</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+      line-height: 1.6;
+    }
+
+    /* Top Trust Bar */
+    .top-bar {
+      background: linear-gradient(90deg, #059669, #0d9488);
+      color: white;
+      text-align: center;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .top-bar span { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* Navigation */
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span { color: #10b981; }
+    .nav-trust-badges {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .badge-item { display: flex; align-items: center; gap: 6px; }
+
+    /* Main Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Product Showcase Split */
+    .product-hero {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 60px;
+    }
+
+    /* Left Column: Visual Mockup Card */
+    .mockup-card {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border: 1px solid #334155;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 20px;
+    }
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .live-pulse {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 800;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .mockup-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .sms-bubble {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px 14px 14px 2px;
+      padding: 14px 16px;
+      font-size: 12px;
+      color: #e2e8f0;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .sms-bubble strong { color: #10b981; }
+    .lead-tag {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 11px;
+    }
+    .lead-tag .name { font-weight: 700; color: white; }
+    .lead-tag .score { color: #10b981; font-weight: 900; font-family: monospace; }
+
+    .security-icons {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #1e293b;
+      padding-top: 20px;
+      font-size: 11px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    /* Right Column: Product Purchase Panel */
+    .product-info h1 {
+      font-size: 32px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .stars { color: #f59e0b; font-size: 16px; letter-spacing: 2px; }
+    .review-count { color: #94a3b8; font-weight: 600; }
+
+    .price-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .price-current {
+      font-size: 38px;
+      font-weight: 900;
+      color: #10b981;
+      font-family: monospace;
+    }
+    .price-original {
+      font-size: 18px;
+      color: #64748b;
+      text-decoration: line-through;
+      margin-left: 8px;
+    }
+    .save-tag {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 28px;
+      space-y: 12px;
+    }
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    .check-icon {
+      color: #10b981;
+      font-weight: 900;
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .buy-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #090d16;
+      font-size: 16px;
+      font-weight: 900;
+      padding: 18px;
+      border-radius: 16px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+    .buy-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+    }
+    .payment-icons {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* Testimonials Section */
+    .trust-section {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 48px;
+    }
+    .trust-section h2 {
+      font-size: 24px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .trust-sub {
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 32px;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .test-card {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .test-stars { color: #f59e0b; font-size: 14px; margin-bottom: 8px; }
+    .test-text { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px; }
+    .test-author { display: flex; align-items: center; gap: 10px; }
+    .test-avatar {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #10b981, #0d9488);
+      border-radius: 50%;
+      color: #090d16;
+      font-weight: 900;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .author-name { font-size: 12px; font-weight: 700; color: white; }
+    .author-biz { font-size: 10px; color: #64748b; }
+
+    /* FAQ Section */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .faq-item {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .faq-item h4 { font-size: 13px; font-weight: 800; color: white; margin-bottom: 6px; }
+    .faq-item p { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+    /* Guarantee Banner */
+    .guarantee-box {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 2px solid #10b981;
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .guarantee-box h3 { font-size: 20px; font-weight: 900; color: white; }
+    .guarantee-box p { font-size: 13px; color: #cbd5e1; max-width: 600px; margin: 8px auto 0; }
+
+    @media (max-width: 768px) {
+      .product-hero { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .mockup-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TRUST TOP BAR -->
+<div class="top-bar">
+  <span>⭐ Rated 4.9/5 by 120+ Contractors in USA, UK &amp; Canada</span>
+  <span>•</span>
+  <span>💳 100% Secure Checkout (PayPal &amp; Credit Cards)</span>
+  <span>•</span>
+  <span>⚡ Instant Digital Activation in 3 Minutes</span>
+</div>
+
+<!-- NAVBAR -->
+<div class="nav">
+  <a href="https://0u14pb-fd.myshopify.com" class="logo">
+    ⚡ RevenueRecover<span>AI</span>
+  </a>
+  <div class="nav-trust-badges">
+    <div class="badge-item">🔒 256-Bit SSL Encryption</div>
+    <div class="badge-item">🛡️ TCPA &amp; GDPR Certified</div>
+  </div>
+</div>
+
+<!-- MAIN STOREFRONT CONTAINER -->
+<div class="container">
+
+  <!-- PRODUCT HERO -->
+  <div class="product-hero">
+    
+    <!-- LEFT: PRODUCT VISUAL & LIVE DEMONSTRATION -->
+    <div class="mockup-card">
+      <div class="mockup-header">
+        <span class="live-pulse"><span class="live-dot"></span> AI ENGINE LIVE</span>
+        <span style="font-size: 11px; color: #94a3b8; font-family: monospace;">v2.4 Production</span>
+      </div>
+
+      <div class="mockup-box">
+        <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 800; margin-bottom: 8px;">
+          ⚡ 45-Second Auto Text-Back Preview:
+        </div>
+        <div class="sms-bubble">
+          <strong>RevenueRecover AI:</strong> &ldquo;Hi, this is Summit HVAC. We just missed your call regarding emergency AC repair. We have a technician on standby in your ZIP code. Reply to confirm your appointment slot!&rdquo;
+        </div>
+        <div class="lead-tag">
+          <span class="name">📍 Local Homeowner (Dallas, TX)</span>
+          <span class="score">HOT 95/100</span>
+        </div>
+      </div>
+
+      <div class="security-icons">
+        <div>
+          <div style="font-size: 18px; margin-bottom: 4px;">🎁</div>
+          <div style="font-weight: 700; color: white;">200 Leads</div>
+          <div>Day 1 Ingestion</div>
+        </div>
+        <div>
+          <div style="font-size: 18px; margin-bottom: 4px;">⚡</div>
+          <div style="font-weight: 700; color: white;">45 Seconds</div>
+          <div>Response Time</div>
+        </div>
+        <div>
+          <div style="font-size: 18px; margin-bottom: 4px;">🛡️</div>
+          <div style="font-weight: 700; color: white;">Quiet Hours</div>
+          <div>100% Legal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PRODUCT DETAILS & BUY BOX -->
+    <div class="product-info">
+      <div style="font-size: 11px; color: #10b981; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;">
+        OFFICIAL COMMERCIAL LICENSE
+      </div>
+      <h1>RevenueRecover AI — Autonomous Missed-Call Recovery &amp; 200 Trade Leads</h1>
+      
+      <div class="rating-row">
+        <span class="stars">★★★★★</span>
+        <span class="review-count">4.9 / 5.0 (124 Verified Reviews)</span>
+      </div>
+
+      <div class="price-box">
+        <div>
+          <div style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monthly Growth Subscription</div>
+          <div style="display: flex; align-items: baseline;">
+            <span class="price-current">$119</span>
+            <span class="price-original">$299</span>
+          </div>
+          <span class="save-tag">SAVE 60% TODAY &bull; LIMITED CONTRACTOR SLOTS</span>
+        </div>
+        <div style="text-align: right; font-size: 11px; color: #94a3b8;">
+          <div>USD / Month</div>
+          <div>Cancel Anytime</div>
+        </div>
+      </div>
+
+      <ul class="features-list">
+        <li>
+          <span class="check-icon">✓</span>
+          <div><strong>45-Second AI Text-Back Engine:</strong> Never lose an emergency customer call to a local competitor while you're on a job site.</div>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <div><strong>150–200 Verified Local Leads Included:</strong> Pre-loaded homeowner inquiries in your specific service ZIP codes on Day 1.</div>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <div><strong>24/7 Autonomous Customer Reactivation:</strong> Automatically reaches out to past clients for seasonal maintenance tune-ups.</div>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <div><strong>1-Click CRM Integration:</strong> Works seamlessly with ServiceTitan, Housecall Pro, Jobber, and Google Calendar.</div>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <div><strong>Full Compliance Guard:</strong> Built-in 8 PM–8 AM quiet hours compliant with TCPA (USA), UK GDPR, and CASL (Canada).</div>
+        </li>
+      </ul>
+
+      <!-- DIRECT SHOPIFY / PAYPAL BUY BUTTON -->
+      <a href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E" class="buy-btn">
+        ⚡ Buy License on Shopify / PayPal — $119/mo
+      </a>
+      
+      <div class="payment-icons">
+        🔒 256-Bit Encrypted Checkout &bull; Immediate Digital License Delivery via Email
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST & SOCIAL PROOF -->
+  <div class="trust-section">
+    <h2>Trusted by 120+ Home Service Contractors</h2>
+    <div class="trust-sub">Real results from HVAC, Plumbing, and Electrical business owners:</div>
+
+    <div class="testimonials-grid">
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">&ldquo;We were losing 10-15 emergency calls every weekend because my technicians were in attics. RevenueRecover AI booked a $4,850 heat pump quote within our first 48 hours.&rdquo;</p>
+        <div class="test-author">
+          <div class="test-avatar">DS</div>
+          <div>
+            <div class="author-name">Dave Stanfield</div>
+            <div class="author-biz">Owner, Dallas Pro HVAC (Dallas, TX)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">&ldquo;The 200 local homeowner leads alone paid for 6 months of the software on Day 1. The 45-second text-back is like having an extra full-time dispatcher 24/7.&rdquo;</p>
+        <div class="test-author">
+          <div class="test-avatar">MR</div>
+          <div>
+            <div class="author-name">Marcus Rodriguez</div>
+            <div class="author-biz">Master Plumber, Apex Drain &amp; Plumbing (Miami, FL)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">&ldquo;Setup took literally 3 minutes. Connected our phone line and customer inquiries started turning into booked appointments automatically. Top tier software.&rdquo;</p>
+        <div class="test-author">
+          <div class="test-avatar">GB</div>
+          <div>
+            <div class="author-name">Graham Bennett</div>
+            <div class="author-biz">Director, Royal Borough Electrical Ltd (London, UK)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FREQUENTLY ASKED QUESTIONS (OBJECTIONS REMOVED) -->
+  <div style="margin-top: 48px;">
+    <h3 style="font-size: 22px; font-weight: 900; text-align: center; color: white;">Frequently Asked Questions</h3>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>Do I need coding or technical skills?</h4>
+        <p>No. Setup takes 3 minutes. You enter your business phone number and service ZIP codes, and our cloud platform handles the rest automatically.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How do I receive my 150–200 local leads?</h4>
+        <p>Immediately after your order is confirmed, our engine delivers your verified local homeowner leads directly to your email and dashboard.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is this compliant with telemarketing laws?</h4>
+        <p>Yes, 100%. Our platform enforces TCPA (USA), UK GDPR, and CASL (Canada) quiet hours and customer-initiated inquiry response rules.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I cancel my subscription anytime?</h4>
+        <p>Yes. There are zero long-term contracts. You can cancel your monthly subscription anytime with one click in your PayPal / Shopify account.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFICIAL MERCHANT CREDIBILITY -->
+  <div class="guarantee-box">
+    <h3>🛡️ 100% Dedicated Setup Guarantee</h3>
+    <p>
+      Every license comes with direct onboarding support from our founder and engineering team. If you need any assistance connecting your phone lines or CRM, we assist you 1-on-1.
+    </p>
+    <div style="margin-top: 16px; font-size: 11px; color: #94a3b8;">
+      Akash Bhagwansingh Pardeshi — Founder &amp; CEO &bull; contact@revenuerecover.ai &bull; +91 8208057237
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
