@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevenueRecover AI — Official Product Brochure & Buyer's Guide</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    .page {
+      background: white;
+      max-width: 850px;
+      margin: 30px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      page-break-after: always;
+    }
+
+    /* Header Banner */
+    .hero {
+      background: linear-gradient(135deg, #090d16 0%, #112240 50%, #0a192f 100%);
+      color: white;
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, #34d399, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 15px;
+      color: #94a3b8;
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Content Area */
+    .content { padding: 40px; }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    /* Problem Grid */
+    .leak-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .leak-card {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #ef4444;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .leak-card h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #991b1b;
+      margin-bottom: 4px;
+    }
+    .leak-card p {
+      font-size: 12px;
+      color: #7f1d1d;
+      line-height: 1.5;
+    }
+    .leak-card .stat {
+      font-size: 11px;
+      font-weight: 800;
+      color: #dc2626;
+      margin-top: 6px;
+    }
+
+    /* Solution 4 Pillars */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .sol-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #10b981;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .sol-card h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .sol-card p {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    /* Pricing Box */
+    .pricing-box {
+      background: linear-gradient(135deg, #090d16, #1e293b);
+      color: white;
+      border-radius: 16px;
+      padding: 28px;
+      margin: 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .pricing-info h3 { font-size: 22px; font-weight: 900; }
+    .pricing-info p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+    .pricing-val { text-align: right; }
+    .pricing-val .price { font-size: 36px; font-weight: 900; color: #10b981; font-family: monospace; }
+    .pricing-val .sub { font-size: 11px; color: #94a3b8; }
+    .cta-btn {
+      display: inline-block;
+      margin-top: 10px;
+      background: #f59e0b;
+      color: #0f172a;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-weight: 900;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    /* Steps List */
+    .steps-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+      text-align: center;
+    }
+    .step-item {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 20px 14px;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: #10b981;
+      color: #0f172a;
+      border-radius: 50%;
+      font-weight: 900;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .step-item h5 { font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+    .step-item p { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+    /* Footer / Contact */
+    .footer {
+      background: #090d16;
+      color: white;
+      padding: 32px 40px;
+      text-align: center;
+      border-top: 1px solid #1e293b;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .f-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .f-label { font-size: 10px; color: #10b981; font-weight: 800; text-transform: uppercase; }
+    .f-val { font-size: 12px; color: white; font-weight: 600; margin-top: 2px; }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <!-- HERO HEADER -->
+  <div class="hero">
+    <div class="badge">⚡ Official Product Brochure &amp; Buyer's Guide</div>
+    <h1>RevenueRecover<span>AI</span></h1>
+    <p>
+      The Autonomous AI Revenue Recovery Employee built exclusively for HVAC, Plumbing &amp; Electrical Contractors across the USA, UK, and Canada.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">🇺🇸 USA &bull; 🇬🇧 UK &bull; 🇨🇦 Canada</span>
+      <span class="hero-tag">⚡ 45-Second AI Text-Back</span>
+      <span class="hero-tag">🎁 150–200 Local Leads Included</span>
+      <span class="hero-tag">🛡️ TCPA &amp; GDPR Compliant</span>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <!-- SECTION 1: THE PROBLEM -->
+    <div class="section-title">🛑 The $657B Problem Home Service Businesses Face</div>
+    <div class="section-sub">Contractors lose thousands of dollars every week because they cannot answer calls while on a job site:</div>
+
+    <div class="leak-grid">
+      <div class="leak-card">
+        <h4>1. Missed Emergency Calls</h4>
+        <p>When a homeowner with a broken AC calls and gets voicemail, 85% immediately call the next contractor on Google.</p>
+        <div class="stat">&bull; Average Loss: $850 to $2,500 per missed call</div>
+      </div>
+      <div class="leak-card">
+        <h4>2. Unanswered After-Hours Inquiries</h4>
+        <p>Evening and weekend calls go to voicemail. By Monday morning, the homeowner has already booked with a competitor.</p>
+        <div class="stat">&bull; 10 to 18 calls missed per week</div>
+      </div>
+      <div class="leak-card">
+        <h4>3. Forgotten Dormant Customers</h4>
+        <p>Past customers who haven't called in 6+ months are never re-contacted for seasonal tune-ups and maintenance.</p>
+        <div class="stat">&bull; $4,000+ lost recurring annual revenue</div>
+      </div>
+      <div class="leak-card">
+        <h4>4. Delayed Estimate Follow-Ups</h4>
+        <p>Sent quotes sit without follow-up because the office team is too busy scheduling active technicians.</p>
+        <div class="stat">&bull; 35% of unclosed quotes can be recovered</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: HOW IT WORKS -->
+    <div class="section-title">💡 The 4 Pillars of RevenueRecover AI</div>
+    <div class="section-sub">Everything you need to capture, book, and retain high-ticket home service jobs:</div>
+
+    <div class="solution-grid">
+      <div class="sol-card">
+        <h4>⚡ 45-Second AI Text-Back</h4>
+        <p>When a customer call is missed, our AI instantly sends a personalized text: <em>"Hi, we missed your call. We have a technician available in your area. Reply here to book your slot!"</em></p>
+      </div>
+      <div class="sol-card">
+        <h4>🎁 150–200 Local Leads Included</h4>
+        <p>On Day 1, our Discovery Engine automatically delivers 150–200 verified local homeowner leads in your specific service ZIP codes.</p>
+      </div>
+      <div class="sol-card">
+        <h4>🤖 24/7 Reactivation Engine</h4>
+        <p>Autonomous AI scans your customer list and sends personalized maintenance specials to past clients — generating booked jobs on autopilot.</p>
+      </div>
+      <div class="sol-card">
+        <h4>🛡️ 100% Legal &amp; TCPA Compliant</h4>
+        <p>Built-in 8 PM–8 AM quiet hours, explicit opt-in management, and full compliance with USA TCPA, Canada CASL, and UK GDPR laws.</p>
+      </div>
+    </div>
+
+    <!-- PRICING BOX -->
+    <div class="pricing-box">
+      <div class="pricing-info">
+        <h3>🔥 Growth License (Most Popular)</h3>
+        <p>Full AI Recovery Suite + 150–200 Verified Local Homeowner Leads</p>
+        <p style="font-size: 11px; color: #10b981; margin-top: 4px;">✅ No setup fees &bull; Cancel anytime &bull; 1-Click setup</p>
+      </div>
+      <div class="pricing-val">
+        <div class="price">$119<span style="font-size: 16px; color: #94a3b8;">/mo</span></div>
+        <div class="sub">USD via PayPal / Shopify</div>
+        <a href="https://0u14pb-fd.myshopify.com" class="cta-btn">🛍️ Buy on Shopify Store</a>
+      </div>
+    </div>
+
+    <!-- 3 EASY STEPS -->
+    <div class="section-title">🚀 How Setup Works (Only 3 Minutes)</div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h5>Subscribe</h5>
+        <p>Purchase your license on Shopify or PayPal ($119/mo).</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h5>2-Min Onboarding</h5>
+        <p>Set your business name, service ZIP codes, and phone number.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h5>Get Leads &amp; Recover</h5>
+        <p>Receive your 200 leads and let AI recover missed calls 24/7!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="font-size: 14px; font-weight: 800; color: white;">📞 Contact &amp; Support</div>
+    <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Direct support from the founder and engineering team.</div>
+    
+    <div class="footer-grid">
+      <div class="f-item">
+        <div class="f-label">📧 Email</div>
+        <div class="f-val">contact@revenuerecover.ai</div>
+      </div>
+      <div class="f-item">
+        <div class="f-label">📱 WhatsApp / Direct</div>
+        <div class="f-val">+91 8208057237</div>
+      </div>
+      <div class="f-item">
+        <div class="f-label">🌐 Live Platform</div>
+        <div class="f-val">revenuerecover-ai.vercel.app</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; font-size: 11px; color: #64748b;">
+      &copy; 2024 RevenueRecover AI Inc. All Rights Reserved. &bull; Official Shopify Store: 0u14pb-fd.myshopify.com
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
