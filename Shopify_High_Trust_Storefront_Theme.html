@@ -11,6 +11,7 @@
       background: #090d16;
       color: #f8fafc;
       line-height: 1.6;
+      padding-bottom: 90px; /* Space for sticky buy bar */
     }
 
     /* Top Trust Bar */
@@ -63,7 +64,7 @@
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 40px 24px 80px;
+      padding: 40px 24px 60px;
     }
 
     /* Product Showcase Split */
@@ -153,7 +154,7 @@
 
     /* Right Column: Product Purchase Panel */
     .product-info h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: white;
       line-height: 1.25;
@@ -164,10 +165,39 @@
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .stars { color: #f59e0b; font-size: 16px; letter-spacing: 2px; }
     .review-count { color: #94a3b8; font-weight: 600; }
+
+    /* Interactive Plan Switcher */
+    .plan-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #0f172a;
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid #334155;
+      margin-bottom: 20px;
+    }
+    .plan-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .plan-btn.active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #090d16;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
 
     .price-box {
       background: #0f172a;
@@ -206,7 +236,6 @@
     .features-list {
       list-style: none;
       margin-bottom: 28px;
-      space-y: 12px;
     }
     .features-list li {
       display: flex;
@@ -225,7 +254,13 @@
       margin-top: 1px;
     }
 
-    .buy-btn {
+    /* Primary & Secondary Buy Buttons */
+    .buttons-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .buy-btn-primary {
       display: block;
       width: 100%;
       text-align: center;
@@ -240,9 +275,26 @@
       transition: all 0.2s ease;
       letter-spacing: 0.5px;
     }
-    .buy-btn:hover {
+    .buy-btn-primary:hover {
       transform: scale(1.02);
       box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+    }
+    .buy-btn-shopify {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .buy-btn-shopify:hover {
+      background: #334155;
     }
     .payment-icons {
       text-align: center;
@@ -251,7 +303,7 @@
       color: #64748b;
     }
 
-    /* Testimonials Section */
+    /* Trust Section */
     .trust-section {
       background: #0f172a;
       border: 1px solid #1e293b;
@@ -300,6 +352,42 @@
     .author-name { font-size: 12px; font-weight: 700; color: white; }
     .author-biz { font-size: 10px; color: #64748b; }
 
+    /* Sticky Bottom Checkout Bar */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-blur-md: 12px;
+      border-top: 1px solid #1e293b;
+      padding: 12px 24px;
+      z-index: 100;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+    }
+    .sticky-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .sticky-price { font-size: 24px; font-weight: 900; color: #10b981; font-family: monospace; }
+    .sticky-plan { font-size: 12px; color: #94a3b8; }
+    .sticky-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #090d16;
+      font-weight: 900;
+      padding: 12px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s;
+    }
+    .sticky-btn:hover { transform: scale(1.03); }
+
     /* FAQ Section */
     .faq-grid {
       display: grid;
@@ -316,23 +404,12 @@
     .faq-item h4 { font-size: 13px; font-weight: 800; color: white; margin-bottom: 6px; }
     .faq-item p { font-size: 12px; color: #94a3b8; line-height: 1.5; }
 
-    /* Guarantee Banner */
-    .guarantee-box {
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      border: 2px solid #10b981;
-      border-radius: 20px;
-      padding: 32px;
-      text-align: center;
-      margin-top: 48px;
-    }
-    .guarantee-box h3 { font-size: 20px; font-weight: 900; color: white; }
-    .guarantee-box p { font-size: 13px; color: #cbd5e1; max-width: 600px; margin: 8px auto 0; }
-
     @media (max-width: 768px) {
       .product-hero { grid-template-columns: 1fr; }
       .testimonials-grid { grid-template-columns: 1fr; }
       .faq-grid { grid-template-columns: 1fr; }
       .mockup-card { position: static; }
+      .sticky-content { flex-direction: row; }
     }
   </style>
 </head>
@@ -415,17 +492,27 @@
         <span class="review-count">4.9 / 5.0 (124 Verified Reviews)</span>
       </div>
 
+      <!-- INTERACTIVE PLAN SWITCHER -->
+      <div class="plan-switcher">
+        <button id="btn-monthly" class="plan-btn active" onclick="switchPlan('monthly')">
+          🔥 Monthly Growth ($119/mo)
+        </button>
+        <button id="btn-annual" class="plan-btn" onclick="switchPlan('annual')">
+          👑 Annual VIP ($990/yr · Best Value)
+        </button>
+      </div>
+
       <div class="price-box">
         <div>
-          <div style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monthly Growth Subscription</div>
+          <div id="plan-label" style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monthly Growth Subscription</div>
           <div style="display: flex; align-items: baseline;">
-            <span class="price-current">$119</span>
-            <span class="price-original">$299</span>
+            <span id="price-display" class="price-current">$119</span>
+            <span id="price-orig" class="price-original">$299</span>
           </div>
-          <span class="save-tag">SAVE 60% TODAY &bull; LIMITED CONTRACTOR SLOTS</span>
+          <span id="save-tag" class="save-tag">SAVE 60% TODAY &bull; LIMITED CONTRACTOR SLOTS</span>
         </div>
         <div style="text-align: right; font-size: 11px; color: #94a3b8;">
-          <div>USD / Month</div>
+          <div id="period-text">USD / Month</div>
           <div>Cancel Anytime</div>
         </div>
       </div>
@@ -437,7 +524,7 @@
         </li>
         <li>
           <span class="check-icon">✓</span>
-          <div><strong>150–200 Verified Local Leads Included:</strong> Pre-loaded homeowner inquiries in your specific service ZIP codes on Day 1.</div>
+          <div><strong id="leads-count">150–200 Verified Local Leads Included:</strong> Pre-loaded homeowner inquiries in your specific service ZIP codes on Day 1.</div>
         </li>
         <li>
           <span class="check-icon">✓</span>
@@ -453,10 +540,18 @@
         </li>
       </ul>
 
-      <!-- DIRECT SHOPIFY / PAYPAL BUY BUTTON -->
-      <a href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E" class="buy-btn">
-        ⚡ Buy License on Shopify / PayPal — $119/mo
-      </a>
+      <!-- DIRECT BUY BUTTONS STACK -->
+      <div class="buttons-stack">
+        <!-- Direct 1-Click PayPal / Card Buy Now Link -->
+        <a id="primary-buy-btn" href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E" class="buy-btn-primary">
+          ⚡ Instant Checkout with PayPal / Card ($119/mo)
+        </a>
+        
+        <!-- Direct Shopify Storefront Order Link -->
+        <a href="https://0u14pb-fd.myshopify.com" class="buy-btn-shopify">
+          🛍️ Order on Shopify Store (0u14pb-fd.myshopify.com)
+        </a>
+      </div>
       
       <div class="payment-icons">
         🔒 256-Bit Encrypted Checkout &bull; Immediate Digital License Delivery via Email
@@ -508,7 +603,7 @@
     </div>
   </div>
 
-  <!-- FREQUENTLY ASKED QUESTIONS (OBJECTIONS REMOVED) -->
+  <!-- FREQUENTLY ASKED QUESTIONS -->
   <div style="margin-top: 48px;">
     <h3 style="font-size: 22px; font-weight: 900; text-align: center; color: white;">Frequently Asked Questions</h3>
     <div class="faq-grid">
@@ -531,18 +626,74 @@
     </div>
   </div>
 
-  <!-- OFFICIAL MERCHANT CREDIBILITY -->
-  <div class="guarantee-box">
-    <h3>🛡️ 100% Dedicated Setup Guarantee</h3>
-    <p>
-      Every license comes with direct onboarding support from our founder and engineering team. If you need any assistance connecting your phone lines or CRM, we assist you 1-on-1.
-    </p>
-    <div style="margin-top: 16px; font-size: 11px; color: #94a3b8;">
-      Akash Bhagwansingh Pardeshi — Founder &amp; CEO &bull; contact@revenuerecover.ai &bull; +91 8208057237
-    </div>
-  </div>
-
 </div>
+
+<!-- STICKY FLOATING CHECKOUT BAR -->
+<div class="sticky-bar">
+  <div class="sticky-content">
+    <div>
+      <div id="sticky-price" class="sticky-price">$119 / mo</div>
+      <div id="sticky-plan" class="sticky-plan">Growth Plan &bull; 200 Leads Included</div>
+    </div>
+    <a id="sticky-btn" href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E" class="sticky-btn">
+      ⚡ Buy Now with PayPal
+    </a>
+  </div>
+</div>
+
+<!-- DYNAMIC JAVASCRIPT PLAN SWITCHER -->
+<script>
+  function switchPlan(type) {
+    const btnMonthly = document.getElementById('btn-monthly');
+    const btnAnnual = document.getElementById('btn-annual');
+    const planLabel = document.getElementById('plan-label');
+    const priceDisplay = document.getElementById('price-display');
+    const priceOrig = document.getElementById('price-orig');
+    const saveTag = document.getElementById('save-tag');
+    const periodText = document.getElementById('period-text');
+    const leadsCount = document.getElementById('leads-count');
+    const primaryBuyBtn = document.getElementById('primary-buy-btn');
+    const stickyPrice = document.getElementById('sticky-price');
+    const stickyPlan = document.getElementById('sticky-plan');
+    const stickyBtn = document.getElementById('sticky-btn');
+
+    if (type === 'annual') {
+      btnMonthly.classList.remove('active');
+      btnAnnual.classList.add('active');
+
+      planLabel.innerText = 'Annual VIP Commercial License';
+      priceDisplay.innerText = '$990';
+      priceOrig.innerText = '$1,428';
+      saveTag.innerText = 'SAVE $438/YR • VIP MULTI-LOCATION & PRIORITY SUPPORT';
+      periodText.innerText = 'USD / Year';
+      leadsCount.innerText = '500+ Verified Local Leads Included (VIP Tier):';
+
+      primaryBuyBtn.href = 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J';
+      primaryBuyBtn.innerText = '⚡ Instant VIP Checkout ($990/yr via PayPal)';
+
+      stickyPrice.innerText = '$990 / yr';
+      stickyPlan.innerText = 'VIP Annual License • 500+ Leads Included';
+      stickyBtn.href = 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J';
+    } else {
+      btnAnnual.classList.remove('active');
+      btnMonthly.classList.add('active');
+
+      planLabel.innerText = 'Monthly Growth Subscription';
+      priceDisplay.innerText = '$119';
+      priceOrig.innerText = '$299';
+      saveTag.innerText = 'SAVE 60% TODAY • LIMITED CONTRACTOR SLOTS';
+      periodText.innerText = 'USD / Month';
+      leadsCount.innerText = '150–200 Verified Local Leads Included:';
+
+      primaryBuyBtn.href = 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E';
+      primaryBuyBtn.innerText = '⚡ Instant Checkout with PayPal / Card ($119/mo)';
+
+      stickyPrice.innerText = '$119 / mo';
+      stickyPlan.innerText = 'Growth Plan • 200 Leads Included';
+      stickyBtn.href = 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E';
+    }
+  }
+</script>
 
 </body>
 </html>
