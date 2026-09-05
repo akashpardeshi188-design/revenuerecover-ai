@@ -58,16 +58,16 @@ export default function HomePage() {
           {/* CTA Group */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <Link
-              href="/free-revenue-scan"
+              href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
               className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-500/25 transition active:scale-95"
             >
-              Find My Lost Revenue <ArrowRight className="w-5 h-5" />
+              ⚡ Get Growth Plan — $119/mo (Instant 200 Leads) <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="/demo"
+              href="/pricing"
               className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-base flex items-center justify-center gap-2.5 transition active:scale-95"
             >
-              <Play className="w-4 h-4 fill-slate-200" /> Watch Interactive Demo
+              👑 View All Pricing &amp; VIP Plans
             </Link>
           </div>
 

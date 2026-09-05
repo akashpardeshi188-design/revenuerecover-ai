@@ -86,18 +86,11 @@ export function Navbar() {
             )}
           </div>
 
-          <Link href="/free-revenue-scan" className="hover:text-emerald-400 transition flex items-center gap-1 text-emerald-300">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-            Free Revenue Scan
-          </Link>
-          <Link href="/demo" className="hover:text-white transition">
-            Interactive Demo
-          </Link>
           <Link href="/how-it-works" className="hover:text-white transition">
             How It Works
           </Link>
-          <Link href="/pricing" className="hover:text-white transition">
-            Pricing
+          <Link href="/pricing" className="hover:text-emerald-400 transition font-bold text-emerald-300">
+            ⚡ Pricing &amp; Plans ($119/mo)
           </Link>
           <Link href="/integrations" className="hover:text-white transition">
             Integrations
@@ -111,22 +104,16 @@ export function Navbar() {
         {/* Action Buttons */}
         <div className="hidden lg:flex items-center gap-3">
           <Link
-            href="/growth"
-            className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-800/50 hover:bg-cyan-900/40 transition"
-          >
-            Growth Engine (Admin)
-          </Link>
-          <Link
             href="/dashboard"
             className="text-sm font-semibold text-slate-300 hover:text-white px-3.5 py-1.5 rounded-lg hover:bg-slate-800 transition"
           >
             Customer Login
           </Link>
           <Link
-            href="/free-revenue-scan"
+            href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
             className="text-sm font-semibold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 transition active:scale-95"
           >
-            Find My Lost Revenue <ArrowRight className="w-4 h-4" />
+            ⚡ Get Growth Plan ($119) <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -143,25 +130,11 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 py-5 space-y-3">
           <Link
-            href="/free-revenue-scan"
+            href="/pricing"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-emerald-400 font-semibold py-2"
+            className="block text-emerald-400 font-bold py-2"
           >
-            ⚡ Free Revenue Scanner
-          </Link>
-          <Link
-            href="/demo"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 font-medium py-2"
-          >
-            Interactive Demo Sandbox
-          </Link>
-          <Link
-            href="/industries"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 font-medium py-2"
-          >
-            Industries (HVAC, Plumbing, etc.)
+            ⚡ Pricing &amp; Plans ($119/mo)
           </Link>
           <Link
             href="/how-it-works"
