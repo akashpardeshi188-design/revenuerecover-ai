@@ -89,8 +89,11 @@ export function Navbar() {
           <Link href="/how-it-works" className="hover:text-white transition">
             How It Works
           </Link>
-          <Link href="/pricing" className="hover:text-emerald-400 transition font-bold text-emerald-300">
-            ⚡ Pricing &amp; Plans ($119/mo)
+          <Link href="/store" className="hover:text-emerald-400 transition font-bold text-emerald-300">
+            🛍️ Official Store
+          </Link>
+          <Link href="/pricing" className="hover:text-white transition">
+            Pricing &amp; Plans
           </Link>
           <Link href="/integrations" className="hover:text-white transition">
             Integrations
