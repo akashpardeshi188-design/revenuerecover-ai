@@ -248,3 +248,183 @@ model SystemEvent {
 
   organization       Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
+
+// ==============================================================================
+// GLOBAL CONTRACTOR DISCOVERY & LEAD INTELLIGENCE ENGINE MODELS
+// ==============================================================================
+
+model SourceRegistry {
+  id                         String   @id
+  sourceName                 String
+  sourceType                 String
+  country                    String
+  categories                 String[]
+  officialApiAvailable       Boolean  @default(true)
+  apiDocumentationUrl        String?
+  authenticationType         String   @default("API_KEY")
+  rateLimitPerMinute         Int      @default(300)
+  termsUrl                   String?
+  robotsPolicy               String   @default("ALLOWED")
+  dataFieldsAvailable        String[]
+  leadCaptureSupported       Boolean  @default(false)
+  businessDiscoverySupported Boolean  @default(true)
+  integrationStatus          String   @default("CONNECTED")
+  enabled                    Boolean  @default(true)
+  lastChecked                DateTime @default(now())
+  complianceNotes            String?
+  estimatedCostPerCallUSD    Float    @default(0.0)
+
+  sourceRecords              BusinessSourceRecord[]
+}
+
+model BusinessMaster {
+  id                   String   @id @default(cuid())
+  tenantId             String   @default("org_default")
+  businessName         String
+  normalizedName       String
+  primaryTrade         String   @default("HVAC")
+  secondaryTrades      String[]
+  phoneE164            String?
+  email                String?
+  website              String?
+  domain               String?
+  addressLine1         String
+  city                 String
+  stateProvince        String
+  postalCode           String
+  country              String   @default("USA")
+  geoLatitude          Float?
+  geoLongitude         Float?
+  serviceRadiusMiles   Int      @default(25)
+  verificationScore    Int      @default(50)
+  verificationStatus   String   @default("MEDIUM")
+  verificationReasons  String[]
+  averageRating        Float    @default(4.5)
+  totalReviews         Int      @default(0)
+  sourceCount          Int      @default(1)
+  connectedSourceIds   String[]
+  dataQualityScore     Int      @default(80)
+  isActive             Boolean  @default(true)
+  isAcceptingLeads     Boolean  @default(true)
+  monthlyCapacity      Int      @default(50)
+  currentActiveLeads   Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  sourceRecords        BusinessSourceRecord[]
+  leadsAssigned        Lead[]
+  matchedOpportunities MasterOpportunity[]
+
+  @@index([tenantId, primaryTrade, city, country])
+  @@index([normalizedName, phoneE164, domain])
+}
+
+model BusinessSourceRecord {
+  id               String         @id @default(cuid())
+  businessMasterId String
+  sourceId         String
+  sourceRecordId   String
+  sourceUrl        String?
+  rawPayload       Json?
+  discoveredAt     DateTime       @default(now())
+
+  business         BusinessMaster @relation(fields: [businessMasterId], references: [id], onDelete: Cascade)
+  sourceRegistry   SourceRegistry @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, sourceRecordId])
+}
+
+model Lead {
+  id                          String            @id @default(cuid())
+  tenantId                    String            @default("org_default")
+  assignedBusinessId          String?
+  masterOpportunityId         String?
+  sourceType                  String            @default("SEARCH_MAPS")
+  sourceChannel               String            @default("MISSED_PHONE_CALL")
+  customerName                String?
+  customerPhoneE164           String?
+  customerEmail               String?
+  serviceCategory             String            @default("HVAC")
+  serviceRequested            String
+  issueDescription            String?
+  city                        String
+  stateProvince               String
+  postalCode                  String
+  country                     String            @default("USA")
+  geoLatitude                 Float?
+  geoLongitude                Float?
+  urgency                     String            @default("HIGH")
+  estimatedJobValueUSD        Float             @default(450)
+  leadScore                   Int               @default(75)
+  leadClassification          String            @default("HOT")
+  scoreReasons                String[]
+  aiClassificationExplanation String?
+  consentStatus               String            @default("IMPLIED_INQUIRY")
+  consentTimestamp            DateTime          @default(now())
+  isDuplicate                 Boolean           @default(false)
+  status                      String            @default("NEW")
+  createdAt                   DateTime          @default(now())
+  updatedAt                   DateTime          @updatedAt
+
+  assignedBusiness            BusinessMaster?   @relation(fields: [assignedBusinessId], references: [id])
+  masterOpportunity           MasterOpportunity? @relation(fields: [masterOpportunityId], references: [id])
+  events                      LeadSourceEvent[]
+
+  @@index([tenantId, serviceCategory, city, status])
+}
+
+model MasterOpportunity {
+  id                        String          @id @default(cuid())
+  tenantId                  String          @default("org_default")
+  primaryLeadId             String
+  customerIdentifier        String
+  customerName              String?
+  customerPhone             String?
+  customerEmail             String?
+  tradeCategory             String          @default("HVAC")
+  summary                   String
+  highestUrgency            String          @default("HIGH")
+  estimatedPipelineValueUSD Float           @default(650)
+  compositeScore            Int             @default(80)
+  classification            String          @default("HOT")
+  assignedBusinessId        String?
+  stage                     String          @default("INBOX")
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  assignedBusiness          BusinessMaster? @relation(fields: [assignedBusinessId], references: [id])
+  leads                     Lead[]
+  events                    LeadSourceEvent[]
+
+  @@index([tenantId, customerIdentifier, stage])
+}
+
+model LeadSourceEvent {
+  id                  String             @id @default(cuid())
+  leadId              String
+  masterOpportunityId String?
+  sourceType          String
+  channel             String
+  rawPayload          Json?
+  timestamp           DateTime           @default(now())
+
+  lead                Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  masterOpportunity   MasterOpportunity? @relation(fields: [masterOpportunityId], references: [id])
+}
+
+model DiscoveryJobRun {
+  id                     String   @id @default(cuid())
+  tenantId               String   @default("org_default")
+  country                String
+  city                   String
+  category               String
+  sourcesQueried         String[]
+  totalRawDiscovered     Int      @default(0)
+  totalUniqueEntities    Int      @default(0)
+  duplicatesConsolidated Int      @default(0)
+  verifiedCount          Int      @default(0)
+  estimatedCostUSD       Float    @default(0.0)
+  startedAt              DateTime @default(now())
+  completedAt            DateTime @default(now())
+}
+
