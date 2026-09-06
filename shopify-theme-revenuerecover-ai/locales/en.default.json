@@ -1,0 +1,16 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    }
+  },
+  "sections": {
+    "header": {
+      "announcement": "⭐ Rated 4.9/5 by 120+ Contractors across USA, UK & Canada • 100% Secure Checkout"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "RevenueRecover AI High-Trust Theme",
+    "theme_version": "2.4.0",
+    "theme_author": "RevenueRecover AI",
+    "theme_documentation_url": "https://revenuerecover-ai.vercel.app/docs",
+    "theme_support_url": "https://revenuerecover-ai.vercel.app"
+  },
+  {
+    "name": "Colors & Branding",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Accent Color",
+        "default": "#10b981"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background Color",
+        "default": "#090d16"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Color",
+        "default": "#f8fafc"
+      }
+    ]
+  }
+]

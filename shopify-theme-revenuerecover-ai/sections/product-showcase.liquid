@@ -1,0 +1,359 @@
+<div class="container">
+  
+  <!-- HERO PRODUCT SECTION -->
+  <div class="product-hero">
+    
+    <!-- LEFT: MOCKUP & LIVE DEMO -->
+    <div class="mockup-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <span class="live-pulse"><span class="live-dot"></span> AI ENGINE ACTIVE</span>
+        <span style="font-size: 11px; color: #94a3b8; font-family: monospace;">v2.4 Production Suite</span>
+      </div>
+
+      <div class="mockup-box">
+        <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 800; margin-bottom: 8px;">
+          ⚡ 45-Second Auto Text-Back Preview:
+        </div>
+        <div class="sms-bubble">
+          <strong style="color: #10b981;">RevenueRecover AI:</strong> "Hi, this is Summit HVAC. We just missed your call regarding emergency AC repair. We have a technician on standby in your ZIP code. Reply 1 to confirm your slot!"
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8;">
+          <span>📍 Homeowner Lead (Dallas, TX)</span>
+          <span style="color: #10b981; font-weight: 900;">HOT 95/100</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-around; text-align: center; border-top: 1px solid #1e293b; padding-top: 16px; font-size: 11px;">
+        <div>
+          <div style="font-size: 20px;">🎁</div>
+          <div style="font-weight: 700; color: white;">200 Leads</div>
+          <div style="color: #64748b;">Day 1 Delivery</div>
+        </div>
+        <div>
+          <div style="font-size: 20px;">⚡</div>
+          <div style="font-weight: 700; color: white;">45 Seconds</div>
+          <div style="color: #64748b;">Speed to Lead</div>
+        </div>
+        <div>
+          <div style="font-size: 20px;">🛡️</div>
+          <div style="font-weight: 700; color: white;">TCPA Certified</div>
+          <div style="color: #64748b;">100% Compliant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PRODUCT DETAILS & BUY BUTTONS -->
+    <div class="product-info">
+      <div style="font-size: 11px; color: #10b981; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;">
+        OFFICIAL COMMERCIAL SAAS LICENSE
+      </div>
+      <h1>RevenueRecover AI — Autonomous Missed-Call Recovery & 200 Trade Leads</h1>
+      
+      <div class="rating-row">
+        <span class="stars">★★★★★</span>
+        <span class="review-count">4.9 / 5.0 (124 Verified Contractor Reviews)</span>
+      </div>
+
+      <!-- PLAN SWITCHER -->
+      <div class="plan-switcher">
+        <button id="btn-monthly" class="plan-btn active" onclick="switchPlan('monthly')">
+          🔥 Monthly Growth ($119/mo)
+        </button>
+        <button id="btn-annual" class="plan-btn" onclick="switchPlan('annual')">
+          👑 Annual VIP ($990/yr)
+        </button>
+      </div>
+
+      <div class="price-box">
+        <div>
+          <div id="plan-label" style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monthly Growth Subscription</div>
+          <div style="display: flex; align-items: baseline;">
+            <span id="price-display" class="price-current">$119</span>
+            <span id="price-orig" style="font-size: 16px; color: #64748b; text-decoration: line-through; margin-left: 8px;">$299</span>
+          </div>
+          <span id="save-tag" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 100px; display: inline-block; margin-top: 4px;">
+            SAVE 60% TODAY • 1-CLICK INSTANT ACTIVATION
+          </span>
+        </div>
+        <div style="text-align: right; font-size: 11px; color: #94a3b8;">
+          <div id="period-text">USD / Month</div>
+          <div style="color: #10b981; font-weight: 700;">Cancel Anytime</div>
+        </div>
+      </div>
+
+      <ul class="features-list">
+        <li>
+          <span class="check">✓</span>
+          <div><strong>45-Second AI Text-Back Engine:</strong> Never lose an emergency homeowner job to a competitor while you are on site.</div>
+        </li>
+        <li>
+          <span class="check">✓</span>
+          <div><strong id="leads-count">150–200 Verified Local Leads Included:</strong> Pre-loaded homeowner inquiries in your specific trade & ZIP code on Day 1.</div>
+        </li>
+        <li>
+          <span class="check">✓</span>
+          <div><strong>24/7 Autonomous Customer Reactivation:</strong> Automatically reactivates past customer databases for seasonal maintenance.</div>
+        </li>
+        <li>
+          <span class="check">✓</span>
+          <div><strong>1-Click CRM & Calendar Sync:</strong> Works with ServiceTitan, Housecall Pro, Jobber, and Google Calendar.</div>
+        </li>
+      </ul>
+
+      <!-- DIRECT CHECKOUT BUTTON WITH MODAL TRIGGER -->
+      <button id="primary-buy-btn" onclick="openCheckoutModal()" class="buy-btn-primary">
+        ⚡ Instant Checkout with PayPal / Card ($119/mo)
+      </button>
+
+      <div style="text-align: center; margin-top: 14px; font-size: 11px; color: #64748b;">
+        🔒 256-Bit Encrypted Checkout • Instant Digital Access • No Setup Fees
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INTERACTIVE ROI CALCULATOR SECTION -->
+  <div class="roi-section">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="color: #10b981; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Interactive Revenue Model</div>
+      <h2 style="font-size: 26px; color: white; font-weight: 900; margin-top: 4px;">Calculate How Much Lost Revenue You Will Recover</h2>
+      <p style="color: #94a3b8; font-size: 14px; max-width: 600px; margin: 8px auto 0;">Adjust the sliders below based on your weekly missed calls and average ticket size:</p>
+    </div>
+
+    <div class="calc-grid">
+      <div class="calc-controls">
+        <div class="slider-group">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+            <span>Missed Calls Per Week:</span>
+            <span id="val-calls" style="color: #10b981; font-weight: 900; font-family: monospace; font-size: 16px;">5 calls</span>
+          </div>
+          <input type="range" id="range-calls" min="1" max="20" value="5" class="custom-slider" oninput="updateCalculator()">
+        </div>
+
+        <div class="slider-group" style="margin-top: 24px;">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+            <span>Average Job Ticket Value ($):</span>
+            <span id="val-ticket" style="color: #10b981; font-weight: 900; font-family: monospace; font-size: 16px;">$1,500</span>
+          </div>
+          <input type="range" id="range-ticket" min="200" max="5000" step="100" value="1500" class="custom-slider" oninput="updateCalculator()">
+        </div>
+      </div>
+
+      <div class="calc-results">
+        <div class="calc-stat-box">
+          <div style="font-size: 11px; color: #ef4444; font-weight: 800; text-transform: uppercase;">💸 Your Monthly Lost Revenue:</div>
+          <div id="res-lost" style="font-size: 28px; font-weight: 900; color: #f87171; font-family: monospace; margin: 4px 0;">$32,500</div>
+          <div style="font-size: 11px; color: #64748b;">Revenue walking straight to your local competitors</div>
+        </div>
+
+        <div class="calc-stat-box highlight">
+          <div style="font-size: 11px; color: #10b981; font-weight: 800; text-transform: uppercase;">🛡️ Monthly Revenue Recovered (65%):</div>
+          <div id="res-recovered" style="font-size: 36px; font-weight: 900; color: #10b981; font-family: monospace; margin: 4px 0;">$21,125 / mo</div>
+          <div id="res-multiplier" style="font-size: 12px; color: #cbd5e1; font-weight: 700;">⚡ 177x Return on your $119/mo plan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRACTOR REVIEWS & PROOF -->
+  <div class="trust-section">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="color: #10b981; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Verified Contractor Proof</div>
+      <h2 style="font-size: 26px; color: white; font-weight: 900; margin-top: 4px;">Trusted by 120+ Trade Contractors in USA & Canada</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="test-card">
+        <div style="color: #f59e0b; font-size: 16px; margin-bottom: 8px;">★★★★★</div>
+        <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 14px;">
+          "We run 4 HVAC vans in Dallas. During our heatwave rush, we missed around 8 calls a day while on roofs. RevenueRecover AI caught those homeowners instantly. Generated $34,200 in recovered jobs in our first 30 days alone."
+        </p>
+        <div style="border-top: 1px solid #1e293b; padding-top: 10px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #10b981;">MM</div>
+          <div>
+            <div style="font-weight: 700; color: white; font-size: 12px;">Mike Miller</div>
+            <div style="font-size: 11px; color: #64748b;">Summit Heating & Air (Dallas, TX)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div style="color: #f59e0b; font-size: 16px; margin-bottom: 8px;">★★★★★</div>
+        <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 14px;">
+          "The 200 local trade leads included on day 1 landed us 2 emergency sewer line replacements right away ($11,000 revenue). The auto text-back engine paid for a full year within 48 hours."
+        </p>
+        <div style="border-top: 1px solid #1e293b; padding-top: 10px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #10b981;">DR</div>
+          <div>
+            <div style="font-weight: 700; color: white; font-size: 12px;">Dave Reynolds</div>
+            <div style="font-size: 11px; color: #64748b;">Apex Plumbing & Drain (Denver, CO)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div style="color: #f59e0b; font-size: 16px; margin-bottom: 8px;">★★★★★</div>
+        <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 14px;">
+          "We upgraded to the Annual VIP plan. Setup took under 15 minutes. It automatically syncs with our Google Calendar and handles quiet hours perfectly so we never violate TCPA laws."
+        </p>
+        <div style="border-top: 1px solid #1e293b; padding-top: 10px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #10b981;">CM</div>
+          <div>
+            <div style="font-weight: 700; color: white; font-size: 12px;">Carlos Mendez</div>
+            <div style="font-size: 11px; color: #64748b;">SunBelt Commercial Roofing (Phoenix, AZ)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ SECTION -->
+  <div class="faq-section">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="color: #10b981; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Got Questions?</div>
+      <h2 style="font-size: 26px; color: white; font-weight: 900; margin-top: 4px;">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🎁 How and when do I receive my 200 verified local leads?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Immediately after checkout, our onboarding intake form collects your exact service trade (HVAC, Plumbing, Roofing, Electrical, etc.) and target ZIP codes. Within 24 hours, 150–200 fresh, verified homeowner inquiries are loaded into your portal and sent via CSV/CRM sync.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>⚡ How fast is the onboarding and setup?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Setup takes less than 10 minutes. You simply configure unconditional or busy call forwarding from your business line to your assigned AI recovery number, or connect your existing Twilio / CRM account. No coding or complex software installation required.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🛡️ Is this compliant with US TCPA & Canadian Anti-Spam laws?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Yes, 100%. Our platform strictly respects statutory quiet hours (no automated texts between 9:00 PM and 8:00 AM local recipient time), manages automated STOP opt-outs, and utilizes carrier-registered A2P 10DLC routes.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>💳 What happens immediately after my PayPal checkout?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          You will receive an instant digital receipt and VIP activation confirmation containing your dashboard credentials, setup guide, and 1-on-1 concierge onboarding link.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🔄 Can I cancel or change plans anytime?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Yes. There are zero long-term lock-in contracts for the Monthly Growth plan ($119/mo). You can cancel anytime with 1-click in your PayPal subscription settings or by reaching out to our support team.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PITCH DECK & BROCHURE DOWNLOAD CALLOUT -->
+  <div class="brochure-banner">
+    <div style="max-width: 600px;">
+      <h3 style="color: white; font-size: 20px; font-weight: 800; margin-bottom: 6px;">Need a Proposal to Review with Your Business Partner?</h3>
+      <p style="color: #94a3b8; font-size: 13px;">Download our complete 1-page commercial PDF pitch deck detailing the technical architecture, ROI metrics, and case studies.</p>
+    </div>
+    <a href="https://revenuerecover-ai.vercel.app/docs" target="_blank" class="btn-brochure-download">
+      📄 View Pitch Deck &amp; Documentation
+    </a>
+  </div>
+
+</div>
+
+<!-- STICKY CHECKOUT BAR -->
+<div class="sticky-bar">
+  <div class="sticky-content">
+    <div>
+      <div id="sticky-price" style="font-size: 20px; font-weight: 900; color: #10b981; font-family: monospace;">$119 / mo</div>
+      <div id="sticky-plan" style="font-size: 11px; color: #94a3b8;">Growth Plan • 200 Leads Included</div>
+    </div>
+    <button id="sticky-btn" onclick="openCheckoutModal()" class="sticky-btn" style="border: none; cursor: pointer;">
+      ⚡ Buy Now with PayPal
+    </button>
+  </div>
+</div>
+
+<!-- FLOATING WHATSAPP SUPPORT -->
+<a href="https://wa.me/918208057237?text=Hi%20RevenueRecover%20AI%20Team%2C%20I%20have%20a%20question%20before%20ordering" target="_blank" class="floating-whatsapp" title="Chat with VIP Support">
+  💬 <span>Chat with Founder</span>
+</a>
+
+<!-- ==========================================================================
+     HIGH-TRUST INLINE CHECKOUT MODAL OVERLAY
+     ========================================================================== -->
+<div id="checkout-modal" class="checkout-modal-backdrop" onclick="handleBackdropClick(event)">
+  <div class="checkout-modal-dialog">
+    <button class="modal-close-btn" onclick="closeCheckoutModal()" aria-label="Close modal">✕</button>
+    
+    <div class="modal-header">
+      <div class="modal-badge">⚡ INSTANT COMMERCIAL ACTIVATION</div>
+      <h3 id="modal-title" style="color: white; font-size: 22px; font-weight: 900; margin: 8px 0 4px;">
+        RevenueRecover AI — Growth Plan
+      </h3>
+      <div id="modal-price" style="font-size: 32px; font-weight: 900; color: #10b981; font-family: monospace;">
+        $119.00 <span style="font-size: 13px; color: #94a3b8; font-weight: normal;">USD / Month</span>
+      </div>
+    </div>
+
+    <div class="modal-benefits">
+      <div class="modal-benefit-item">
+        <span style="color: #10b981; font-weight: 900;">✓</span>
+        <span><strong>200 Local Homeowner Leads</strong> loaded in your target ZIP codes</span>
+      </div>
+      <div class="modal-benefit-item">
+        <span style="color: #10b981; font-weight: 900;">✓</span>
+        <span><strong>45-Second AI Text-Back Engine</strong> active 24/7/365</span>
+      </div>
+      <div class="modal-benefit-item">
+        <span style="color: #10b981; font-weight: 900;">✓</span>
+        <span><strong>100% TCPA & Anti-Spam Legal Compliance</strong> with quiet hours</span>
+      </div>
+      <div class="modal-benefit-item">
+        <span style="color: #10b981; font-weight: 900;">✓</span>
+        <span><strong>14-Day Zero-Risk Guarantee:</strong> Cancel anytime with 1 click</span>
+      </div>
+    </div>
+
+    <!-- DIRECT PAYPAL EXPRESS LAUNCH BUTTON -->
+    <a id="modal-paypal-btn" href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E" target="_blank" onclick="launchPayPalPopup(event)" class="modal-paypal-cta">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>🔒 Pay with</span>
+        <span style="font-weight: 900; font-size: 18px; color: #003087; background: white; padding: 2px 8px; border-radius: 4px; font-style: italic;">PayPal</span>
+        <span>/ Credit Card</span>
+      </div>
+    </a>
+
+    <div style="display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 11px; color: #64748b;">
+      <span>🔒 256-Bit SSL Encrypted</span>
+      <span>⚡ Instant Onboarding Email</span>
+      <span>💳 Major Cards Accepted</span>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Showcase",
+  "settings": []
+}
+{% endschema %}
