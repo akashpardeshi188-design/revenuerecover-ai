@@ -89,8 +89,8 @@ export default function OfficialStorefrontPage() {
       a: 'You will receive an instant digital receipt and VIP activation confirmation containing your dashboard credentials, setup guide, and 1-on-1 concierge onboarding link.'
     },
     {
-      q: '🔄 Can I cancel or change plans anytime?',
-      a: 'Yes. There are zero long-term lock-in contracts for the Monthly Growth plan ($119/mo). You can cancel anytime with 1-click in your PayPal subscription settings or by contacting support.'
+      q: '⚡ How are the 200 trade leads assigned to my business?',
+      a: 'During onboarding, you specify your exact service radius, trade niche, and target ZIP codes. Our proprietary lead engine filters and verifies local homeowner inquiries exclusively for your account.'
     }
   ];
 
@@ -217,7 +217,7 @@ export default function OfficialStorefrontPage() {
               </div>
               <div className="text-right text-xs text-slate-400">
                 <div>{billingPlan === 'annual' ? 'USD / Year' : 'USD / Month'}</div>
-                <div className="text-emerald-400 font-bold">Cancel Anytime</div>
+                <div className="text-emerald-400 font-bold">Instant Activation</div>
               </div>
             </div>
 
@@ -503,7 +503,7 @@ export default function OfficialStorefrontPage() {
               <div className="text-3xl font-black text-emerald-400 font-mono mt-1">
                 {billingPlan === 'annual' ? '$990.00' : '$119.00'}
                 <span className="text-xs font-normal text-slate-400 ml-2">
-                  {billingPlan === 'annual' ? 'USD / Year (Save $438)' : 'USD / Month (Cancel Anytime)'}
+                  {billingPlan === 'annual' ? 'USD / Year (Save $438)' : 'USD / Month'}
                 </span>
               </div>
             </div>

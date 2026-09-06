@@ -112,7 +112,7 @@ function openCheckoutModal() {
     if (modalPaypalBtn) modalPaypalBtn.href = PAYPAL_GATEWAYS.annual;
   } else {
     if (modalTitle) modalTitle.innerText = 'RevenueRecover AI — Monthly Growth Plan';
-    if (modalPrice) modalPrice.innerHTML = '$119.00 <span style="font-size: 13px; color: #94a3b8; font-weight: normal;">USD / Month (Cancel Anytime)</span>';
+    if (modalPrice) modalPrice.innerHTML = '$119.00 <span style="font-size: 13px; color: #94a3b8; font-weight: normal;">USD / Month</span>';
     if (modalPaypalBtn) modalPaypalBtn.href = PAYPAL_GATEWAYS.monthly;
   }
 
