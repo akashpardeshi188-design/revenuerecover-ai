@@ -1,23 +1,25 @@
-# RevenueRecover AI — Event Automation Architecture
+# Autonomous Growth Operations & Daily Scheduler
 
-## Event Engine Specifications
+## 15-Step Daily Operations Workflow
 
 ```
-  Inbound Event (Missed Call / Web Form)
-                │
-                ▼
-      [AutomationEngine.publish()]
-                │
-    ┌───────────┼───────────┬───────────┐
-    ▼           ▼           ▼           ▼
- AI Intent   Deduplicate   Match Tech  Send SMS
-  Scorer     into Master    by Geo    Text-Back
- (Gemini)    Opportunity   Radius     (45-sec)
+1. Discover New Leads (Multi-Source Adapters)
+2. Verify Leads (E.164, Registry, MX Records)
+3. Enrich Profiles (Fleet Size, Missed Call Volume)
+4. Score Prospects (0-100 ICP Fit)
+5. Identify Highest-Value Opportunities
+6. Prepare Personalized Value Propositions
+7. Execute Compliance Pre-Flight Checks
+8. Dispatch Approved Outreach (Email & SMS)
+9. Process Inbound Replies & Inquiries
+10. Qualify Conversations via AI SDR
+11. Book Interactive Demos into Calendar
+12. Synchronize CRM Lifecycle State Machine
+13. Analyze Funnel Velocity & Pipeline Value
+14. Run QA Smoke Test Suite
+15. Generate Executive Daily Growth Report
 ```
 
-## Supported Event Triggers
-
-1. **`lead.created`**: Ingests new lead and initiates AI intent scoring.
-2. **`lead.hot`**: Triggers high-priority push notification and immediate SMS alert to on-duty technician.
-3. **`missed_call.detected`**: Runs compliance guard -> generates personalized text -> dispatches 45-second recovery message.
-4. **`booking.created`**: Syncs appointment with ServiceTitan / Housecall Pro CRM webhooks.
+## Scheduler Triggers
+- **Manual Trigger:** `POST /api/growth/cron`
+- **Automated Trigger:** Configured via standard Vercel Cron or GitHub Actions workflow running daily at 08:00 UTC.

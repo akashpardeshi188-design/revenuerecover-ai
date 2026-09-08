@@ -1,42 +1,12 @@
-# RevenueRecover AI — Environment Setup & Deployment Guide
+# Deployment & Hosting Architecture
 
-## 1. Environment Variables (.env.local)
+## 1. Hosting Environment
+- **Platform:** Vercel Edge Network (`vercel.json`)
+- **Node Runtime:** Node.js 20+ / Next.js 16.3 App Router with Turbopack.
+- **Database:** Managed PostgreSQL (Supabase / Neon / AWS RDS).
 
-```bash
-# App Configuration
-NEXT_PUBLIC_APP_URL="https://revenuerecover-ai.vercel.app"
-DISCOVERY_DRY_RUN="true" # Set to false in production
-
-# AI Providers
-GEMINI_API_KEY="AIzaSy..."
-
-# Discovery Source API Keys (Optional - System uses deterministic fixtures if keys are absent)
-GOOGLE_MAPS_API_KEY=""
-YELP_API_KEY=""
-FOURSQUARE_API_KEY=""
-UK_COMPANIES_HOUSE_API_KEY=""
-
-# Payments
-PAYPAL_MODE="live"
-NEXT_PUBLIC_PAYPAL_CLIENT_ID="BAAPGFKrr_..."
-PAYPAL_CLIENT_SECRET="EI2SgRc_..."
-
-# Database
-DATABASE_URL="postgresql://postgres:password@localhost:5432/revenuerecover?schema=public"
-```
-
-## 2. Deployment Steps
-
-```bash
-# 1. Install dependencies
-npm install
-
-# 2. Run Test Suite
-node scripts/test-discovery-engine.mjs
-
-# 3. Compile Production Next.js Build
-npm run build
-
-# 4. Deploy to Vercel
-git push origin main
-```
+## 2. Production Checklist
+1. Verify all 13 categories of `.env.example` are set in Vercel project settings.
+2. Confirm `DISCOVERY_DRY_RUN="false"` only when live carrier SMS credentials (Twilio) and PayPal live client keys are verified.
+3. Verify PayPal REST webhook endpoint (`/api/checkout/paypal/capture-order`) is registered in the PayPal Developer Dashboard.
+4. Set daily cron triggers via Vercel Cron or GitHub Actions against `/api/growth/cron`.
