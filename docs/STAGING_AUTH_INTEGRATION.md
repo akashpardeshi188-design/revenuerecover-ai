@@ -41,7 +41,7 @@ Staging migrations 001–013 were applied to the staging database through the Su
 
 ## Remaining release gates
 
-1. Run npm install, npm run lint, and npm run build with the environment template populated with staging-only values. The repository lockfile still needs to be regenerated to include the added Supabase dependencies.
+1. The lockfile now includes the Supabase client packages; the feature-branch CI workflow runs npm install, lint and a production build. Confirm the latest run passes before merge.
 2. Sign up with a test mailbox, click the email confirmation link, and verify the flow reaches onboarding.
 3. Complete onboarding with a disposable staging business and verify company/profile/onboarding rows; verify another user cannot read these rows.
 4. Reconcile one server-side plan-price configuration and implement provider order ownership, signature verification, durable idempotent webhook processing, and subscription activation/cancellation before re-enabling checkout.
