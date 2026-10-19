@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 const PAGE_PREFIXES = ['/dashboard', '/growth', '/admin', '/onboarding'];
+const ADMIN_PAGE_PREFIXES = ['/admin', '/growth'];
 const API_PREFIXES = ['/api/admin', '/api/agents', '/api/leads', '/api/businesses', '/api/checkout', '/api/growth', '/api/sources', '/api/discovery/import', '/api/discovery/search'];
 const ADMIN_API_PREFIXES = ['/api/admin', '/api/businesses', '/api/sources', '/api/discovery'];
 
@@ -76,14 +77,23 @@ export async function updateSession(request: NextRequest) {
 
   const pageNeedsProfile = pathname === '/dashboard' || pathname.startsWith('/dashboard/') || pathname === '/onboarding';
   const adminApi = matchesPrefix(pathname, ADMIN_API_PREFIXES);
-  if (pageNeedsProfile || adminApi) {
+  const adminPage = matchesPrefix(pathname, ADMIN_PAGE_PREFIXES);
+  if (pageNeedsProfile || adminApi || adminPage) {
     const { data: profile } = await supabase.from('users').select('role, company_id').eq('id', userId).maybeSingle();
+    const isAdmin = ['admin', 'manager'].includes(profile?.role || '');
 
-    if (adminApi && !['admin', 'manager'].includes(profile?.role || '')) {
+    if (adminApi && !isAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    if (pageNeedsProfile && profile && profile.role !== 'admin' && profile.role !== 'manager' && !profile.company_id && pathname !== '/onboarding') {
+    if (adminPage && !isAdmin) {
+      const destination = request.nextUrl.clone();
+      destination.pathname = profile ? '/dashboard' : '/login';
+      destination.search = '';
+      return redirectKeepingCookies(destination, response);
+    }
+
+    if (pageNeedsProfile && profile && !isAdmin && !profile.company_id && pathname !== '/onboarding') {
       const destination = request.nextUrl.clone();
       destination.pathname = '/onboarding';
       destination.search = '';
