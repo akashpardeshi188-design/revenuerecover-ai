@@ -1,15 +1,12 @@
 name: Staging auth integration checks
 
 on:
-  push:
-    branches:
-      - fix/staging-supabase-auth
   pull_request:
     branches:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   lint-and-build:
@@ -21,10 +18,8 @@ jobs:
       STRIPE_WEBHOOK_SECRET: whsec_ci_placeholder
       RAZORPAY_WEBHOOK_SECRET: ci-only-not-a-real-secret
     steps:
-      - name: Check out branch
+      - name: Check out pull request
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -32,19 +27,8 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies and sync lockfile
-        run: npm install --no-audit --no-fund
-
-      - name: Commit synced lockfile on feature-branch pushes
-        if: github.event_name == 'push'
-        run: |
-          if ! git diff --quiet -- package-lock.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add package-lock.json
-            git commit -m "chore: sync Supabase auth dependency lockfile"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
-          fi
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
 
       - name: Lint
         run: npm run lint
