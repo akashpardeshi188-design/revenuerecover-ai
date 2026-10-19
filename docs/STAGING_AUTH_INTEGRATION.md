@@ -27,6 +27,16 @@ Staging migration 014 introduces restricted client tenant self-onboarding; migra
 
 Staging migrations 001–013 were applied to the staging database through the Supabase connection, but they are not yet reconstructed as a complete, reproducible supabase/migrations history in this repository. Do not run a fresh database reset from this repository until the original baseline migration files are checked in and reviewed.
 
+## Approved pricing source of truth
+
+The approved **monthly USD** pricing for the pricing page is:
+
+- Starter — **$497/month**
+- Growth — **$997/month**
+- Pro — **$1,994/month**
+
+Annual billing and localized non-USD prices are not offered on the page until those amounts are explicitly approved. The pricing page remains informational and checkout stays disabled until provider verification, subscription persistence, and staging end-to-end tests are complete.
+
 ## Verification status
 
 - The staging database has RLS enabled on all 22 public base tables.
