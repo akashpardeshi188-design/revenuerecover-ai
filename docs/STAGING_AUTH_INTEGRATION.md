@@ -37,7 +37,7 @@ Staging migrations 001–013 were applied to the staging database through the Su
 - Checkout UI has been disabled deliberately. PayPal order creation/capture, Razorpay order creation, and Skydo invoice routes return an unavailable response instead of creating false orders, using hard-coded credentials, or displaying fabricated bank details. The visible plan amounts need a single approved source of truth before billing is reopened.
 - Stripe/Razorpay webhook signatures are checked, but event handling still uses in-memory telemetry and does not activate or persist subscriptions. Do not describe billing as production-ready.
 - The cron endpoint requires CRON_SECRET. The health endpoint no longer reports a fabricated hard-coded action count.
-- The available Vercel connection did not show a RevenueRecover project linked to this repository. No deployment, production database change, or live payment action was attempted.
+- The connected Vercel account could not inspect the RevenueRecover project. GitHub shows an automatic Vercel preview status as pending; no manual production deployment or promotion was performed. No production database change or live payment action was attempted.
 
 ## Remaining release gates
 
