@@ -6,7 +6,6 @@ import {
   Check,
   ArrowRight,
   Globe2,
-  Flame,
 } from 'lucide-react';
 
 export default function PricingPage() {
@@ -16,13 +15,10 @@ export default function PricingPage() {
     {
       name: 'Starter',
       description: 'Ideal for solo contractors & small trade teams getting started with automated follow-ups.',
-      originalMonthly: 97.5,
-      originalAnnual: 79.0,
       monthlyPrice: 49,
       annualPrice: 39,
       currency: '$',
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £39 / CAD $55',
-      discountBadge: '🔥 60% OFF',
       highlight: false,
       badge: null,
       features: [
@@ -38,13 +34,10 @@ export default function PricingPage() {
     {
       name: 'Growth',
       description: 'The complete AI Revenue Recovery Employee for growing HVAC, plumbing, and service businesses.',
-      originalMonthly: 297.5,
-      originalAnnual: 249.0,
       monthlyPrice: 149,
       annualPrice: 119,
       currency: '$',
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
-      discountBadge: '🔥 60% OFF SPECIAL',
       highlight: true,
       badge: 'GROWTH PLAN',
       features: [
@@ -62,18 +55,15 @@ export default function PricingPage() {
     {
       name: 'Pro',
       description: 'Engineered for high-volume, multi-truck contractors and multi-location franchises.',
-      originalMonthly: 597.5,
-      originalAnnual: 497.0,
       monthlyPrice: 299,
       annualPrice: 239,
       currency: '$',
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £199 / CAD $320',
-      discountBadge: '🔥 60% OFF (SAVE $358)',
       highlight: false,
       badge: 'ENTERPRISE CAPABLE',
       features: [
         'Everything in Growth Plan',
-        '🎁 500+ Verified Commercial & Residential Leads',
+        'Lead intake workflows for multi-location businesses',
         'Multi-location & Multi-brand management',
         'Full Autonomous Autopilot mode with safeguards',
         'Custom AI Voice / Webhook integrations',
@@ -148,9 +138,7 @@ export default function PricingPage() {
                 <span className={`text-xs font-medium ${isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
                   Annual Billing
                 </span>
-                <span className="text-[10px] font-bold text-amber-300 bg-red-500/20 px-2 py-0.5 rounded-full border border-red-500/40 animate-pulse">
-                  🔥 60% OFF
-                </span>
+
               </div>
             </div>
           </div>
@@ -159,7 +147,6 @@ export default function PricingPage() {
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {plans.map((plan) => {
-            const originalPrice = isAnnual ? plan.originalAnnual : plan.originalMonthly;
             const currentPrice = isAnnual ? plan.annualPrice : plan.monthlyPrice;
 
             return (
@@ -183,34 +170,23 @@ export default function PricingPage() {
                       <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                       <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{plan.description}</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-xl bg-red-500/20 text-amber-300 border border-red-500/30 text-[11px] font-black shrink-0 flex items-center gap-1">
-                      <Flame className="w-3 h-3 fill-amber-400 text-amber-400" /> {plan.discountBadge}
-                    </span>
+
                   </div>
 
-                  {/* PRICE SLASH DISPLAY ($597.50 -> $239) */}
                   <div className="space-y-1 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
                     <div className="flex items-center gap-2">
-                      {/* Crossed Out Original Price */}
-                      <span className="text-lg sm:text-xl font-bold text-slate-500 line-through decoration-red-500 decoration-2 font-mono">
-                        ${originalPrice.toFixed(2)}
-                      </span>
-                      <span className="text-sm font-black text-amber-400">→</span>
-                      {/* New Discounted Price */}
                       <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
                         ${currentPrice}
                       </span>
-                      <span className="text-xs text-slate-400">/ mo</span>
+                      <span className="text-xs text-slate-400">/ mo (indicative)</span>
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] pt-1">
-                      <span className="text-emerald-400 font-semibold">
-                        {isAnnual ? `Billed annually ($${currentPrice * 12}/yr)` : 'Billed monthly'}
-                      </span>
-                      <span className="text-amber-400 font-bold bg-red-950/60 px-1.5 py-0.5 rounded text-[10px]">
-                        Save ${(originalPrice - currentPrice).toFixed(0)}/mo
+                      <span className="text-slate-300 font-semibold">
+                        {isAnnual ? `Indicative annual amount: ${currentPrice * 12}/yr` : 'Indicative monthly amount'}
                       </span>
                     </div>
+                    <p className="text-[10px] text-slate-500">Final prices and billing terms will be confirmed when secure checkout is enabled.</p>
 
                     <div className="text-[10px] text-slate-500 font-mono pt-1">
                       Global Currency: {plan.currencyLabel}
