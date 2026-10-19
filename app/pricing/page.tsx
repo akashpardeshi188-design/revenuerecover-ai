@@ -4,12 +4,7 @@ import React, { useState } from 'react';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
 import {
   Check,
-  Sparkles,
   ArrowRight,
-  HelpCircle,
-  Zap,
-  TrendingUp,
-  Lock,
   Globe2,
   Flame,
 } from 'lucide-react';
