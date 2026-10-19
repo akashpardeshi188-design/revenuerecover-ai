@@ -12,7 +12,8 @@ function verifyRazorpaySignature(rawBody: string, signature: string, secret: str
 }
 
 export async function POST(req: Request) {
-  const secret = process.env.RAZORPAY_WEBHOOK_SECRET || process.env.RAZORPAY_KEY_SECRET;
+  // Use the dedicated webhook secret from Razorpay's webhook configuration, never the API key secret.
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
   const signature = req.headers.get('x-razorpay-signature');
   if (!secret) return NextResponse.json({ error: 'Razorpay webhook is not configured.' }, { status: 503 });
   if (!signature) return NextResponse.json({ error: 'Missing Razorpay signature.' }, { status: 400 });
@@ -31,12 +32,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid Razorpay event payload.' }, { status: 400 });
     }
 
-    const event = payload.event;
-    const entity = payload.payload?.payment?.entity || {};
-    if (event !== 'payment.captured' && event !== 'order.paid') {
-      return NextResponse.json({ received: true, event, status: 'ignored' });
+    // This handler only understands the payment entity schema for payment.captured.
+    if (payload.event !== 'payment.captured') {
+      return NextResponse.json({ received: true, event: payload.event, status: 'ignored' });
     }
 
+    const entity = payload.payload?.payment?.entity || {};
     const amountPaise = Number(entity.amount);
     const paymentId = typeof entity.id === 'string' ? entity.id : null;
     if (!paymentId || !Number.isFinite(amountPaise) || amountPaise <= 0) {
@@ -45,24 +46,31 @@ export async function POST(req: Request) {
 
     const amount = amountPaise / 100;
     const email = typeof entity.email === 'string' ? entity.email : 'payment_event_without_email';
+
+    // This is a staging/in-memory telemetry event only, not database-backed subscription activation.
     eventBus.logAudit({
       channel: 'email',
       recipient: email,
       consent_basis: 'Verified Razorpay payment webhook',
-      message_snippet: `Razorpay event ${event}: ₹${amount.toFixed(2)} captured`,
+      message_snippet: `Razorpay payment.captured: ₹${amount.toFixed(2)}`,
       status: 'approved',
       agent: 'BillingAgent',
       organization_id: 'webhook_unassigned',
     });
-
-    await eventBus.emit('opportunity.recovered', {
+    await eventBus.emit('payment.succeeded', {
       amountINR: amount,
       paymentId,
       gateway: 'Razorpay',
       status: 'captured',
     }, { actorAgent: 'BillingAgent' });
 
-    return NextResponse.json({ received: true, signatureVerified: true, event, amount, status: 'processed' });
+    return NextResponse.json({
+      received: true,
+      signatureVerified: true,
+      event: payload.event,
+      amount,
+      status: 'processed_in_memory_only',
+    });
   } catch {
     return NextResponse.json({ success: false, error: 'Webhook payload could not be processed.' }, { status: 400 });
   }
