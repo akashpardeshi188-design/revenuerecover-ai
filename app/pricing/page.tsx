@@ -1,44 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
-import { ModeBanner } from '@/components/shared/ModeBanner';
-import { UrgencyCountdownBanner } from '@/components/marketing/UrgencyCountdownBanner';
 import {
   Check,
   Sparkles,
-  ShieldCheck,
   ArrowRight,
   HelpCircle,
   Zap,
   TrendingUp,
-  CreditCard,
   Lock,
   Globe2,
   Flame,
-  Clock,
-  Timer,
 } from 'lucide-react';
 
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(true);
   const [region, setRegion] = useState<'usa' | 'global'>('usa');
-  const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 48, seconds: 15 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
-        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { hours: 23, minutes: 59, seconds: 59 };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatNumber = (num: number) => String(num).padStart(2, '0');
-
   const plans = [
     {
       name: 'Starter',
@@ -61,8 +39,6 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: '⚡ Pay Now with PayPal ($59/mo)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Growth',
@@ -75,9 +51,9 @@ export default function PricingPage() {
       currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
       discountBadge: '🔥 60% OFF SPECIAL',
       highlight: true,
-      badge: '🔥 1-CLICK TRIAL • 150–200 LEADS UNLOCKED',
+      badge: 'GROWTH PLAN',
       features: [
-        '🎁 150–200 Verified Local Contractor Leads Ingested on Day 1',
+        'Lead-generation workflow configured during onboarding',
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
         'Stripe & QuickBooks past-due payment recovery',
@@ -87,8 +63,6 @@ export default function PricingPage() {
         'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: '⚡ Pay Now with PayPal ($119/mo)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Pro',
@@ -113,47 +87,25 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: '⚡ Pay Now with PayPal ($990/yr)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J',
     },
   ];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <UrgencyCountdownBanner />
-      <ModeBanner />
       <Navbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-12">
-        {/* Urgent Scarcity Header */}
+        {/* Pricing and billing status */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-amber-400 text-xs font-black uppercase tracking-wider animate-pulse shadow-lg shadow-red-500/10">
-            <Flame className="w-4 h-4 fill-amber-400 text-amber-400" /> LAST 1 DAY LEFT • 60% FOUNDING DISCOUNT
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Lock-in 60% Off Lifetime Pricing
+            Revenue recovery plans for service businesses
           </h1>
-
           <p className="text-slate-300 text-sm sm:text-base">
-            {region === 'usa'
-              ? 'Start your 24-hour test flight ($0 Today). After 24 hours, locks in at the discounted 60% OFF rate. Cancel anytime.'
-              : 'Direct instant cloud activation. Keep 100% of all recovered missed calls and invoice revenue. Cancel anytime with 1-click.'}
+            Compare the current indicative plan options. Secure checkout is temporarily paused while plan pricing, payment verification, and subscription activation are reconciled.
           </p>
 
-          {/* Live Countdown Box on Header */}
-          <div className="inline-flex items-center justify-center gap-3 p-3.5 bg-slate-900/90 border border-red-500/40 rounded-2xl shadow-xl">
-            <span className="text-xs text-red-400 font-bold uppercase flex items-center gap-1.5">
-              <Clock className="w-4 h-4" /> Deal Expires In:
-            </span>
-            <div className="font-mono text-sm font-black text-amber-300 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
-              <span className="text-white">{formatNumber(timeLeft.hours)}</span>h :{' '}
-              <span className="text-white">{formatNumber(timeLeft.minutes)}</span>m :{' '}
-              <span className="text-amber-400">{formatNumber(timeLeft.seconds)}</span>s
-            </div>
-            <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-              (Price increases to full retail at midnight)
-            </span>
+          <div role="status" className="max-w-3xl mx-auto rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 text-left text-sm text-amber-100">
+            <strong>Checkout temporarily unavailable.</strong> Prices shown are informational only. No payment or subscription can be started from this page until staging verification is complete.
           </div>
 
           {/* Region Switcher & Billing Toggle */}
@@ -168,7 +120,7 @@ export default function PricingPage() {
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                🇺🇸 United States (1-Day Trial)
+                🇺🇸 United States Pricing
               </button>
               <button
                 onClick={() => setRegion('global')}
