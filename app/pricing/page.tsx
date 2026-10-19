@@ -121,7 +121,7 @@ export default function PricingPage() {
                   <div className="space-y-1 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
                     <div className="flex items-center gap-2">
                       <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
-                        ${currentPrice}
+                        ${currentPrice.toLocaleString('en-US')}
                       </span>
                       <span className="text-xs text-slate-400">/ month</span>
                     </div>
