@@ -3,7 +3,16 @@ import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 
 function safeNextPath(value: string | null) {
-  return value && value.startsWith('/') && !value.startsWith('//') ? value : '/dashboard';
+  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes(String.fromCharCode(92))) {
+    return '/dashboard';
+  }
+  try {
+    const target = new URL(value, 'https://internal.invalid');
+    if (target.origin !== 'https://internal.invalid') return '/dashboard';
+    return target.pathname + target.search + target.hash;
+  } catch {
+    return '/dashboard';
+  }
 }
 
 export async function GET(request: NextRequest) {
