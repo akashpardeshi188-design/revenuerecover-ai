@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
 import { ModeBanner } from '@/components/shared/ModeBanner';
 import { UrgencyCountdownBanner } from '@/components/marketing/UrgencyCountdownBanner';
@@ -289,28 +288,19 @@ export default function PricingPage() {
                 </div>
 
                 <div className="pt-8 space-y-3">
-                  <Link
-                    href={plan.ctaHref}
-                    className={`w-full py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 ${
-                      plan.highlight
-                        ? 'bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 shadow-lg shadow-emerald-500/20 font-black'
-                        : 'bg-slate-800 hover:bg-slate-700 text-white font-bold'
-                    }`}
-                  >
-                    {plan.cta} <ArrowRight className="w-4 h-4" />
-                  </Link>
+                                    <button type="button" disabled aria-disabled="true"
+                    className="w-full py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700">
+                    Checkout temporarily unavailable <ArrowRight className="w-4 h-4" />
+                  </button>
 
                   <div className="text-center space-y-1">
-                    <p className="text-[10px] text-amber-300 font-semibold flex items-center justify-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                      {region === 'usa'
-                        ? '24-Hour Card Pilot ($0 Today) • Lock-in 60% OFF'
-                        : 'Instant License • Keep 100% of Recovered Revenue • Cancel Anytime'}
+                    <p className="text-[10px] text-amber-300 font-semibold">
+                      Billing is under verification. No payment or subscription will be initiated.
                     </p>
                     <p className="text-[10px] text-slate-500">
-                      💳 Accepts VISA, Mastercard, AMEX, Discover, Apple Pay, PayPal
+                      Checkout will reopen after plan prices, provider verification, and account activation pass staging tests.
                     </p>
-                  </div>
+                  </div>v>
                 </div>
               </div>
             );
