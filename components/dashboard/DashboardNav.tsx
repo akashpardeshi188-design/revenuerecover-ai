@@ -21,6 +21,7 @@ export function DashboardNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [companyName, setCompanyName] = React.useState('Authenticated Workspace');
+  const [canAccessGrowth, setCanAccessGrowth] = React.useState(false);
 
   React.useEffect(() => {
     let active = true;
@@ -30,6 +31,7 @@ export function DashboardNav() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
         const { data: profile } = await supabase.from('users').select('company_id, role').eq('id', user.id).maybeSingle();
+        if (active && (profile?.role === 'admin' || profile?.role === 'manager')) setCanAccessGrowth(true);
         if (profile?.company_id) {
           const { data: company } = await supabase.from('companies').select('name').eq('id', profile.company_id).maybeSingle();
           if (active && company?.name) setCompanyName(company.name);
@@ -126,16 +128,18 @@ export function DashboardNav() {
 
       {/* Bottom Growth Portal Link & Kill Switch */}
       <div className="p-4 border-t border-slate-800 space-y-3">
-        <Link
-          href="/growth"
-          className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-800/50 hover:bg-cyan-900/40 text-cyan-300 text-xs font-semibold flex items-center justify-between transition group"
-        >
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400" />
-            <span>Switch to Growth Engine</span>
-          </div>
-          <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
-        </Link>
+        {canAccessGrowth && (
+          <Link
+            href="/growth"
+            className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-800/50 hover:bg-cyan-900/40 text-cyan-300 text-xs font-semibold flex items-center justify-between transition group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span>Switch to Growth Engine</span>
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+          </Link>
+        )}
 
         <div className="flex items-center justify-between gap-2">
           <button type="button" onClick={handleSignOut} className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 border border-slate-700 hover:bg-slate-800">Sign Out</button>
