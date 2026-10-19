@@ -1,63 +1,77 @@
 import { NextResponse } from 'next/server';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import { eventBus } from '@/lib/event-bus';
-import crypto from 'crypto';
+
+export const runtime = 'nodejs';
+
+function verifyRazorpaySignature(rawBody: string, signature: string, secret: string): boolean {
+  if (!/^[a-f0-9]{64}$/i.test(signature)) return false;
+  const expected = createHmac('sha256', secret).update(rawBody).digest();
+  const supplied = Buffer.from(signature, 'hex');
+  return supplied.length === expected.length && timingSafeEqual(supplied, expected);
+}
 
 export async function POST(req: Request) {
+  // Use the dedicated webhook secret from Razorpay's webhook configuration, never the API key secret.
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  const signature = req.headers.get('x-razorpay-signature');
+  if (!secret) return NextResponse.json({ error: 'Razorpay webhook is not configured.' }, { status: 503 });
+  if (!signature) return NextResponse.json({ error: 'Missing Razorpay signature.' }, { status: 400 });
+
   try {
     const rawBody = await req.text();
-    const signature = req.headers.get('x-razorpay-signature');
-    const secret = process.env.RAZORPAY_KEY_SECRET || '4L8bFWI1m7HOhwW5MeHVxnZC';
-
-    let isVerified = false;
-    if (signature) {
-      const expectedSignature = crypto
-        .createHmac('sha256', secret)
-        .update(rawBody)
-        .digest('hex');
-      isVerified = expectedSignature === signature;
+    if (!verifyRazorpaySignature(rawBody, signature, secret)) {
+      return NextResponse.json({ error: 'Invalid Razorpay signature.' }, { status: 400 });
     }
 
-    let payload: Record<string, unknown> = {};
-    try {
-      payload = JSON.parse(rawBody);
-    } catch {
-      // payload parse
+    const payload = JSON.parse(rawBody) as {
+      event?: string;
+      payload?: { payment?: { entity?: Record<string, unknown> } };
+    };
+    if (typeof payload.event !== 'string') {
+      return NextResponse.json({ error: 'Invalid Razorpay event payload.' }, { status: 400 });
     }
 
-    const event = (payload.event as string) || 'payment.captured';
-    const paymentEntity = (payload.payload as Record<string, unknown>)?.payment as Record<string, unknown>;
-    const entity = (paymentEntity?.entity as Record<string, unknown>) || {};
-    const amount = Number(entity.amount || 993600) / 100;
-    const email = (entity.email as string) || 'customer@contractor.example.com';
+    // This handler only understands the payment entity schema for payment.captured.
+    if (payload.event !== 'payment.captured') {
+      return NextResponse.json({ received: true, event: payload.event, status: 'ignored' });
+    }
 
-    // Log payment captured in Event Bus and Audit Log
+    const entity = payload.payload?.payment?.entity || {};
+    const amountPaise = Number(entity.amount);
+    const paymentId = typeof entity.id === 'string' ? entity.id : null;
+    if (!paymentId || !Number.isFinite(amountPaise) || amountPaise <= 0) {
+      return NextResponse.json({ error: 'Captured payment data is incomplete.' }, { status: 400 });
+    }
+
+    const amount = amountPaise / 100;
+    const email = typeof entity.email === 'string' ? entity.email : 'payment_event_without_email';
+
+    // This is a staging/in-memory telemetry event only, not database-backed subscription activation.
     eventBus.logAudit({
       channel: 'email',
       recipient: email,
-      consent_basis: 'Authorized Razorpay Card Settlement (Live Mode)',
-      message_snippet: `Razorpay Event ${event}: ₹${amount} received (Status: captured)`,
-      status: 'delivered',
+      consent_basis: 'Verified Razorpay payment webhook',
+      message_snippet: `Razorpay payment.captured: ₹${amount.toFixed(2)}`,
+      status: 'approved',
       agent: 'BillingAgent',
-      organization_id: 'org_live_production',
+      organization_id: 'webhook_unassigned',
     });
-
-    await eventBus.emit('opportunity.recovered', {
-      amountUSD: Math.round(amount / 83.5),
+    await eventBus.emit('payment.succeeded', {
       amountINR: amount,
-      paymentId: entity.id || `pay_${Date.now()}`,
+      paymentId,
       gateway: 'Razorpay',
-      status: 'settled',
+      status: 'captured',
     }, { actorAgent: 'BillingAgent' });
 
     return NextResponse.json({
       received: true,
-      signatureVerified: isVerified,
-      event,
+      signatureVerified: true,
+      event: payload.event,
       amount,
-      status: 'processed',
+      status: 'processed_in_memory_only',
     });
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Razorpay webhook handler error';
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+  } catch {
+    return NextResponse.json({ success: false, error: 'Webhook payload could not be processed.' }, { status: 400 });
   }
 }

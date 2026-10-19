@@ -1,36 +1,62 @@
 import { NextResponse } from 'next/server';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import { eventBus } from '@/lib/event-bus';
 
+export const runtime = 'nodejs';
+
+function verifyStripeSignature(rawBody: string, header: string, secret: string): boolean {
+  const parts = header.split(',').map(value => value.trim());
+  const timestamp = Number(parts.find(value => value.startsWith('t='))?.slice(2));
+  const signatures = parts.filter(value => value.startsWith('v1=')).map(value => value.slice(3));
+
+  if (!Number.isSafeInteger(timestamp) || signatures.length === 0) return false;
+  if (Math.abs(Date.now() / 1000 - timestamp) > 300) return false;
+
+  const expected = createHmac('sha256', secret).update(`${timestamp}.${rawBody}`).digest();
+  return signatures.some(signature => {
+    if (!/^[a-f0-9]{64}$/i.test(signature)) return false;
+    const supplied = Buffer.from(signature, 'hex');
+    return supplied.length === expected.length && timingSafeEqual(supplied, expected);
+  });
+}
+
 export async function POST(req: Request) {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  const signature = req.headers.get('stripe-signature');
+  if (!secret) return NextResponse.json({ error: 'Stripe webhook is not configured.' }, { status: 503 });
+  if (!signature) return NextResponse.json({ error: 'Missing Stripe signature.' }, { status: 400 });
+
   try {
     const rawBody = await req.text();
-    const sig = req.headers.get('stripe-signature') || '';
-    const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-    let eventPayload: { type: string; data: { object: Record<string, unknown> } };
-
-    // If Stripe secret is configured, verify signature; otherwise accept mock/simulation payloads
-    if (stripeWebhookSecret && sig) {
-      // In production with stripe package:
-      // const event = stripe.webhooks.constructEvent(rawBody, sig, stripeWebhookSecret);
-      eventPayload = JSON.parse(rawBody);
-    } else {
-      eventPayload = JSON.parse(rawBody || '{}');
+    if (!verifyStripeSignature(rawBody, signature, secret)) {
+      return NextResponse.json({ error: 'Invalid Stripe signature.' }, { status: 400 });
     }
 
-    const { type, data } = eventPayload;
-    const obj = data?.object || {};
+    const payload = JSON.parse(rawBody) as {
+      id?: string;
+      type?: string;
+      data?: { object?: Record<string, unknown> };
+    };
+    if (typeof payload.type !== 'string' || !payload.data?.object) {
+      return NextResponse.json({ error: 'Invalid Stripe event payload.' }, { status: 400 });
+    }
+
+    const { type } = payload;
+    const obj = payload.data.object;
+    const customerDetails = obj.customer_details as Record<string, unknown> | undefined;
+    const customerEmail = typeof obj.customer_email === 'string'
+      ? obj.customer_email
+      : typeof customerDetails?.email === 'string' ? customerDetails.email : undefined;
 
     switch (type) {
       case 'checkout.session.completed':
         await eventBus.emit('checkout.completed', {
           customerId: obj.customer,
-          customerEmail: obj.customer_email || (obj.customer_details as Record<string, unknown>)?.email,
+          customerEmail,
           amountTotal: obj.amount_total,
           subscriptionId: obj.subscription,
         });
         break;
-
       case 'payment_intent.succeeded':
         await eventBus.emit('payment.succeeded', {
           paymentIntentId: obj.id,
@@ -38,7 +64,6 @@ export async function POST(req: Request) {
           currency: obj.currency,
         });
         break;
-
       case 'invoice.paid':
         await eventBus.emit('invoice.paid', {
           invoiceId: obj.id,
@@ -46,9 +71,7 @@ export async function POST(req: Request) {
           subscriptionId: obj.subscription,
         });
         break;
-
       case 'invoice.payment_failed':
-        // Trigger automated failed payment recovery opportunity
         await eventBus.emit('opportunity.created', {
           type: 'failed_payment',
           customerId: obj.customer,
@@ -56,40 +79,39 @@ export async function POST(req: Request) {
           reason: 'Card decline or insufficient funds',
         }, { actorAgent: 'RevenueRecoveryAgent' });
         break;
-
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
         await eventBus.emit('subscription.updated', {
           subscriptionId: obj.id,
           status: obj.status,
-          plan: (obj.items as Record<string, unknown>)?.data,
+          plan: (obj.items as Record<string, unknown> | undefined)?.data,
         });
         break;
-
       case 'customer.subscription.deleted':
         await eventBus.emit('subscription.cancelled', {
           subscriptionId: obj.id,
           customerId: obj.customer,
         });
         break;
-
       default:
-        console.log(`Unhandled Stripe webhook event: ${type}`);
+        // A valid but unhandled provider event is acknowledged without taking action.
+        console.info('Unhandled verified Stripe webhook event:', type);
     }
 
+    const metadata = obj.metadata as Record<string, unknown> | undefined;
+    const companyId = typeof metadata?.company_id === 'string' ? metadata.company_id : 'webhook_unassigned';
     eventBus.logAudit({
       channel: 'webchat',
-      recipient: (obj.customer_email as string) || 'stripe_system',
-      consent_basis: 'Stripe Billing Webhook Verified',
-      message_snippet: `Processed event ${type}`,
+      recipient: customerEmail || 'stripe_system',
+      consent_basis: 'Verified Stripe webhook signature',
+      message_snippet: `Processed verified event ${type}`,
       status: 'approved',
       agent: 'StripeWebhookHandler',
-      organization_id: 'org_summit_hvac',
+      organization_id: companyId,
     });
 
     return NextResponse.json({ received: true, event: type });
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Webhook error';
-    return NextResponse.json({ success: false, error: msg }, { status: 400 });
+  } catch {
+    return NextResponse.json({ success: false, error: 'Webhook payload could not be processed.' }, { status: 400 });
   }
 }

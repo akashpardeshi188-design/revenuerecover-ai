@@ -1,228 +1,68 @@
-'use client';
-
-import React from 'react';
-import Link from 'next/link';
-import { useAppStore } from '@/lib/store';
-import { ModeBanner } from '@/components/shared/ModeBanner';
+import { redirect } from 'next/navigation';
+import { createClient } from '@/lib/supabase/server';
 import { DashboardNav } from '@/components/dashboard/DashboardNav';
-import {
-  DollarSign,
-  TrendingUp,
-  Sparkles,
-  ArrowRight,
-  PhoneCall,
-  FileText,
-  CreditCard,
-  CheckCircle2,
-  Calendar,
-  AlertCircle,
-  Clock,
-  ShieldCheck,
-  Send,
-} from 'lucide-react';
+import { DollarSign, Sparkles, Users, CreditCard, AlertCircle } from 'lucide-react';
 
-export default function DashboardOverviewPage() {
-  const { state, triggerOpportunityAction, markOpportunityRecovered } = useAppStore();
+const money = (value: number, currency = 'USD') =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 0 }).format(value);
+const label = (value?: string | null) =>
+  (value || 'unknown').replace(/_/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
 
-  const activeOpportunities = state.opportunities.filter((o) => o.status !== 'recovered' && o.status !== 'dismissed');
-  const recoveredOpportunities = state.opportunities.filter((o) => o.status === 'recovered');
+export default async function DashboardOverviewPage() {
+  const supabase = await createClient();
+  const { data: auth, error: authError } = await supabase.auth.getUser();
+  if (authError || !auth.user) redirect('/login');
 
-  const totalAtRisk = activeOpportunities.reduce((acc, curr) => acc + curr.estimated_value, 0);
-  const totalIdentified = state.opportunities.reduce((acc, curr) => acc + curr.estimated_value, 0);
-  const recoveryRate = state.opportunities.length > 0
-    ? Math.round((recoveredOpportunities.length / state.opportunities.length) * 100)
-    : 0;
+  const { data: profile, error: profileError } = await supabase
+    .from('users').select('role, company_id').eq('id', auth.user.id).maybeSingle();
+  if (profileError || !profile) redirect('/login?error=profile_pending');
+  if (!profile.company_id && !['admin', 'manager'].includes(profile.role)) redirect('/onboarding');
+
+  let companyName = 'Administrator Workspace';
+  if (profile.company_id) {
+    const { data: company } = await supabase.from('companies').select('name').eq('id', profile.company_id).maybeSingle();
+    companyName = company?.name || 'Your Business';
+  }
+
+  const [oppResult, leadResult, paymentResult] = await Promise.all([
+    supabase.from('recovery_opportunities').select('id,status,recovered_value,reason,created_at').order('created_at', { ascending: false }).limit(100),
+    supabase.from('client_leads').select('id,customer_name,customer_email,service_requested,status,estimated_job_value,created_at', { count: 'exact' }).order('created_at', { ascending: false }).limit(5),
+    supabase.from('payments').select('id,amount,currency,status,created_at').order('created_at', { ascending: false }).limit(5),
+  ]);
+  const opportunities = oppResult.data || [];
+  const leads = leadResult.data || [];
+  const payments = paymentResult.data || [];
+  const openCount = opportunities.filter(row => row.status !== 'recovered' && row.status !== 'dismissed').length;
+  const recoveredRevenue = opportunities.filter(row => row.status === 'recovered').reduce((sum, row) => sum + Number(row.recovered_value || 0), 0);
+  const recentPaymentTotal = payments.reduce((sum, row) => sum + Number(row.amount || 0), 0);
+  const errors = [oppResult.error, leadResult.error, paymentResult.error].filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <ModeBanner />
-
-      <div className="flex-grow flex">
-        <DashboardNav />
-
-        <main className="flex-grow p-6 sm:p-8 space-y-8 max-w-7xl overflow-x-hidden">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-white tracking-tight">Revenue Recovery Dashboard</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  AI Employee Active
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Real-time financial leakage diagnostics and automated follow-ups for {state.organization.name}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link
-                href="/dashboard/opportunities"
-                className="py-2 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold flex items-center gap-1.5 transition shadow-sm"
-              >
-                <Sparkles className="w-3.5 h-3.5" /> View All Opportunities ({activeOpportunities.length})
-              </Link>
-            </div>
-          </div>
-
-          {/* KPI CARDS RIBBON */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* KPI 1: CONFIRMED REVENUE RECOVERED */}
-            <div className="bg-slate-900 border-2 border-emerald-500/40 rounded-3xl p-5 shadow-xl relative overflow-hidden">
-              <div className="flex items-center justify-between text-xs text-slate-400 font-semibold">
-                <span className="text-emerald-400">CONFIRMED RECOVERED</span>
-                <DollarSign className="w-4 h-4 text-emerald-400" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 mt-2">
-                ${state.organization.monthly_recovered.toLocaleString()}
-              </div>
-              <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                <span>Verified Stripe / CRM transactions</span>
-              </div>
-            </div>
-
-            {/* KPI 2: REVENUE AT RISK */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-xs text-slate-400 font-semibold">
-                <span>REVENUE AT RISK</span>
-                <AlertCircle className="w-4 h-4 text-rose-400" />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-rose-400 mt-2">
-                ${totalAtRisk.toLocaleString()}
-              </div>
-              <div className="text-[11px] text-slate-400">
-                Across {activeOpportunities.length} pending unbooked quotes & calls
-              </div>
-            </div>
-
-            {/* KPI 3: ESTIMATED RECOVERY OPPORTUNITY */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-xs text-slate-400 font-semibold">
-                <span>EST. RECOVERY POTENTIAL</span>
-                <TrendingUp className="w-4 h-4 text-cyan-400" />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400 mt-2">
-                ${totalIdentified.toLocaleString()}
-              </div>
-              <div className="text-[11px] text-slate-400">
-                Lifetime identified pipeline upside
-              </div>
-            </div>
-
-            {/* KPI 4: RECOVERY RATE */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-xs text-slate-400 font-semibold">
-                <span>RECOVERY RATE</span>
-                <Sparkles className="w-4 h-4 text-purple-400" />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                {recoveryRate}%
-              </div>
-              <div className="text-[11px] text-emerald-400 font-medium">
-                {recoveredOpportunities.length} jobs saved from leaving
-              </div>
-            </div>
-          </div>
-
-          {/* SECONDARY METRICS STRIP */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-slate-400">AI Follow-ups Sent</div>
-              <div className="text-lg font-bold text-white mt-0.5">142 actions</div>
-            </div>
-            <div className="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-slate-400">Customer Responses</div>
-              <div className="text-lg font-bold text-emerald-400 mt-0.5">68 replies (48%)</div>
-            </div>
-            <div className="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-slate-400">Appointments Recovered</div>
-              <div className="text-lg font-bold text-cyan-400 mt-0.5">19 booked</div>
-            </div>
-            <div className="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-slate-400">AI Mode & Safety</div>
-              <div className="text-lg font-bold text-purple-400 mt-0.5 capitalize">
-                {state.businessRules.autopilot_mode}
-              </div>
-            </div>
-          </div>
-
-          {/* ACTIVE OPPORTUNITY FEED WITH 1-CLICK ACTION */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-              <div>
-                <h3 className="text-lg font-bold text-white">Active High-Priority Opportunities</h3>
-                <p className="text-xs text-slate-400">
-                  AI automatically detected these leaks. Click 1-Click Follow-up to dispatch or test message.
-                </p>
-              </div>
-              <Link
-                href="/dashboard/opportunities"
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1"
-              >
-                Manage All ({activeOpportunities.length}) <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            <div className="space-y-3">
-              {activeOpportunities.slice(0, 4).map((opp) => (
-                <div
-                  key={opp.id}
-                  className="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:border-slate-700 transition"
-                >
-                  <div className="space-y-1.5 max-w-2xl">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-bold text-white text-sm">{opp.customer_name}</span>
-                      <span className="text-xs text-slate-400">{opp.customer_phone}</span>
-                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 uppercase">
-                        {opp.type.replace('_', ' ')}
-                      </span>
-                      <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded">
-                        Score: {opp.recovery_score}/100
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-slate-300 leading-relaxed font-mono bg-slate-900/80 p-2 rounded-xl border border-slate-800/80">
-                      &quot;{opp.recommended_action}&quot;
-                    </p>
-
-                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
-                      <span>Source: {opp.source}</span>
-                      <span>•</span>
-                      <span>Channel: {opp.recommended_channel.toUpperCase()}</span>
-                      <span>•</span>
-                      <span className="text-emerald-400 font-semibold">{opp.score_reasons[0]}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 shrink-0">
-                    <div className="text-right sm:mr-3">
-                      <div className="text-base font-black text-white">${opp.estimated_value.toLocaleString()}</div>
-                      <div className="text-[10px] text-slate-400">Estimated Ticket</div>
-                    </div>
-
-                    <button
-                      onClick={() => triggerOpportunityAction(opp.id)}
-                      className="py-2 px-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition active:scale-95 shadow-sm"
-                    >
-                      <Send className="w-3 h-3" /> 1-Click Follow-up
-                    </button>
-
-                    <button
-                      onClick={() => markOpportunityRecovered(opp.id)}
-                      className="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition"
-                      title="Mark as confirmed recovered in CRM"
-                    >
-                      Confirm Recovered
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex font-sans">
+      <DashboardNav />
+      <main className="min-w-0 flex-grow p-5 sm:p-8 space-y-7 max-w-7xl">
+        <header>
+          <div className="flex flex-wrap items-center gap-2"><h1 className="text-2xl font-bold text-white">Revenue Recovery Overview</h1><span className="px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">STAGING DATABASE</span></div>
+          <p className="text-sm text-slate-400 mt-1">{companyName} · signed in as {auth.user.email}</p>
+        </header>
+        {errors > 0 && <div role="status" className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-sm text-amber-200 flex gap-2"><AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />Some staging tables could not be read ({errors}). Totals may be incomplete; verify permissions and table setup.</div>}
+        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <article className="rounded-2xl border border-emerald-500/30 bg-slate-900 p-5"><div className="flex justify-between text-xs text-slate-400"><span>Recovered revenue</span><DollarSign className="w-4 h-4 text-emerald-400" /></div><div className="mt-3 text-3xl font-black text-emerald-300">{money(recoveredRevenue)}</div><p className="mt-2 text-xs text-slate-500">From latest 100 visible recovery records</p></article>
+          <article className="rounded-2xl border border-slate-800 bg-slate-900 p-5"><div className="flex justify-between text-xs text-slate-400"><span>Open opportunities</span><Sparkles className="w-4 h-4 text-cyan-300" /></div><div className="mt-3 text-3xl font-black">{openCount}</div><p className="mt-2 text-xs text-slate-500">Visible to your authenticated tenant</p></article>
+          <article className="rounded-2xl border border-slate-800 bg-slate-900 p-5"><div className="flex justify-between text-xs text-slate-400"><span>Customer requests</span><Users className="w-4 h-4 text-blue-300" /></div><div className="mt-3 text-3xl font-black">{leadResult.count ?? leads.length}</div><p className="mt-2 text-xs text-slate-500">Latest five requests listed below</p></article>
+          <article className="rounded-2xl border border-slate-800 bg-slate-900 p-5"><div className="flex justify-between text-xs text-slate-400"><span>Latest five payments</span><CreditCard className="w-4 h-4 text-amber-300" /></div><div className="mt-3 text-3xl font-black">{money(recentPaymentTotal, payments[0]?.currency || 'USD')}</div><p className="mt-2 text-xs text-slate-500">Not a full historical revenue total</p></article>
+        </section>
+        <section className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden">
+          <div className="p-5 border-b border-slate-800"><h2 className="text-base font-bold">Recent customer requests</h2><p className="text-xs text-slate-400 mt-1">Loaded from Supabase under the current user session.</p></div>
+          {leads.length === 0 ? <div className="p-8 text-sm text-slate-400">No customer requests are visible yet. This is normal for an empty staging tenant.</div> :
+            <div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="text-[11px] uppercase tracking-wider text-slate-500 bg-slate-950/50"><tr><th className="p-4">Customer</th><th className="p-4">Service</th><th className="p-4">Status</th><th className="p-4 text-right">Estimated value</th></tr></thead><tbody>{leads.map(lead => <tr key={lead.id} className="border-t border-slate-800"><td className="p-4"><div className="font-semibold text-slate-200">{lead.customer_name || 'New customer'}</div><div className="text-xs text-slate-500">{lead.customer_email || 'No email listed'}</div></td><td className="p-4 text-slate-300">{lead.service_requested || 'Service request'}</td><td className="p-4"><span className="px-2 py-1 rounded-lg bg-slate-800 text-xs">{label(lead.status)}</span></td><td className="p-4 text-right font-semibold">{money(Number(lead.estimated_job_value || 0))}</td></tr>)}</tbody></table></div>}
+        </section>
+        <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+          <h2 className="text-base font-bold">Latest recovery opportunities</h2>
+          <div className="mt-4 space-y-3">{opportunities.slice(0,5).map(row => <div key={row.id} className="flex items-start justify-between gap-3 border-b border-slate-800 pb-3 last:border-0 last:pb-0"><div><div className="text-sm text-slate-200">{row.reason || 'Recovery opportunity'}</div><div className="text-xs text-slate-500 mt-1">{label(row.status)} · {new Date(row.created_at).toLocaleDateString('en-US')}</div></div><div className="text-sm font-semibold text-emerald-300">{money(Number(row.recovered_value || 0))}</div></div>)}{opportunities.length===0 && <p className="text-sm text-slate-400">No recovery opportunities are visible yet.</p>}</div>
+        </section>
+        <p className="text-[11px] text-slate-500">Staging verification view. Payment capture and outbound messaging have not been end-to-end verified; this is not a production launch signal.</p>
+      </main>
     </div>
   );
 }

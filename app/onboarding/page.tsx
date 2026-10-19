@@ -1,72 +1,117 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/lib/store';
-import { ModeBanner } from '@/components/shared/ModeBanner';
 import {
   TrendingUp,
   Sparkles,
-  CheckCircle2,
   ArrowRight,
   ShieldCheck,
-  Building,
-  PhoneCall,
-  Calendar,
-  CreditCard,
   Zap,
-  Sliders,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { createClient } from '@/lib/supabase/client';
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { state, updateBusinessRules } = useAppStore();
-
   const [step, setStep] = useState(1);
-  const [businessName, setBusinessName] = useState(state.organization.name || 'Summit HVAC & Plumbing');
+  const [businessName, setBusinessName] = useState('');
   const [industry, setIndustry] = useState('HVAC & Plumbing Services');
-  const [website, setWebsite] = useState('https://summithvacpros.com');
-  const [businessPhone, setBusinessPhone] = useState('(214) 555-0142');
-  const [businessEmail, setBusinessEmail] = useState('dave@summithvacpros.com');
+  const [website, setWebsite] = useState('');
+  const [businessPhone, setBusinessPhone] = useState('');
+  const [businessEmail, setBusinessEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [stateCode, setStateCode] = useState('');
   const [startTime, setStartTime] = useState('08:00');
   const [endTime, setEndTime] = useState('18:00');
   const [selectedCrm, setSelectedCrm] = useState('ServiceTitan');
   const [autopilotMode, setAutopilotMode] = useState<'copilot' | 'supervised' | 'autopilot'>('supervised');
   const [isActivating, setIsActivating] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleCompleteOnboarding = () => {
-    setIsActivating(true);
-    updateBusinessRules({
-      autopilot_mode: autopilotMode,
-      business_hours: {
-        start: startTime,
-        end: endTime,
-        timezone: 'America/Chicago',
-        work_days: [1, 2, 3, 4, 5, 6],
-      },
-      kill_switch_active: false,
-    });
+  useEffect(() => {
+    let active = true;
+    const loadUser = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error: authError } = await supabase.auth.getUser();
+        if (!active) return;
+        if (authError || !data.user) {
+          router.replace('/login');
+          return;
+        }
+        setBusinessEmail(data.user.email ?? '');
+      } catch {
+        if (active) setError('Authentication is not configured. Contact support before onboarding.');
+      }
+    };
+    void loadUser();
+    return () => { active = false; };
+  }, [router]);
 
-    try {
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.5 },
-      });
-    } catch {
-      // confetti
+  const handleCompleteOnboarding = async () => {
+    setError('');
+    if (businessName.trim().length < 2) {
+      setError('Enter your company name before finishing onboarding.');
+      setStep(1);
+      return;
     }
+    if (!/^https?:\/\/[^\s]+$/i.test(website.trim())) {
+      setError('Enter a valid website that starts with https:// or http://.');
+      setStep(3);
+      return;
+    }
+    setIsActivating(true);
+    try {
+      const supabase = createClient();
+      const typeText = industry.toLowerCase();
+      const businessType =
+        typeText.includes('hvac') && typeText.includes('plumbing') ? 'hvac_plumbing' :
+        typeText.includes('hvac') ? 'hvac' :
+        typeText.includes('plumbing') ? 'plumbing' :
+        typeText.includes('electrical') ? 'electrical' :
+        typeText.includes('general contractor') ? 'general_contractor' : 'other';
 
-    setTimeout(() => {
+      const { error: companyError } = await supabase.rpc('complete_client_onboarding', {
+        p_company_name: businessName.trim(),
+        p_website: website.trim(),
+        p_business_type: businessType,
+        p_city: city.trim(),
+        p_state: stateCode.trim(),
+        p_phone: businessPhone.trim() || null,
+        p_email: businessEmail.trim() || null,
+      });
+      if (companyError) throw companyError;
+
+      const serviceAreas = city.trim() || stateCode.trim()
+        ? [`${city.trim()}${city.trim() && stateCode.trim() ? ', ' : ''}${stateCode.trim()}`]
+        : [];
+      const { error: detailsError } = await supabase.rpc('save_client_onboarding_details', {
+        p_primary_contact_phone: businessPhone.trim() || null,
+        p_service_areas: serviceAreas,
+        p_emergency_hours: `${startTime}-${endTime} America/Chicago`,
+        p_primary_services: [industry],
+        p_booking_software_name: selectedCrm || null,
+        p_ninety_day_revenue_goal: null,
+      });
+      if (detailsError) throw detailsError;
+
+      try {
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+      } catch {
+        // Decorative only; data has already been saved.
+      }
+      router.replace('/dashboard');
+      router.refresh();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Unable to save onboarding. Check your fields and try again.');
+    } finally {
       setIsActivating(false);
-      router.push('/dashboard');
-    }, 1500);
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <ModeBanner />
 
       <main className="flex-grow max-w-4xl mx-auto px-4 sm:px-6 py-12 w-full flex flex-col justify-center">
         {/* Onboarding Container */}
@@ -96,6 +141,8 @@ export default function OnboardingPage() {
             />
           </div>
 
+          {error && <p role="alert" className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-3 text-sm text-rose-200">{error}</p>}
+
           {/* STEP 1: BUSINESS PROFILE */}
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in duration-150">
@@ -112,6 +159,17 @@ export default function OnboardingPage() {
                   onChange={(e) => setBusinessName(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">City</label>
+                  <input type="text" value={city} onChange={(e) => setCity(e.target.value)} maxLength={100} placeholder="Dallas" className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">State</label>
+                  <input type="text" value={stateCode} onChange={(e) => setStateCode(e.target.value)} maxLength={100} placeholder="TX" className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
               </div>
 
               <div className="flex justify-end">
@@ -173,8 +231,10 @@ export default function OnboardingPage() {
               <div className="space-y-3">
                 <label className="text-xs font-semibold text-slate-300">Website</label>
                 <input
-                  type="text"
+                  type="url"
                   value={website}
+                  placeholder="https://yourcompany.com"
+                  required
                   onChange={(e) => setWebsite(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"
                 />

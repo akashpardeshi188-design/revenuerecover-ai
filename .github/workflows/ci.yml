@@ -1,0 +1,52 @@
+name: Staging auth integration checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-auth-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://staging-build.example.invalid
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+      CRON_SECRET: ci-only-not-a-real-secret
+      STRIPE_WEBHOOK_SECRET: whsec_ci_placeholder
+      RAZORPAY_WEBHOOK_SECRET: ci-only-not-a-real-secret
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint changed TypeScript files
+        shell: bash
+        run: |
+          git fetch origin main:refs/remotes/origin/main
+          mapfile -t changed_files < <(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx')
+          if (( ${#changed_files[@]} == 0 )); then
+            echo "No changed TypeScript files to lint."
+            exit 0
+          fi
+          printf 'Linting %s changed TypeScript files\n' "${#changed_files[@]}"
+          npx eslint "${changed_files[@]}"
+
+      - name: Production build
+        run: npm run build

@@ -2,9 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAppStore } from '@/lib/store';
-import { KillSwitchButton } from '@/components/shared/ModeBanner';
+import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import {
   TrendingUp,
   LayoutDashboard,
@@ -14,17 +13,45 @@ import {
   Layers,
   Settings,
   HelpCircle,
-  ShieldCheck,
   Zap,
-  Flame,
   ArrowUpRight,
-  LogOut,
-  ChevronRight,
 } from 'lucide-react';
 
 export function DashboardNav() {
   const pathname = usePathname();
-  const { state } = useAppStore();
+  const router = useRouter();
+  const [companyName, setCompanyName] = React.useState('Authenticated Workspace');
+  const [canAccessGrowth, setCanAccessGrowth] = React.useState(false);
+
+  React.useEffect(() => {
+    let active = true;
+    const loadCompany = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data: profile } = await supabase.from('users').select('company_id, role').eq('id', user.id).maybeSingle();
+        if (active && (profile?.role === 'admin' || profile?.role === 'manager')) setCanAccessGrowth(true);
+        if (profile?.company_id) {
+          const { data: company } = await supabase.from('companies').select('name').eq('id', profile.company_id).maybeSingle();
+          if (active && company?.name) setCompanyName(company.name);
+        } else if (active && (profile?.role === 'admin' || profile?.role === 'manager')) {
+          setCompanyName('Administrator Workspace');
+        }
+      } catch {
+        if (active) setCompanyName('Authenticated Workspace');
+      }
+    };
+    void loadCompany();
+    return () => { active = false; };
+  }, []);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.replace('/login');
+    router.refresh();
+  };
 
   const navItems = [
     { name: 'Executive Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -32,13 +59,13 @@ export function DashboardNav() {
       name: 'Opportunities Hub',
       href: '/dashboard/opportunities',
       icon: Sparkles,
-      badge: state.opportunities.filter((o) => o.status !== 'recovered').length.toString(),
+      
     },
     {
       name: 'Unified Inbox',
       href: '/dashboard/inbox',
       icon: MessageSquare,
-      badge: state.conversations.filter((c) => c.status === 'needs_reply').length.toString(),
+      
     },
     { name: 'Customer Database', href: '/dashboard/customers', icon: Users },
     { name: 'Recovery Campaigns', href: '/dashboard/campaigns', icon: Zap },
@@ -58,16 +85,16 @@ export function DashboardNav() {
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-sm text-white tracking-tight">RevenueRecover</span>
-              <span className="text-[10px] text-emerald-400 font-semibold">{state.organization.name}</span>
+              <span className="text-[10px] text-emerald-400 font-semibold">{companyName}</span>
             </div>
           </Link>
         </div>
 
-        {/* Autopilot Status Pill */}
+        {/* Authenticated tenant status */}
         <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-300 capitalize font-medium">{state.businessRules.autopilot_mode} Mode</span>
+            <span className="text-slate-300 capitalize font-medium">Authenticated Tenant</span>
           </div>
           <Link href="/dashboard/settings" className="text-[10px] text-slate-400 hover:text-white">
             Change
@@ -93,11 +120,6 @@ export function DashboardNav() {
                   <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
                   <span>{item.name}</span>
                 </div>
-                {item.badge && Number(item.badge) > 0 && (
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950">
-                    {item.badge}
-                  </span>
-                )}
               </Link>
             );
           })}
@@ -106,26 +128,21 @@ export function DashboardNav() {
 
       {/* Bottom Growth Portal Link & Kill Switch */}
       <div className="p-4 border-t border-slate-800 space-y-3">
-        <Link
-          href="/growth"
-          className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-800/50 hover:bg-cyan-900/40 text-cyan-300 text-xs font-semibold flex items-center justify-between transition group"
-        >
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400" />
-            <span>Switch to Growth Engine</span>
-          </div>
-          <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
-        </Link>
+        {canAccessGrowth && (
+          <Link
+            href="/growth"
+            className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-800/50 hover:bg-cyan-900/40 text-cyan-300 text-xs font-semibold flex items-center justify-between transition group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span>Switch to Growth Engine</span>
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+          </Link>
+        )}
 
         <div className="flex items-center justify-between gap-2">
-          <KillSwitchButton />
-          <Link
-            href="/"
-            title="Return to Public Website"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs"
-          >
-            <LogOut className="w-4 h-4" />
-          </Link>
+          <button type="button" onClick={handleSignOut} className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 border border-slate-700 hover:bg-slate-800">Sign Out</button>
         </div>
       </div>
     </aside>

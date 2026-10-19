@@ -1,56 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
-import { ModeBanner } from '@/components/shared/ModeBanner';
-import { UrgencyCountdownBanner } from '@/components/marketing/UrgencyCountdownBanner';
 import {
   Check,
-  Sparkles,
-  ShieldCheck,
   ArrowRight,
-  HelpCircle,
-  Zap,
-  TrendingUp,
-  CreditCard,
-  Lock,
-  Globe2,
-  Flame,
-  Clock,
-  Timer,
 } from 'lucide-react';
 
 export default function PricingPage() {
-  const [isAnnual, setIsAnnual] = useState(true);
-  const [region, setRegion] = useState<'usa' | 'global'>('usa');
-  const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 48, seconds: 15 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
-        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { hours: 23, minutes: 59, seconds: 59 };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatNumber = (num: number) => String(num).padStart(2, '0');
-
   const plans = [
     {
       name: 'Starter',
       description: 'Ideal for solo contractors & small trade teams getting started with automated follow-ups.',
-      originalMonthly: 97.5,
-      originalAnnual: 79.0,
-      monthlyPrice: 49,
-      annualPrice: 39,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £39 / CAD $55',
-      discountBadge: '🔥 60% OFF',
+      monthlyPrice: 497,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: false,
       badge: null,
       features: [
@@ -62,23 +25,17 @@ export default function PricingPage() {
         'Email & SMS provider integration',
         'Standard Email & Chat Support',
       ],
-      cta: '⚡ Pay Now with PayPal ($59/mo)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Growth',
       description: 'The complete AI Revenue Recovery Employee for growing HVAC, plumbing, and service businesses.',
-      originalMonthly: 297.5,
-      originalAnnual: 249.0,
-      monthlyPrice: 149,
-      annualPrice: 119,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
-      discountBadge: '🔥 60% OFF SPECIAL',
+      monthlyPrice: 997,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: true,
-      badge: '🔥 1-CLICK TRIAL • 150–200 LEADS UNLOCKED',
+      badge: 'GROWTH PLAN',
       features: [
-        '🎁 150–200 Verified Local Contractor Leads Ingested on Day 1',
+        'Lead-generation workflow configured during onboarding',
         'UNLIMITED recovery opportunities/mo',
         'Full ServiceTitan, Housecall Pro & Jobber sync',
         'Stripe & QuickBooks past-due payment recovery',
@@ -88,24 +45,18 @@ export default function PricingPage() {
         'TCPA, GDPR & Multi-Region Compliance Engine',
         'Priority Phone & Live Chat Support',
       ],
-      cta: '⚡ Pay Now with PayPal ($119/mo)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E',
     },
     {
       name: 'Pro',
       description: 'Engineered for high-volume, multi-truck contractors and multi-location franchises.',
-      originalMonthly: 597.5,
-      originalAnnual: 497.0,
-      monthlyPrice: 299,
-      annualPrice: 239,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £199 / CAD $320',
-      discountBadge: '🔥 60% OFF (SAVE $358)',
+      monthlyPrice: 1994,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: false,
       badge: 'ENTERPRISE CAPABLE',
       features: [
         'Everything in Growth Plan',
-        '🎁 500+ Verified Commercial & Residential Leads',
+        'Lead intake workflows for multi-location businesses',
         'Multi-location & Multi-brand management',
         'Full Autonomous Autopilot mode with safeguards',
         'Custom AI Voice / Webhook integrations',
@@ -114,107 +65,34 @@ export default function PricingPage() {
         'SOC2 Type II compliance reports',
         'Dedicated Account Manager & 1-on-1 Onboarding',
       ],
-      cta: '⚡ Pay Now with PayPal ($990/yr)',
-      ctaHref: 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J',
     },
   ];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <UrgencyCountdownBanner />
-      <ModeBanner />
       <Navbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-12">
-        {/* Urgent Scarcity Header */}
+        {/* Pricing and billing status */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-amber-400 text-xs font-black uppercase tracking-wider animate-pulse shadow-lg shadow-red-500/10">
-            <Flame className="w-4 h-4 fill-amber-400 text-amber-400" /> LAST 1 DAY LEFT • 60% FOUNDING DISCOUNT
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Lock-in 60% Off Lifetime Pricing
+            Revenue recovery plans for service businesses
           </h1>
-
           <p className="text-slate-300 text-sm sm:text-base">
-            {region === 'usa'
-              ? 'Start your 24-hour test flight ($0 Today). After 24 hours, locks in at the discounted 60% OFF rate. Cancel anytime.'
-              : 'Direct instant cloud activation. Keep 100% of all recovered missed calls and invoice revenue. Cancel anytime with 1-click.'}
+            Compare the current approved USD monthly plan prices. Secure checkout remains paused while payment verification and subscription activation are reconciled.
           </p>
 
-          {/* Live Countdown Box on Header */}
-          <div className="inline-flex items-center justify-center gap-3 p-3.5 bg-slate-900/90 border border-red-500/40 rounded-2xl shadow-xl">
-            <span className="text-xs text-red-400 font-bold uppercase flex items-center gap-1.5">
-              <Clock className="w-4 h-4" /> Deal Expires In:
-            </span>
-            <div className="font-mono text-sm font-black text-amber-300 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
-              <span className="text-white">{formatNumber(timeLeft.hours)}</span>h :{' '}
-              <span className="text-white">{formatNumber(timeLeft.minutes)}</span>m :{' '}
-              <span className="text-amber-400">{formatNumber(timeLeft.seconds)}</span>s
-            </div>
-            <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-              (Price increases to full retail at midnight)
-            </span>
+          <div role="status" className="max-w-3xl mx-auto rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 text-left text-sm text-amber-100">
+            <strong>Checkout temporarily unavailable.</strong> Prices shown are informational only. No payment or subscription can be started from this page until staging verification is complete.
           </div>
 
-          {/* Region Switcher & Billing Toggle */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            {/* Region Toggle */}
-            <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-2xl text-xs font-semibold">
-              <button
-                onClick={() => setRegion('usa')}
-                className={`py-1.5 px-3 rounded-xl transition ${
-                  region === 'usa'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🇺🇸 United States (1-Day Trial)
-              </button>
-              <button
-                onClick={() => setRegion('global')}
-                className={`py-1.5 px-3 rounded-xl transition flex items-center gap-1 ${
-                  region === 'global'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Globe2 className="w-3 h-3" /> 🌍 Global (0-Day Instant)
-              </button>
-            </div>
-
-            {/* Annual vs Monthly */}
-            <div className="flex items-center gap-2.5">
-              <span className={`text-xs font-medium ${!isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-                Monthly
-              </span>
-              <button
-                onClick={() => setIsAnnual(!isAnnual)}
-                className="w-12 h-6 rounded-full bg-slate-800 p-1 transition-colors relative"
-              >
-                <div
-                  className={`w-4 h-4 rounded-full bg-emerald-400 transition-transform ${
-                    isAnnual ? 'translate-x-6' : 'translate-x-0'
-                  }`}
-                />
-              </button>
-              <div className="flex items-center gap-1.5">
-                <span className={`text-xs font-medium ${isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-                  Annual Billing
-                </span>
-                <span className="text-[10px] font-bold text-amber-300 bg-red-500/20 px-2 py-0.5 rounded-full border border-red-500/40 animate-pulse">
-                  🔥 60% OFF
-                </span>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {plans.map((plan) => {
-            const originalPrice = isAnnual ? plan.originalAnnual : plan.originalMonthly;
-            const currentPrice = isAnnual ? plan.annualPrice : plan.monthlyPrice;
+            const currentPrice = plan.monthlyPrice;
 
             return (
               <div
@@ -237,37 +115,26 @@ export default function PricingPage() {
                       <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                       <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{plan.description}</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-xl bg-red-500/20 text-amber-300 border border-red-500/30 text-[11px] font-black shrink-0 flex items-center gap-1">
-                      <Flame className="w-3 h-3 fill-amber-400 text-amber-400" /> {plan.discountBadge}
-                    </span>
+
                   </div>
 
-                  {/* PRICE SLASH DISPLAY ($597.50 -> $239) */}
                   <div className="space-y-1 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
                     <div className="flex items-center gap-2">
-                      {/* Crossed Out Original Price */}
-                      <span className="text-lg sm:text-xl font-bold text-slate-500 line-through decoration-red-500 decoration-2 font-mono">
-                        ${originalPrice.toFixed(2)}
-                      </span>
-                      <span className="text-sm font-black text-amber-400">→</span>
-                      {/* New Discounted Price */}
                       <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
-                        ${currentPrice}
+                        ${currentPrice.toLocaleString('en-US')}
                       </span>
-                      <span className="text-xs text-slate-400">/ mo</span>
+                      <span className="text-xs text-slate-400">/ month</span>
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] pt-1">
-                      <span className="text-emerald-400 font-semibold">
-                        {isAnnual ? `Billed annually ($${currentPrice * 12}/yr)` : 'Billed monthly'}
-                      </span>
-                      <span className="text-amber-400 font-bold bg-red-950/60 px-1.5 py-0.5 rounded text-[10px]">
-                        Save ${(originalPrice - currentPrice).toFixed(0)}/mo
+                      <span className="text-slate-300 font-semibold">
+                        Monthly subscription price
                       </span>
                     </div>
+                    <p className="text-[10px] text-slate-500">Taxes and final checkout terms will be shown before billing is enabled.</p>
 
                     <div className="text-[10px] text-slate-500 font-mono pt-1">
-                      Global Currency: {plan.currencyLabel}
+                      Currency: {plan.currencyLabel}
                     </div>
                   </div>
 
@@ -289,26 +156,17 @@ export default function PricingPage() {
                 </div>
 
                 <div className="pt-8 space-y-3">
-                  <Link
-                    href={plan.ctaHref}
-                    className={`w-full py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 ${
-                      plan.highlight
-                        ? 'bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 shadow-lg shadow-emerald-500/20 font-black'
-                        : 'bg-slate-800 hover:bg-slate-700 text-white font-bold'
-                    }`}
-                  >
-                    {plan.cta} <ArrowRight className="w-4 h-4" />
-                  </Link>
+                                    <button type="button" disabled aria-disabled="true"
+                    className="w-full py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700">
+                    Checkout temporarily unavailable <ArrowRight className="w-4 h-4" />
+                  </button>
 
                   <div className="text-center space-y-1">
-                    <p className="text-[10px] text-amber-300 font-semibold flex items-center justify-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                      {region === 'usa'
-                        ? '24-Hour Card Pilot ($0 Today) • Lock-in 60% OFF'
-                        : 'Instant License • Keep 100% of Recovered Revenue • Cancel Anytime'}
+                    <p className="text-[10px] text-amber-300 font-semibold">
+                      Billing is under verification. No payment or subscription will be initiated.
                     </p>
                     <p className="text-[10px] text-slate-500">
-                      💳 Accepts VISA, Mastercard, AMEX, Discover, Apple Pay, PayPal
+                      Checkout will reopen after plan prices, provider verification, and account activation pass staging tests.
                     </p>
                   </div>
                 </div>
