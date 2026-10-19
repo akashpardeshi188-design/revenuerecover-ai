@@ -37,11 +37,11 @@ Staging migrations 001–013 were applied to the staging database through the Su
 - Checkout UI has been disabled deliberately. PayPal order creation/capture, Razorpay order creation, and Skydo invoice routes return an unavailable response instead of creating false orders, using hard-coded credentials, or displaying fabricated bank details. The visible plan amounts need a single approved source of truth before billing is reopened.
 - Stripe/Razorpay webhook signatures are checked, but event handling still uses in-memory telemetry and does not activate or persist subscriptions. Do not describe billing as production-ready.
 - The cron endpoint requires CRON_SECRET. The health endpoint no longer reports a fabricated hard-coded action count.
-- The connected Vercel account could not inspect the RevenueRecover project. GitHub shows an automatic Vercel preview status as pending; no manual production deployment or promotion was performed. No production database change or live payment action was attempted.
+- The Vercel preview check failed. The connected Vercel integration returned HTTP 403 (not authorized) for the RevenueRecover team/project scope, and the accessible project list contains only a different project. Vercel access must be re-authorized before preview logs/configuration can be inspected. No manual production deployment or promotion was performed. No production database change or live payment action was attempted.
 
 ## Remaining release gates
 
-1. The lockfile now includes the Supabase client packages; the feature-branch CI workflow runs npm install, lint and a production build. Confirm the latest run passes before merge.
+1. The lockfile includes the Supabase client packages; the latest GitHub Actions run passed changed-file TypeScript lint and the Next.js production build. Re-run after any further code changes.
 2. Sign up with a test mailbox, click the email confirmation link, and verify the flow reaches onboarding.
 3. Complete onboarding with a disposable staging business and verify company/profile/onboarding rows; verify another user cannot read these rows.
 4. Reconcile one server-side plan-price configuration and implement provider order ownership, signature verification, durable idempotent webhook processing, and subscription activation/cancellation before re-enabling checkout.
