@@ -1,24 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
 import {
   Check,
   ArrowRight,
-  Globe2,
 } from 'lucide-react';
 
 export default function PricingPage() {
-  const [isAnnual, setIsAnnual] = useState(true);
-  const [region, setRegion] = useState<'usa' | 'global'>('usa');
   const plans = [
     {
       name: 'Starter',
       description: 'Ideal for solo contractors & small trade teams getting started with automated follow-ups.',
-      monthlyPrice: 49,
-      annualPrice: 39,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £39 / CAD $55',
+      monthlyPrice: 497,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: false,
       badge: null,
       features: [
@@ -34,10 +29,9 @@ export default function PricingPage() {
     {
       name: 'Growth',
       description: 'The complete AI Revenue Recovery Employee for growing HVAC, plumbing, and service businesses.',
-      monthlyPrice: 149,
-      annualPrice: 119,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £99 / CAD $159 / ₹9,936',
+      monthlyPrice: 997,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: true,
       badge: 'GROWTH PLAN',
       features: [
@@ -55,10 +49,9 @@ export default function PricingPage() {
     {
       name: 'Pro',
       description: 'Engineered for high-volume, multi-truck contractors and multi-location franchises.',
-      monthlyPrice: 299,
-      annualPrice: 239,
-      currency: '$',
-      currencyLabel: region === 'usa' ? 'USD' : 'USD / £199 / CAD $320',
+      monthlyPrice: 1994,
+            currency: '$',
+      currencyLabel: 'USD',
       highlight: false,
       badge: 'ENTERPRISE CAPABLE',
       features: [
@@ -86,68 +79,20 @@ export default function PricingPage() {
             Revenue recovery plans for service businesses
           </h1>
           <p className="text-slate-300 text-sm sm:text-base">
-            Compare the current indicative plan options. Secure checkout is temporarily paused while plan pricing, payment verification, and subscription activation are reconciled.
+            Compare the current approved USD monthly plan prices. Secure checkout remains paused while payment verification and subscription activation are reconciled.
           </p>
 
           <div role="status" className="max-w-3xl mx-auto rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 text-left text-sm text-amber-100">
             <strong>Checkout temporarily unavailable.</strong> Prices shown are informational only. No payment or subscription can be started from this page until staging verification is complete.
           </div>
 
-          {/* Region Switcher & Billing Toggle */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            {/* Region Toggle */}
-            <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-2xl text-xs font-semibold">
-              <button
-                onClick={() => setRegion('usa')}
-                className={`py-1.5 px-3 rounded-xl transition ${
-                  region === 'usa'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🇺🇸 United States Pricing
-              </button>
-              <button
-                onClick={() => setRegion('global')}
-                className={`py-1.5 px-3 rounded-xl transition flex items-center gap-1 ${
-                  region === 'global'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Globe2 className="w-3 h-3" /> 🌍 Global (0-Day Instant)
-              </button>
-            </div>
-
-            {/* Annual vs Monthly */}
-            <div className="flex items-center gap-2.5">
-              <span className={`text-xs font-medium ${!isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-                Monthly
-              </span>
-              <button
-                onClick={() => setIsAnnual(!isAnnual)}
-                className="w-12 h-6 rounded-full bg-slate-800 p-1 transition-colors relative"
-              >
-                <div
-                  className={`w-4 h-4 rounded-full bg-emerald-400 transition-transform ${
-                    isAnnual ? 'translate-x-6' : 'translate-x-0'
-                  }`}
-                />
-              </button>
-              <div className="flex items-center gap-1.5">
-                <span className={`text-xs font-medium ${isAnnual ? 'text-white font-bold' : 'text-slate-400'}`}>
-                  Annual Billing
-                </span>
-
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {plans.map((plan) => {
-            const currentPrice = isAnnual ? plan.annualPrice : plan.monthlyPrice;
+            const currentPrice = plan.monthlyPrice;
 
             return (
               <div
@@ -178,18 +123,18 @@ export default function PricingPage() {
                       <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">
                         ${currentPrice}
                       </span>
-                      <span className="text-xs text-slate-400">/ mo (indicative)</span>
+                      <span className="text-xs text-slate-400">/ month</span>
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] pt-1">
                       <span className="text-slate-300 font-semibold">
-                        {isAnnual ? `Indicative annual amount: ${currentPrice * 12}/yr` : 'Indicative monthly amount'}
+                        Monthly subscription price
                       </span>
                     </div>
-                    <p className="text-[10px] text-slate-500">Final prices and billing terms will be confirmed when secure checkout is enabled.</p>
+                    <p className="text-[10px] text-slate-500">Taxes and final checkout terms will be shown before billing is enabled.</p>
 
                     <div className="text-[10px] text-slate-500 font-mono pt-1">
-                      Global Currency: {plan.currencyLabel}
+                      Currency: {plan.currencyLabel}
                     </div>
                   </div>
 
