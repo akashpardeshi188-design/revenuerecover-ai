@@ -40,7 +40,8 @@ export default function LoginPage() {
 
       const params = new URLSearchParams(window.location.search);
       const next = params.get('next');
-      const safeNext = next && next.startsWith('/') && !next.startsWith('//') ? next : '/dashboard';
+      const safeNext = next && next.startsWith('/') && !next.startsWith('//') &&
+        !next.includes(String.fromCharCode(92)) ? next : '/dashboard';
       router.replace(safeNext);
       router.refresh();
     } catch (cause) {
