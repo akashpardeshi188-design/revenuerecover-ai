@@ -1,0 +1,53 @@
+name: Staging auth integration checks
+
+on:
+  push:
+    branches:
+      - fix/staging-supabase-auth
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://staging-build.example.invalid
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+      CRON_SECRET: ci-only-not-a-real-secret
+      STRIPE_WEBHOOK_SECRET: whsec_ci_placeholder
+      RAZORPAY_WEBHOOK_SECRET: ci-only-not-a-real-secret
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies and sync lockfile
+        run: npm install --no-audit --no-fund
+
+      - name: Commit synced lockfile on feature-branch pushes
+        if: github.event_name == 'push'
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: sync Supabase auth dependency lockfile"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Production build
+        run: npm run build
