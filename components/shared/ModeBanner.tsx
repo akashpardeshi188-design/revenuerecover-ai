@@ -43,7 +43,7 @@ export function ModeBanner() {
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            LIVE MODE
+            LIVE MODE (EXPERIMENTAL)
           </button>
         </div>
       </div>
@@ -52,7 +52,7 @@ export function ModeBanner() {
         <span className="hidden sm:inline">
           {state.mode === 'demo' && 'Showing fictional Summit HVAC & Plumbing dataset (Dallas, TX)'}
           {state.mode === 'mock' && 'Connected to deterministic simulation endpoints for all 8 AI Agents'}
-          {state.mode === 'live' && 'Active production environment with real customer tenant isolation'}
+          {state.mode === 'live' && 'Experimental: only the overview is connected to Supabase; feature pages may still use demo data'}
         </span>
         <button
           onClick={resetToDemo}
