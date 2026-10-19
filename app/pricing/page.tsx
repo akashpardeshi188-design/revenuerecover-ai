@@ -300,7 +300,7 @@ export default function PricingPage() {
                     <p className="text-[10px] text-slate-500">
                       Checkout will reopen after plan prices, provider verification, and account activation pass staging tests.
                     </p>
-                  </div>v>
+                  </div>
                 </div>
               </div>
             );
