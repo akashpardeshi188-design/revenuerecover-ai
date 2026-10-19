@@ -5,15 +5,9 @@ import { useRouter } from 'next/navigation';
 import {
   TrendingUp,
   Sparkles,
-  CheckCircle2,
   ArrowRight,
   ShieldCheck,
-  Building,
-  PhoneCall,
-  Calendar,
-  CreditCard,
   Zap,
-  Sliders,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { createClient } from '@/lib/supabase/client';
@@ -78,7 +72,7 @@ export default function OnboardingPage() {
         typeText.includes('electrical') ? 'electrical' :
         typeText.includes('general contractor') ? 'general_contractor' : 'other';
 
-      const { data: companyId, error: companyError } = await supabase.rpc('complete_client_onboarding', {
+      const { error: companyError } = await supabase.rpc('complete_client_onboarding', {
         p_company_name: businessName.trim(),
         p_website: website.trim(),
         p_business_type: businessType,
