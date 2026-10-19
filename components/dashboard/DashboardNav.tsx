@@ -15,7 +15,6 @@ import {
   HelpCircle,
   Zap,
   ArrowUpRight,
-  LogOut,
 } from 'lucide-react';
 
 export function DashboardNav() {
@@ -140,13 +139,6 @@ export function DashboardNav() {
 
         <div className="flex items-center justify-between gap-2">
           <button type="button" onClick={handleSignOut} className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 border border-slate-700 hover:bg-slate-800">Sign Out</button>
-          <Link
-            href="/"
-            title="Return to Public Website"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs"
-          >
-            <LogOut className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </aside>
