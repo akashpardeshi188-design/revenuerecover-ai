@@ -1,5 +1,12 @@
 # PayPal recurring subscription setup
 
+## Payment mode safety
+
+- Set `PAYPAL_MODE=sandbox` on all Preview deployments.
+- Live mode is rejected unless `VERCEL_ENV=production` **and** `PAYPAL_LIVE_PAYMENTS_ENABLED=true`.
+- Do not add `PAYPAL_LIVE_PAYMENTS_ENABLED` to Preview. Keep it unset until an explicitly approved production cutover after all staging checks pass.
+- Live credentials and live plan/webhook IDs must never be placed in Preview variables.
+
 ## Preview setup required before an end-to-end test
 
 Configure the following variables for the **Preview** deployment only first:
