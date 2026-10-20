@@ -10,25 +10,27 @@ export default function AuthConfirmedPage() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const fragment = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-    const errorDescription = fragment.get('error_description') || fragment.get('error');
-    const errorCode = fragment.get('error_code');
+    void Promise.resolve().then(() => {
+      const fragment = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+      const errorDescription = fragment.get('error_description') || fragment.get('error');
+      const errorCode = fragment.get('error_code');
 
-    if (errorDescription || errorCode) {
-      setHasError(true);
-      setMessage((errorDescription || 'The confirmation link could not be verified.').slice(0, 240));
-    } else {
-      setMessage(
-        fragment.has('access_token')
-          ? 'The confirmation link returned successfully. Sign in with your email and password to continue.'
-          : 'You have returned from the confirmation link. Try signing in; if confirmation failed, request a fresh link.'
-      );
-    }
+      if (errorDescription || errorCode) {
+        setHasError(true);
+        setMessage((errorDescription || 'The confirmation link could not be verified.').slice(0, 240));
+      } else {
+        setMessage(
+          fragment.has('access_token')
+            ? 'The confirmation link returned successfully. Sign in with your email and password to continue.'
+            : 'You have returned from the confirmation link. Try signing in; if confirmation failed, request a fresh link.'
+        );
+      }
 
-    // Supabase may return session tokens in the URL fragment. This app asks
-    // the user to sign in again, so discard the fragment immediately.
-    window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-    setReady(true);
+      // Supabase may return session tokens in the URL fragment. This app asks
+      // the user to sign in again, so discard the fragment immediately.
+      window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      setReady(true);
+    });
   }, []);
 
   return (
