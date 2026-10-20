@@ -96,7 +96,7 @@ export default function DashboardOverviewPage() {
     }
   }, []);
 
-  useEffect(() => { void loadDashboard(); }, [loadDashboard]);
+  useEffect(() => { void Promise.resolve().then(() => loadDashboard()); }, [loadDashboard]);
 
   const updateStatus = async (
     opportunity: Opportunity,
