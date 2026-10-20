@@ -44,9 +44,11 @@ export async function POST(request: NextRequest) {
   let upstream: Response;
   try {
     const redirectTo = getAuthConfirmationRedirectTo();
-    upstream = await supabaseAuthRequest('signup', {
+    const signupEndpoint = redirectTo
+      ? `signup?${new URLSearchParams({ redirect_to: redirectTo }).toString()}`
+      : 'signup';
+    upstream = await supabaseAuthRequest(signupEndpoint, {
       method: 'POST',
-      headers: redirectTo ? { 'X-Redirect-To': redirectTo } : undefined,
       body: JSON.stringify({
         email,
         password,
