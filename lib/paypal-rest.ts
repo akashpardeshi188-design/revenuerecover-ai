@@ -111,6 +111,12 @@ export async function payPalRequest<T>(
 }
 
 export function getConfiguredAppBaseUrl(): string | null {
+  // Always keep Preview billing redirects on the current Preview deployment,
+  // even if APP_BASE_URL was accidentally copied from Production or localhost.
+  if (process.env.VERCEL_URL && process.env.VERCEL_ENV === 'preview') {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
   const configured = process.env.APP_BASE_URL;
   if (configured) {
     try {
@@ -122,12 +128,6 @@ export function getConfiguredAppBaseUrl(): string | null {
       return null;
     }
     return null;
-  }
-
-  // Vercel provides the deployment hostname for preview builds. Production
-  // should set APP_BASE_URL to the stable customer-facing domain explicitly.
-  if (process.env.VERCEL_URL && process.env.VERCEL_ENV === 'preview') {
-    return `https://${process.env.VERCEL_URL}`;
   }
 
   if (process.env.NODE_ENV !== 'production') {
