@@ -114,6 +114,7 @@ export async function PATCH(request: NextRequest) {
   const query = new URLSearchParams({
     id: 'eq.' + id,
     company_id: 'eq.' + profile.company_id,
+    status: 'eq.' + current.status,
     select: 'id,company_id,status,recovered_value',
   });
 
