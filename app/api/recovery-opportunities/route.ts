@@ -7,13 +7,14 @@ import {
 } from '@/lib/supabase-rest';
 
 const ALLOWED_STATUSES = new Set(['in_progress', 'recovered', 'lost', 'dismissed']);
+const EDITABLE_STATUSES = new Set(['detected', 'in_progress']);
 
+type CurrentOpportunity = { id: string; status: string };
 type UpdatedOpportunity = {
   id: string;
   company_id: string;
   status: string;
   recovered_value: number | null;
-  updated_at?: string;
 };
 
 export async function PATCH(request: NextRequest) {
@@ -45,11 +46,50 @@ export async function PATCH(request: NextRequest) {
   const payload = body as Record<string, unknown>;
   const id = payload.id;
   const status = payload.status;
-  if (typeof id !== 'string' || !/^[0-9a-f-]{36}$/i.test(id)) {
+  if (
+    typeof id !== 'string' ||
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)
+  ) {
     return NextResponse.json({ error: 'A valid opportunity ID is required.' }, { status: 400 });
   }
   if (typeof status !== 'string' || !ALLOWED_STATUSES.has(status)) {
     return NextResponse.json({ error: 'Choose an allowed recovery status.' }, { status: 400 });
+  }
+
+  // Read current state first so callers cannot rewrite terminal states (recovered/lost/dismissed).
+  // Both the explicit company filter and database RLS are intentional.
+  const currentQuery = new URLSearchParams({
+    id: 'eq.' + id,
+    company_id: 'eq.' + profile.company_id,
+    select: 'id,status',
+    limit: '1',
+  });
+  const currentResponse = await supabaseRestRequest(
+    'recovery_opportunities?' + currentQuery.toString(),
+    auth.accessToken,
+    { method: 'GET', headers: { 'Cache-Control': 'no-store' } }
+  ).catch(() => null);
+
+  if (!currentResponse?.ok) {
+    const response = NextResponse.json(
+      { error: 'Could not verify this opportunity. Please retry.' },
+      { status: currentResponse?.status === 401 ? 401 : 502 }
+    );
+    return setRefreshedSessionIfNeeded(response, auth);
+  }
+
+  const currentRows = (await currentResponse.json().catch(() => [])) as CurrentOpportunity[];
+  const current = Array.isArray(currentRows) ? currentRows[0] : undefined;
+  if (!current) {
+    const response = NextResponse.json({ error: 'Opportunity not found for this company.' }, { status: 404 });
+    return setRefreshedSessionIfNeeded(response, auth);
+  }
+  if (!EDITABLE_STATUSES.has(current.status)) {
+    const response = NextResponse.json(
+      { error: 'This opportunity is already in a final state and cannot be changed.' },
+      { status: 409 }
+    );
+    return setRefreshedSessionIfNeeded(response, auth);
   }
 
   const patch: Record<string, string | number> = { status };
@@ -70,10 +110,11 @@ export async function PATCH(request: NextRequest) {
     patch.recovered_value = recoveredValue;
   }
 
+  // recovery_opportunities has no updated_at column; return only verified existing columns.
   const query = new URLSearchParams({
     id: 'eq.' + id,
     company_id: 'eq.' + profile.company_id,
-    select: 'id,company_id,status,recovered_value,updated_at',
+    select: 'id,company_id,status,recovered_value',
   });
 
   const updateResponse = await supabaseRestRequest(
@@ -87,7 +128,10 @@ export async function PATCH(request: NextRequest) {
   ).catch(() => null);
 
   if (!updateResponse) {
-    const response = NextResponse.json({ error: 'Staging database is temporarily unavailable.' }, { status: 502 });
+    const response = NextResponse.json(
+      { error: 'Staging database is temporarily unavailable.' },
+      { status: 502 }
+    );
     return setRefreshedSessionIfNeeded(response, auth);
   }
 
