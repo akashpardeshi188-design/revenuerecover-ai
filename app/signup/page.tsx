@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ModeBanner } from '@/components/shared/ModeBanner';
@@ -15,6 +15,14 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [confirmationRequired, setConfirmationRequired] = useState(false);
+  const [requestedPlan, setRequestedPlan] = useState('');
+
+  useEffect(() => {
+    const plan = new URLSearchParams(window.location.search).get('plan');
+    if (plan === 'starter' || plan === 'growth' || plan === 'revenue_partner') {
+      setRequestedPlan(plan);
+    }
+  }, []);
 
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,7 +55,7 @@ export default function SignupPage() {
         return;
       }
 
-      router.replace('/onboarding');
+      router.replace(requestedPlan ? `/onboarding?plan=${requestedPlan}` : '/onboarding');
       router.refresh();
     } catch {
       setError('Unable to connect right now. Please try again.');
@@ -79,7 +87,7 @@ export default function SignupPage() {
               <p role="status" className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-3 text-sm text-emerald-200">
                 Account created. Check your email to confirm it, then sign in to continue onboarding.
               </p>
-              <Link href="/login" className="w-full py-3.5 px-4 rounded-xl bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
+              <Link href={requestedPlan ? `/login?plan=${requestedPlan}` : "/login"} className="w-full py-3.5 px-4 rounded-xl bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
                 Go to Sign In <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
