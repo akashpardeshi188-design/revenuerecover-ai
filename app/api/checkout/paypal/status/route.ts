@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   }
 
   const query = new URLSearchParams({
-    select: 'id,plan_tier,amount,amount_cents,currency,status,provider_subscription_id,provider_plan_id,created_at,updated_at,last_payment_at,canceled_at',
+    select: 'id,checkout_key,plan_tier,amount,amount_cents,currency,status,provider_subscription_id,provider_plan_id,created_at,updated_at,last_payment_at,canceled_at',
     company_id: `eq.${profile.company_id}`,
     provider: 'eq.paypal',
     order: 'created_at.desc',
