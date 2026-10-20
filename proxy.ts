@@ -15,7 +15,6 @@ export async function proxy(request: NextRequest) {
   }
 
   const profile = await getSupabaseProfile(auth.user.id, auth.accessToken);
-  const isOnboardingPage = pathname === '/onboarding' || pathname.startsWith('/onboarding/');
   const isDashboardPage = pathname === '/dashboard' || pathname.startsWith('/dashboard/');
   const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
 
@@ -30,10 +29,6 @@ export async function proxy(request: NextRequest) {
   if (isDashboardPage && !profile?.company_id) {
     const response = NextResponse.redirect(new URL('/onboarding', request.url));
     return auth.refreshedSession ? applySessionCookies(response, auth.refreshedSession) : response;
-  }
-
-  if (isOnboardingPage && profile?.company_id) {
-    // Existing customer profiles can still open onboarding to update their profile.
   }
 
   const response = NextResponse.next();
