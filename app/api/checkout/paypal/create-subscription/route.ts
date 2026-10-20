@@ -260,8 +260,8 @@ export async function POST(request: NextRequest) {
             locale: 'en-US',
             user_action: 'SUBSCRIBE_NOW',
             shipping_preference: 'NO_SHIPPING',
-            return_url: `${appBaseUrl}/dashboard/billing?checkout=approved`,
-            cancel_url: `${appBaseUrl}/dashboard/billing?checkout=cancelled`,
+            return_url: `${appBaseUrl}/dashboard/billing?checkout=approved&checkout_key=${encodeURIComponent(checkoutKey)}`,
+            cancel_url: `${appBaseUrl}/dashboard/billing?checkout=cancelled&checkout_key=${encodeURIComponent(checkoutKey)}`,
           },
         }),
       }
@@ -269,10 +269,9 @@ export async function POST(request: NextRequest) {
 
     const created = subscriptionResult.payload;
     if (!subscriptionResult.response.ok || !created?.id || !created.links) {
-      const debug = await import('@/lib/paypal-rest').then((m) => m.safelyReadError(subscriptionResult.response));
       console.error('PayPal subscription creation failed', {
         status: subscriptionResult.response.status,
-        debug,
+        planKey,
       });
       return NextResponse.json(
         { error: 'PayPal could not create the subscription. Please try again or contact support.' },
