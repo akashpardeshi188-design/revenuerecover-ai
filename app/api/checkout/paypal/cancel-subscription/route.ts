@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
   if (subscription.status === 'canceled') {
     return NextResponse.json({ success: true, status: 'canceled' });
   }
-  if (!['active', 'trialing', 'past_due', 'inactive'].includes(subscription.status)) {
+  if (!['active', 'trialing', 'past_due', 'unpaid', 'inactive'].includes(subscription.status)) {
     return NextResponse.json(
       { error: 'This subscription cannot be canceled from its current state.' },
       { status: 409 }
