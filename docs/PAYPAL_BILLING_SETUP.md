@@ -59,4 +59,4 @@ The route sends the original event body to PayPal's webhook signature verificati
 
 ## Migration repository limitation
 
-The existing repository did not previously contain `supabase/migrations`. This branch records migrations 017 and 018, which were applied to the **staging** project, but migration scripts 001–016 still need to be recovered/synced. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been added and reviewed.
+The existing repository did not previously contain `supabase/migrations`. This branch records migrations 017–019, which were applied to the **staging** project; migration scripts 001–016 still need to be recovered/synced, and migration 020 (private webhook-event RLS) is prepared but has not yet been applied. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been added and reviewed.
