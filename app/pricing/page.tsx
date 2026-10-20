@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { ArrowRight, Check, ShieldCheck } from 'lucide-react';
 import { Navbar, Footer } from '@/components/marketing/Navbar';
-import { ModeBanner } from '@/components/shared/ModeBanner';
 
 const plans = [
   {
@@ -50,7 +49,6 @@ const plans = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <ModeBanner />
       <Navbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-10">
