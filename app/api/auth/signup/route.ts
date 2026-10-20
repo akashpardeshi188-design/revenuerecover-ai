@@ -1,39 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuthConfirmationRedirectTo } from '@/lib/auth-redirect';
 import {
   applySessionCookies,
   getSafeSupabaseError,
   supabaseAuthRequest,
   type SupabaseSession,
 } from '@/lib/supabase-rest';
-
-function getConfirmationRedirectTo(): string | null {
-  // On Preview, always redirect back to the current deployment rather than a
-  // production domain. Vercel supplies VERCEL_URL for each deployment.
-  if (process.env.VERCEL_ENV === 'preview' && process.env.VERCEL_URL) {
-    const host = process.env.VERCEL_URL;
-    if (/^[a-z0-9.-]+$/i.test(host) && !host.includes('..')) {
-      return `https://${host}/auth/confirmed`;
-    }
-  }
-
-  const configuredBase = process.env.APP_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL;
-  if (configuredBase) {
-    try {
-      const url = new URL(configuredBase);
-      const localDevelopmentHost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
-      if (url.protocol === 'https:' || (process.env.NODE_ENV !== 'production' && url.protocol === 'http:' && localDevelopmentHost)) {
-        return new URL('/auth/confirmed', url.origin).toString();
-      }
-    } catch {
-      // Ignore an invalid optional URL and fail back to the configured Site URL.
-    }
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    return 'http://localhost:3000/auth/confirmed';
-  }
-  return null;
-}
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -71,7 +43,7 @@ export async function POST(request: NextRequest) {
 
   let upstream: Response;
   try {
-    const redirectTo = getConfirmationRedirectTo();
+    const redirectTo = getAuthConfirmationRedirectTo();
     upstream = await supabaseAuthRequest('signup', {
       method: 'POST',
       headers: redirectTo ? { 'X-Redirect-To': redirectTo } : undefined,
