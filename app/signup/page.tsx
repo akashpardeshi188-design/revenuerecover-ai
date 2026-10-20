@@ -15,6 +15,9 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [confirmationRequired, setConfirmationRequired] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
+  const [resendError, setResendError] = useState('');
   const [requestedPlan, setRequestedPlan] = useState('');
 
   useEffect(() => {
@@ -23,6 +26,28 @@ export default function SignupPage() {
       setRequestedPlan(plan);
     }
   }, []);
+
+  const handleResendConfirmation = async () => {
+    setResendMessage('');
+    setResendError('');
+    setIsResending(true);
+    try {
+      const response = await fetch('/api/auth/resend-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const payload = (await response.json().catch(() => ({}))) as { message?: string; error?: string };
+      if (!response.ok) {
+        throw new Error(payload.error || 'Could not request a new confirmation email.');
+      }
+      setResendMessage(payload.message || 'If this account needs confirmation, a new email will be sent shortly.');
+    } catch (resendError: unknown) {
+      setResendError(resendError instanceof Error ? resendError.message : 'Could not request a new confirmation email.');
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,6 +112,16 @@ export default function SignupPage() {
               <p role="status" className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-3 text-sm text-emerald-200">
                 Account created. Check your email to confirm it, then sign in to continue onboarding.
               </p>
+              {resendMessage && (
+                <p role="status" className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-xs leading-5 text-emerald-200">{resendMessage}</p>
+              )}
+              {resendError && (
+                <p role="alert" className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs leading-5 text-red-300">{resendError}</p>
+              )}
+              <button type="button" onClick={() => void handleResendConfirmation()} disabled={isResending}
+                className="w-full rounded-xl border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 hover:bg-slate-800 disabled:opacity-50">
+                {isResending ? 'Requesting new email…' : 'Resend confirmation email'}
+              </button>
               <Link href={requestedPlan ? `/login?plan=${requestedPlan}` : "/login"} className="w-full py-3.5 px-4 rounded-xl bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2">
                 Go to Sign In <ArrowRight className="w-4 h-4" />
               </Link>
