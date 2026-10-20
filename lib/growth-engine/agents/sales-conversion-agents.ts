@@ -21,7 +21,7 @@ export class AISDRAgent {
 
     const qualification = isPositive ? 'HOT' : objection.objectionKey === 'not_interested' ? 'UNQUALIFIED' : 'WARM';
 
-    let replyText = `${objection.rebuttal}\n\n${objection.socialProofPoint}\n\n${objection.recommendedCTA}`;
+    const replyText = `${objection.rebuttal}\n\n${objection.socialProofPoint}\n\n${objection.recommendedCTA}`;
 
     return {
       success: true,
