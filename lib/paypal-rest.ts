@@ -31,6 +31,17 @@ export function getPayPalConfig(): PayPalConfig | null {
     return null;
   }
 
+  // Fail closed: this sprint must not initiate real charges from Preview or
+  // development, even if someone accidentally copies live PayPal credentials.
+  // Live payments require a deliberate production-only enablement at cutover.
+  if (
+    mode === 'live' &&
+    (process.env.VERCEL_ENV !== 'production' ||
+      process.env.PAYPAL_LIVE_PAYMENTS_ENABLED !== 'true')
+  ) {
+    return null;
+  }
+
   return {
     mode,
     clientId,
