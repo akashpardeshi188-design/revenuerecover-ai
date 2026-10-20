@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
-  ACCESS_TOKEN_COOKIE,
-  REFRESH_TOKEN_COOKIE,
   clearSessionCookies,
+  resolveAuthContext,
   supabaseAuthRequest,
 } from '@/lib/supabase-rest';
 
 export async function POST(request: NextRequest) {
-  const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value;
-  const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE)?.value;
+  const auth = await resolveAuthContext(request).catch(() => null);
 
-  if (accessToken) {
+  if (auth) {
     await supabaseAuthRequest('logout', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${auth.accessToken}` },
     }).catch(() => null);
-  } else if (refreshToken) {
-    // The browser session is cleared even when the access token has expired.
-    // Server-side session revocation is attempted only when an access token exists.
   }
 
+  // Clear the browser session even if the upstream revocation request fails.
   return clearSessionCookies(NextResponse.json({ success: true }));
 }
