@@ -21,10 +21,12 @@ export default function SignupPage() {
   const [requestedPlan, setRequestedPlan] = useState('');
 
   useEffect(() => {
-    const plan = new URLSearchParams(window.location.search).get('plan');
-    if (plan === 'starter' || plan === 'growth' || plan === 'revenue_partner') {
-      setRequestedPlan(plan);
-    }
+    void Promise.resolve().then(() => {
+      const plan = new URLSearchParams(window.location.search).get('plan');
+      if (plan === 'starter' || plan === 'growth' || plan === 'revenue_partner') {
+        setRequestedPlan(plan);
+      }
+    });
   }, []);
 
   const handleResendConfirmation = async () => {
