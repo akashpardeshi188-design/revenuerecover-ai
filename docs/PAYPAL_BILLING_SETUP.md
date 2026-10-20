@@ -66,4 +66,4 @@ The route sends the original event body to PayPal's webhook signature verificati
 
 ## Migration repository limitation
 
-The existing repository did not previously contain `supabase/migrations`. This branch records migrations 017–019, which were applied to the **staging** project; migration scripts 001–016 still need to be recovered/synced, and migration 020 (private webhook-event RLS) is prepared but has not yet been applied. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been added and reviewed.
+Migrations 017–021 are now recorded in staging and the corresponding files are tracked in this branch. Migrations 020–021 enable RLS and add an explicit deny policy for `anon` / `authenticated` on the private PayPal webhook event log; post-change Security Advisor returned zero findings. Migration scripts 001–016 are recorded on the live staging database but are not yet fully reconstructed/synced as repository SQL files. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been recovered and reviewed.
