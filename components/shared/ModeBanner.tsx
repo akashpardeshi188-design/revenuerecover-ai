@@ -13,7 +13,7 @@ export function ModeBanner() {
     <div className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 border-b border-amber-400/20 bg-slate-900 px-4 py-2 text-xs shadow-md">
       <span className="font-semibold text-amber-200">STAGING ENVIRONMENT</span>
       <span className="text-slate-300">
-        Authenticated staging data only · PayPal Sandbox only · Automated customer outreach is not enabled
+        Staging preview · secondary screens still being connected · no live customer outreach or payments
       </span>
     </div>
   );
