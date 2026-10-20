@@ -42,17 +42,35 @@ export async function POST(request: NextRequest) {
   const companyName = stringField(data, 'businessName', 160, true);
   const website = stringField(data, 'website', 2048, true);
   const industry = stringField(data, 'industry', 120, true);
-  const city = stringField(data, 'city', 100) ?? '';
-  const state = stringField(data, 'state', 100) ?? '';
-  const phone = stringField(data, 'businessPhone', 80) ?? '';
-  const email = stringField(data, 'businessEmail', 254) ?? '';
-  const startTime = stringField(data, 'startTime', 5) ?? '08:00';
-  const endTime = stringField(data, 'endTime', 5) ?? '18:00';
-  const selectedCrm = stringField(data, 'selectedCrm', 120) ?? '';
+  const cityField = stringField(data, 'city', 100);
+  const stateField = stringField(data, 'state', 100);
+  const phoneField = stringField(data, 'businessPhone', 80);
+  const emailField = stringField(data, 'businessEmail', 254);
+  const startTimeField = stringField(data, 'startTime', 5);
+  const endTimeField = stringField(data, 'endTime', 5);
+  const selectedCrmField = stringField(data, 'selectedCrm', 120);
 
-  if (!companyName || !website || !industry) {
-    return NextResponse.json({ error: 'Company name, website and industry are required.' }, { status: 400 });
+  if (
+    !companyName ||
+    !website ||
+    !industry ||
+    [cityField, stateField, phoneField, emailField, startTimeField, endTimeField, selectedCrmField].some(
+      (value) => value === null
+    )
+  ) {
+    return NextResponse.json(
+      { error: 'Company name, website and industry are required; check that optional fields are within their length limits.' },
+      { status: 400 }
+    );
   }
+
+  const city = cityField ?? '';
+  const state = stateField ?? '';
+  const phone = phoneField ?? '';
+  const email = emailField ?? '';
+  const startTime = startTimeField || '08:00';
+  const endTime = endTimeField || '18:00';
+  const selectedCrm = selectedCrmField ?? '';
 
   let parsedWebsite: URL;
   try {
