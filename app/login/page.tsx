@@ -31,7 +31,9 @@ export default function LoginPage() {
         return;
       }
 
-      router.replace('/dashboard');
+      const requestedPlan = new URLSearchParams(window.location.search).get('plan');
+      const hasValidPlan = requestedPlan === 'starter' || requestedPlan === 'growth' || requestedPlan === 'revenue_partner';
+      router.replace(hasValidPlan ? `/onboarding?plan=${requestedPlan}` : '/dashboard');
       router.refresh();
     } catch {
       setError('Unable to connect right now. Please try again.');

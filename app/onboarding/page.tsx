@@ -86,7 +86,9 @@ export default function OnboardingPage() {
         // Confetti is decorative; persistence succeeds without it.
       }
 
-      router.replace('/dashboard');
+      const requestedPlan = new URLSearchParams(window.location.search).get('plan');
+      const hasValidPlan = requestedPlan === 'starter' || requestedPlan === 'growth' || requestedPlan === 'revenue_partner';
+      router.replace(hasValidPlan ? `/dashboard/billing?plan=${requestedPlan}` : '/dashboard');
       router.refresh();
     } catch (error: unknown) {
       setFormError(error instanceof Error ? error.message : 'Could not save onboarding.');

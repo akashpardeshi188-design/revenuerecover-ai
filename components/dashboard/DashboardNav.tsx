@@ -12,6 +12,7 @@ import {
   MessageSquare,
   Users,
   Layers,
+  CreditCard,
   Settings,
   HelpCircle,
   ShieldCheck,
@@ -56,6 +57,7 @@ export function DashboardNav() {
     { name: 'Customer Database', href: '/dashboard/customers', icon: Users },
     { name: 'Recovery Campaigns', href: '/dashboard/campaigns', icon: Zap },
     { name: 'Integrations Hub', href: '/dashboard/integrations', icon: Layers },
+    { name: 'Billing & Plans', href: '/dashboard/billing', icon: CreditCard },
     { name: 'AI Success Copilot', href: '/dashboard/success-agent', icon: HelpCircle },
     { name: 'Rules & Safety Settings', href: '/dashboard/settings', icon: Settings },
   ];
