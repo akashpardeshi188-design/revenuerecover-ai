@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { KillSwitchButton } from '@/components/shared/ModeBanner';
 import {
@@ -24,7 +24,20 @@ import {
 
 export function DashboardNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { state } = useAppStore();
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      router.replace('/login');
+      router.refresh();
+      setIsLoggingOut(false);
+    }
+  };
 
   const navItems = [
     { name: 'Executive Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -119,13 +132,15 @@ export function DashboardNav() {
 
         <div className="flex items-center justify-between gap-2">
           <KillSwitchButton />
-          <Link
-            href="/"
-            title="Return to Public Website"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs"
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            title="Sign out"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-50 transition text-xs"
           >
             <LogOut className="w-4 h-4" />
-          </Link>
+          </button>
         </div>
       </div>
     </aside>
