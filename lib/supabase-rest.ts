@@ -94,14 +94,16 @@ export async function resolveAuthContext(
       headers: { Authorization: `Bearer ${accessToken}` },
     }).catch(() => null);
 
-    if (userResponse?.ok) {
+    if (!userResponse) return null;
+
+    if (userResponse.ok) {
       const user = (await userResponse.json()) as SupabaseUser;
       if (user?.id) return { accessToken, user };
     }
 
     // Do not attempt token rotation for transient server errors. A 401 means
     // the access token is no longer accepted; only then try the refresh token.
-    if (userResponse && userResponse.status !== 401) return null;
+    if (userResponse.status !== 401) return null;
   }
 
   if (!refreshToken) return null;
