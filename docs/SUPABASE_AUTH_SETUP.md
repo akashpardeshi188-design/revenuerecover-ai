@@ -21,7 +21,7 @@ In the staging Supabase dashboard, open **Authentication → URL Configuration**
    - `http://localhost:3000/**` (local development)
 3. Ensure the confirmation email template uses Supabase's `{{ .ConfirmationURL }}` or an approved `{{ .RedirectTo }}` value, not a hard-coded localhost or unrelated production URL.
 
-For Preview signup requests, the app sends the current Vercel deployment origin to Supabase in the `X-Redirect-To` header and routes the email link back to `/auth/confirmed`. The landing page removes token fragments from the address bar and asks the user to sign in again. Vercel's `VERCEL_URL` is used automatically in Preview; do not copy `APP_BASE_URL` or production payment settings into Preview.
+For Preview signup and resend requests, the app sends the current Vercel deployment origin to Supabase using the `redirect_to` query parameter and routes the email link back to `/auth/confirmed`. The landing page removes token fragments from the address bar and asks the user to sign in again. Vercel's `VERCEL_URL` is used automatically in Preview; do not copy `APP_BASE_URL` or production payment settings into Preview.
 
 For a later, separately approved production cutover, set `APP_BASE_URL` and `NEXT_PUBLIC_SITE_URL` to the stable HTTPS application domain and configure the production Supabase Auth redirect allowlist explicitly.
 
