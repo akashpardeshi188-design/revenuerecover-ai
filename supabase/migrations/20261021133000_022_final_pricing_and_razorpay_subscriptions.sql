@@ -21,7 +21,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS subscriptions_one_live_subscription_per_compan
   WHERE status IN (
     'trialing'::public.subscription_status,
     'active'::public.subscription_status,
-    'past_due'::public.subscription_status
+    'past_due'::public.subscription_status,
+    'unpaid'::public.subscription_status
   );
 
 -- 3. Razorpay webhook events ledger for idempotent persistence
@@ -155,7 +156,8 @@ BEGIN
       AND s.status IN (
         'trialing'::public.subscription_status,
         'active'::public.subscription_status,
-        'past_due'::public.subscription_status
+        'past_due'::public.subscription_status,
+        'unpaid'::public.subscription_status
       )
       AND s.checkout_key IS DISTINCT FROM p_checkout_key
   ) THEN
@@ -257,7 +259,8 @@ BEGIN
       AND s.status IN (
         'trialing'::public.subscription_status,
         'active'::public.subscription_status,
-        'past_due'::public.subscription_status
+        'past_due'::public.subscription_status,
+        'unpaid'::public.subscription_status
       )
       AND s.checkout_key IS DISTINCT FROM p_checkout_key
   ) THEN
