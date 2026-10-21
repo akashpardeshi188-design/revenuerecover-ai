@@ -149,7 +149,7 @@ export async function supabaseServiceRpc<T>(
   }
 
   // Only call a fixed RPC allowlist. Never send arbitrary function names to this helper.
-  if (!['link_paypal_subscription', 'process_paypal_webhook_event', 'cancel_paypal_subscription'].includes(functionName)) {
+  if (!['link_paypal_subscription', 'process_paypal_webhook_event', 'cancel_paypal_subscription', 'link_razorpay_subscription', 'process_razorpay_webhook_event', 'cancel_razorpay_subscription'].includes(functionName)) {
     throw new Error('SUPABASE_RPC_NOT_ALLOWED');
   }
 

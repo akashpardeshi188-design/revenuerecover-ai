@@ -49,14 +49,24 @@ export class AISDRAgent {
 export class AISalesAgent {
   public static readonly agentName = 'AI Sales Agent';
 
-  public static generateProposal(lead: GrowthLead, planTier: 'STARTER' | 'GROWTH' | 'PRO_ANNUAL' = 'GROWTH'): AgentExecutionResult<{ recommendedPlan: string; monthlyCostUSD: number; projectedMonthlyRecoveredUSD: number; projectedROI: string; checkoutLink: string }> {
-    const monthlyCost = planTier === 'STARTER' ? 59 : planTier === 'GROWTH' ? 119 : 82.5; // $990/yr annualized
+  public static generateProposal(
+    lead: GrowthLead,
+    planTier: 'GROWTH' | 'REVENUE_PARTNER' | 'STARTER' | 'PRO_ANNUAL' = 'GROWTH'
+  ): AgentExecutionResult<{
+    recommendedPlan: string;
+    monthlyCostUSD: number;
+    projectedMonthlyRecoveredUSD: number;
+    projectedROI: string;
+    checkoutLink: string;
+  }> {
+    const isRevenuePartner = planTier === 'REVENUE_PARTNER' || planTier === 'PRO_ANNUAL';
+    const monthlyCost = isRevenuePartner ? 1299 : 999;
     const recoverable = lead.estimatedRecoverableRevenueMonthlyUSD || 3800;
-    const roiMultiple = (recoverable / (planTier === 'PRO_ANNUAL' ? 82.5 : monthlyCost)).toFixed(1);
+    const roiMultiple = (recoverable / monthlyCost).toFixed(1);
 
-    const checkoutUrl = planTier === 'PRO_ANNUAL'
-      ? 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J'
-      : 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E';
+    const checkoutUrl = isRevenuePartner
+      ? '/signup?plan=revenue_partner'
+      : '/signup?plan=growth';
 
     return {
       success: true,
@@ -65,7 +75,7 @@ export class AISalesAgent {
       timestamp: new Date().toISOString(),
       confidenceScore: 97,
       data: {
-        recommendedPlan: planTier === 'PRO_ANNUAL' ? 'Pro Annual VIP ($990/yr)' : planTier === 'GROWTH' ? 'Growth ($119/mo)' : 'Starter ($59/mo)',
+        recommendedPlan: isRevenuePartner ? 'Revenue Partner ($1,299/mo)' : 'Growth ($999/mo)',
         monthlyCostUSD: monthlyCost,
         projectedMonthlyRecoveredUSD: recoverable,
         projectedROI: `${roiMultiple}x ROI`,
