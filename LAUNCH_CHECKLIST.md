@@ -1,6 +1,6 @@
 # RevenueRecover AI — Launch Checklist
 
-Last checked: 2026-10-22
+Last checked: 2026-10-24
 Branch: `feature/staging-mvp-integrated-2026-10-20`
 Draft PR: https://github.com/akashpardeshi188-design/revenuerecover-ai/pull/5
 
@@ -22,6 +22,7 @@ Draft PR: https://github.com/akashpardeshi188-design/revenuerecover-ai/pull/5
 - ✅ Separate Razorpay and PayPal subscription cancellation routes exist.
 - ✅ Dashboard summary and recovery-opportunity API routes resolve authenticated context and use Supabase data rather than treating client-only data as authoritative.
 - ✅ Staging migration 023 hardened Razorpay RPC permissions and invalid/null plan-key validation; previous staging Security Advisor re-check returned zero findings.
+- ✅ Staging pricing correction migration `20261024033510_restore_growth_999_revenue_partner_1299.sql` applied and verified: Starter $497 (legacy), Growth $999, Revenue Partner $1,299; shared plan quote and new subscription amount defaults match.
 
 ## B. Still to verify — do not call these complete yet
 
@@ -36,6 +37,7 @@ Draft PR: https://github.com/akashpardeshi188-design/revenuerecover-ai/pull/5
 - ⬜ Deliver a verified PayPal sandbox webhook and test activation, duplicate events, failures, and cancellation.
 - ⬜ Confirm dashboard access changes only after the server-verified subscription state changes.
 - ⬜ Inspect actual Vercel Preview and Production environment variable names/targets; never print secret values to logs.
+- ⬜ Vercel integration currently returns `403 Forbidden` for the project/team scope; environment variables and latest Preview cannot yet be inspected through the connector.
 - ⬜ Verify the exact deployment URL and deployment state for the intended branch/commit.
 - ⬜ Complete a final production smoke test only after staging checks pass.
 
