@@ -2,8 +2,6 @@
 -- The app's public plans are Growth $999/month and Revenue Partner $1,299/month.
 -- Starter $497 remains legacy-only. Apply only after the base schema and migration 022.
 
-BEGIN;
-
 ALTER TABLE public.agency_settings
   ALTER COLUMN pricing_starter_monthly SET DEFAULT 497,
   ALTER COLUMN pricing_growth_monthly SET DEFAULT 999,
@@ -60,4 +58,3 @@ GRANT EXECUTE ON FUNCTION private.get_subscription_plan_quote(text) TO authentic
 
 NOTIFY pgrst, 'reload schema';
 
-COMMIT;
