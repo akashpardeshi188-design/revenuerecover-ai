@@ -4,12 +4,7 @@ import Link from 'next/link';
 import {
   ShieldCheck,
   Zap,
-  PhoneCall,
-  CheckCircle2,
-  ArrowRight,
   MapPin,
-  Building2,
-  Sparkles,
 } from 'lucide-react';
 import { CountryCode, TradeCategory } from '@/lib/discovery/types';
 import { getCountrySpec } from '@/config/countries';
@@ -47,10 +42,10 @@ export default async function GeoContractorLandingPage({
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
+              href="/signup?plan=growth"
               className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-sm shadow-xl shadow-emerald-500/20 hover:scale-105 transition flex items-center gap-2"
             >
-              <Zap className="w-4 h-4 fill-slate-950" /> Start 1-Click Setup ({countrySpec.currencySymbol}119/mo)
+              <Zap className="w-4 h-4 fill-slate-950" /> Start Growth Plan ($999/mo)
             </Link>
           </div>
         </div>

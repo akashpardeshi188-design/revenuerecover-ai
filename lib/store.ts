@@ -175,7 +175,7 @@ class StoreService {
     );
 
     // Add or update conversation
-    let updatedConversations = [...this.state.conversations];
+    const updatedConversations = [...this.state.conversations];
     const existingConvIndex = updatedConversations.findIndex((c) => c.customer_id === opp.customer_id);
 
     const newMsg = {
@@ -354,7 +354,7 @@ class StoreService {
       l.id === leadId ? { ...l, stage, next_action: this.getNextActionForStage(stage) } : l
     );
 
-    let updatedMetrics = { ...this.state.growthMetrics };
+    const updatedMetrics = { ...this.state.growthMetrics };
     if (stage === 'won') {
       updatedMetrics.paid_customers += 1;
       updatedMetrics.mrr += 149;

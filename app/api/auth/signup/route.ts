@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuthConfirmationRedirectTo } from '@/lib/auth-redirect';
 import {
   applySessionCookies,
   getSafeSupabaseError,
@@ -42,7 +43,11 @@ export async function POST(request: NextRequest) {
 
   let upstream: Response;
   try {
-    upstream = await supabaseAuthRequest('signup', {
+    const redirectTo = getAuthConfirmationRedirectTo();
+    const signupEndpoint = redirectTo
+      ? `signup?${new URLSearchParams({ redirect_to: redirectTo }).toString()}`
+      : 'signup';
+    upstream = await supabaseAuthRequest(signupEndpoint, {
       method: 'POST',
       body: JSON.stringify({
         email,

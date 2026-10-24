@@ -1,5 +1,12 @@
 # PayPal recurring subscription setup
 
+## Payment mode safety
+
+- Set `PAYPAL_MODE=sandbox` on all Preview deployments.
+- Live mode is rejected unless `VERCEL_ENV=production` **and** `PAYPAL_LIVE_PAYMENTS_ENABLED=true`.
+- Do not add `PAYPAL_LIVE_PAYMENTS_ENABLED` to Preview. Keep it unset until an explicitly approved production cutover after all staging checks pass.
+- Live credentials and live plan/webhook IDs must never be placed in Preview variables.
+
 ## Preview setup required before an end-to-end test
 
 Configure the following variables for the **Preview** deployment only first:
@@ -59,4 +66,4 @@ The route sends the original event body to PayPal's webhook signature verificati
 
 ## Migration repository limitation
 
-The existing repository did not previously contain `supabase/migrations`. This branch records migrations 017 and 018, which were applied to the **staging** project, but migration scripts 001–016 still need to be recovered/synced. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been added and reviewed.
+Migrations 017–021 are now recorded in staging and the corresponding files are tracked in this branch. Migrations 020–021 enable RLS and add an explicit deny policy for `anon` / `authenticated` on the private PayPal webhook event log; post-change Security Advisor returned zero findings. Migration scripts 001–016 are recorded on the live staging database but are not yet fully reconstructed/synced as repository SQL files. Do not reset a database or run a fresh-database migration sequence from this folder until the earlier baseline migrations have been recovered and reviewed.

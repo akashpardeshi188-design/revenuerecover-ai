@@ -429,7 +429,7 @@ export default function FreeRevenueScanPage() {
                   <div className="flex flex-col items-end shrink-0">
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-xs text-slate-500 line-through font-mono">$297.50</span>
-                      <span className="text-3xl font-black text-emerald-400 font-mono">$119</span>
+                      <span className="text-3xl font-black text-emerald-400 font-mono">$999</span>
                       <span className="text-xs text-slate-400">/ mo</span>
                     </div>
                     <span className="text-[10px] text-emerald-400 font-semibold">Save $178.50/mo forever</span>
@@ -443,7 +443,7 @@ export default function FreeRevenueScanPage() {
                     onClick={() => setIsCheckoutOpen(true)}
                     className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 hover:from-emerald-300 hover:to-teal-200 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/20 active:scale-95 transition"
                   >
-                    <CreditCard className="w-4 h-4" /> 1-Click Checkout with Razorpay / Cards ($119/mo)
+                    <CreditCard className="w-4 h-4" /> 1-Click Checkout with Razorpay / Cards ($999/mo)
                   </button>
 
                   <button
@@ -451,7 +451,7 @@ export default function FreeRevenueScanPage() {
                     onClick={() => setIsCheckoutOpen(true)}
                     className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 hover:from-cyan-300 hover:to-blue-300 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/20 active:scale-95 transition"
                   >
-                    <Globe2 className="w-4 h-4" /> 1-Click Checkout with PayPal ($119/mo)
+                    <Globe2 className="w-4 h-4" /> 1-Click Checkout with PayPal ($999/mo)
                   </button>
                 </div>
 
@@ -477,7 +477,7 @@ export default function FreeRevenueScanPage() {
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         planName="Growth Plan"
-        amountUSD={119}
+        amountUSD={999}
         businessName={businessName}
       />
 

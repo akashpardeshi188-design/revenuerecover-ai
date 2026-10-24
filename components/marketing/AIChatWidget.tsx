@@ -1,16 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Bot,
   Send,
   X,
   Sparkles,
   Zap,
-  CheckCircle2,
-  ArrowRight,
-  CreditCard,
-  Building2,
   ShieldCheck,
 } from 'lucide-react';
 
@@ -20,7 +17,7 @@ interface ChatMessage {
   text: string;
   timestamp: string;
   hasCta?: boolean;
-  ctaType?: 'monthly' | 'annual';
+  ctaType?: 'growth' | 'revenue_partner';
 }
 
 export function AIChatWidget() {
@@ -31,7 +28,7 @@ export function AIChatWidget() {
     {
       id: '1',
       sender: 'ai',
-      text: 'Hi there! 👋 I am the RevenueRecover AI Assistant. Are you looking to recover missed customer calls and unlock 150–200 local trade leads for your HVAC/Plumbing business?',
+      text: 'Hi there! 👋 I am the RevenueRecover AI Assistant. Are you looking to recover missed customer calls and unlock verified local trade leads for your HVAC/Plumbing business?',
       timestamp: 'Just now',
     },
   ]);
@@ -60,29 +57,29 @@ export function AIChatWidget() {
     setTimeout(() => {
       let aiReply = '';
       let hasCta = false;
-      let ctaType: 'monthly' | 'annual' = 'monthly';
+      let ctaType: 'growth' | 'revenue_partner' = 'growth';
 
       const lower = text.toLowerCase();
       if (lower.includes('lead') || lower.includes('150') || lower.includes('200')) {
         aiReply =
-          'Great question! When you activate your Growth Plan ($119/mo), our AI engine instantly ingests 150–200 verified local homeowner leads in your service ZIP code. You can start with 1-click via PayPal below:';
+          'Great question! When you activate your Growth Plan ($999/mo), our AI engine instantly ingests verified local homeowner leads in your service ZIP code. You can start with 1-click subscription below:';
         hasCta = true;
-        ctaType = 'monthly';
-      } else if (lower.includes('price') || lower.includes('cost') || lower.includes('plan') || lower.includes('annual')) {
+        ctaType = 'growth';
+      } else if (lower.includes('price') || lower.includes('cost') || lower.includes('plan') || lower.includes('partner')) {
         aiReply =
-          'Our Growth Plan is currently 60% OFF at $119/mo (or $990/year for the VIP Enterprise License with 500+ leads). Both plans come with instant cloud activation via PayPal:';
+          'We offer two official monthly recurring subscription plans: Growth at $999/mo and Revenue Partner at $1,299/mo. Both plans feature dual recurring billing via Razorpay (Primary) or PayPal (Secondary):';
         hasCta = true;
-        ctaType = lower.includes('annual') || lower.includes('year') ? 'annual' : 'monthly';
+        ctaType = lower.includes('partner') || lower.includes('enterprise') ? 'revenue_partner' : 'growth';
       } else if (lower.includes('servicetitan') || lower.includes('housecall') || lower.includes('crm')) {
         aiReply =
           'Yes! We offer 1-click native webhook sync with ServiceTitan, Housecall Pro, Jobber, and QuickBooks. Inactive customers and missed calls are automatically recovered.';
         hasCta = true;
-        ctaType = 'monthly';
+        ctaType = 'growth';
       } else {
         aiReply =
           'RevenueRecover AI automatically engages your missed calls in 45 seconds via smart SMS text-back, booking the job before your competitor answers. Ready to activate your software?';
         hasCta = true;
-        ctaType = 'monthly';
+        ctaType = 'growth';
       }
 
       setMessages((prev) => [
@@ -101,10 +98,10 @@ export function AIChatWidget() {
   };
 
   const quickPrompts = [
-    '🎁 How to get 150-200 leads?',
+    '🎁 How to get verified trade leads?',
     '⚡ How does missed-call recovery work?',
-    '💳 How do I pay via PayPal ($119)?',
-    '👑 $990 VIP Annual Plan',
+    '💳 Growth Plan ($999/mo)',
+    '🚀 Revenue Partner ($1,299/mo)',
   ];
 
   return (
@@ -152,26 +149,24 @@ export function AIChatWidget() {
                 >
                   {msg.text}
 
-                  {/* Embedded 1-Click PayPal Checkout CTAs */}
+                  {/* Embedded Subscription Checkout CTAs */}
                   {msg.hasCta && (
                     <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-1.5">
-                      <a
+                      <Link
                         href={
-                          msg.ctaType === 'annual'
-                            ? 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J'
-                            : 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E'
+                          msg.ctaType === 'revenue_partner'
+                            ? '/signup?plan=revenue_partner'
+                            : '/signup?plan=growth'
                         }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black text-[11px] flex items-center justify-center gap-1.5 shadow hover:brightness-105 transition"
+                        className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 font-black text-[11px] flex items-center justify-center gap-1.5 shadow hover:brightness-105 transition"
                       >
                         <Zap className="w-3.5 h-3.5 fill-slate-950" />
-                        {msg.ctaType === 'annual'
-                          ? '⚡ Pay $990/yr VIP Annual on PayPal'
-                          : '⚡ Pay $119/mo & Unlock 150–200 Leads'}
-                      </a>
+                        {msg.ctaType === 'revenue_partner'
+                          ? '⚡ Start Revenue Partner ($1,299/mo)'
+                          : '⚡ Start Growth Plan ($999/mo)'}
+                      </Link>
                       <div className="text-[9px] text-center text-slate-400 flex items-center justify-center gap-1">
-                        <ShieldCheck className="w-3 h-3 text-emerald-400" /> PayPal Verified • Instant Setup
+                        <ShieldCheck className="w-3 h-3 text-emerald-400" /> Razorpay &amp; PayPal Recurring • Instant Setup
                       </div>
                     </div>
                   )}

@@ -58,10 +58,10 @@ export default function HomePage() {
           {/* CTA Group */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <Link
-              href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
+              href="/signup?plan=growth"
               className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-500/25 transition active:scale-95"
             >
-              ⚡ Get Growth Plan — $119/mo (Instant 200 Leads) <ArrowRight className="w-5 h-5" />
+              ⚡ Get Growth Plan — $999/mo <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/pricing"
@@ -313,7 +313,7 @@ export default function HomePage() {
               href="/pricing"
               className="py-4 px-8 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-base transition"
             >
-              View Pricing ($49/mo)
+              View Pricing & Plans
             </Link>
           </div>
         </div>

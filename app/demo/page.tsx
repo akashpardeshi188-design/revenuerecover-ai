@@ -35,8 +35,8 @@ export default function InteractiveDemoPage() {
               <div className="text-lg font-black text-white">Growth Plan</div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-black text-emerald-400 font-mono">$119<span className="text-xs text-slate-400">/mo</span></div>
-              <div className="text-[10px] text-slate-400">USD via PayPal</div>
+              <div className="text-2xl font-black text-emerald-400 font-mono">$999<span className="text-xs text-slate-400">/mo</span></div>
+              <div className="text-[10px] text-slate-400">USD Monthly</div>
             </div>
           </div>
 
@@ -56,10 +56,10 @@ export default function InteractiveDemoPage() {
           </ul>
 
           <Link
-            href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
+            href="/signup?plan=growth"
             className="w-full block text-center py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.02] transition"
           >
-            ⚡ Unlock Growth Access — $119/mo
+            ⚡ Unlock Growth Access — $999/mo
           </Link>
         </div>
       </main>

@@ -31,6 +31,17 @@ export function getPayPalConfig(): PayPalConfig | null {
     return null;
   }
 
+  // Fail closed: this sprint must not initiate real charges from Preview or
+  // development, even if someone accidentally copies live PayPal credentials.
+  // Live payments require a deliberate production-only enablement at cutover.
+  if (
+    mode === 'live' &&
+    (process.env.VERCEL_ENV !== 'production' ||
+      process.env.PAYPAL_LIVE_PAYMENTS_ENABLED !== 'true')
+  ) {
+    return null;
+  }
+
   return {
     mode,
     clientId,
@@ -100,6 +111,12 @@ export async function payPalRequest<T>(
 }
 
 export function getConfiguredAppBaseUrl(): string | null {
+  // Always keep Preview billing redirects on the current Preview deployment,
+  // even if APP_BASE_URL was accidentally copied from Production or localhost.
+  if (process.env.VERCEL_URL && process.env.VERCEL_ENV === 'preview') {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
   const configured = process.env.APP_BASE_URL;
   if (configured) {
     try {
@@ -111,12 +128,6 @@ export function getConfiguredAppBaseUrl(): string | null {
       return null;
     }
     return null;
-  }
-
-  // Vercel provides the deployment hostname for preview builds. Production
-  // should set APP_BASE_URL to the stable customer-facing domain explicitly.
-  if (process.env.VERCEL_URL && process.env.VERCEL_ENV === 'preview') {
-    return `https://${process.env.VERCEL_URL}`;
   }
 
   if (process.env.NODE_ENV !== 'production') {
@@ -138,7 +149,7 @@ export async function supabaseServiceRpc<T>(
   }
 
   // Only call a fixed RPC allowlist. Never send arbitrary function names to this helper.
-  if (!['link_paypal_subscription', 'process_paypal_webhook_event'].includes(functionName)) {
+  if (!['link_paypal_subscription', 'process_paypal_webhook_event', 'cancel_paypal_subscription', 'link_razorpay_subscription', 'process_razorpay_webhook_event', 'cancel_razorpay_subscription'].includes(functionName)) {
     throw new Error('SUPABASE_RPC_NOT_ALLOWED');
   }
 

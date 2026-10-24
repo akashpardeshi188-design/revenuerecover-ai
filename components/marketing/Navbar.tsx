@@ -113,10 +113,10 @@ export function Navbar() {
             Customer Login
           </Link>
           <Link
-            href="https://www.paypal.com/ncp/payment/GFXAWMG4S227E"
+            href="/signup?plan=growth"
             className="text-sm font-semibold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 transition active:scale-95"
           >
-            ⚡ Get Growth Plan ($119) <ArrowRight className="w-4 h-4" />
+            ⚡ Get Growth Plan ($999/mo) <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -137,7 +137,7 @@ export function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-emerald-400 font-bold py-2"
           >
-            ⚡ Pricing &amp; Plans ($119/mo)
+            ⚡ Pricing &amp; Plans ($999/mo)
           </Link>
           <Link
             href="/how-it-works"

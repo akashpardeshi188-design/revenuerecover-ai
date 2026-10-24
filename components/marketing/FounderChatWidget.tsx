@@ -8,7 +8,7 @@ export function FounderChatWidget() {
 
   const founderWhatsApp = '918208057237';
   const defaultMessage = encodeURIComponent(
-    'Hi Akash, I saw RevenueRecover AI for HVAC & Plumbing. I want to activate the $119/mo Growth Plan and unlock my 150-200 local leads.'
+    'Hi Akash, I saw RevenueRecover AI for HVAC & Plumbing. I want to activate the $999/mo Growth Plan and unlock my verified local leads.'
   );
 
   return (
