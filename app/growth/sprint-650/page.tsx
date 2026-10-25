@@ -31,7 +31,7 @@ export default function Sprint650Page() {
   const [dispatchBatchSuccess, setDispatchBatchSuccess] = useState(false);
 
   const targetGoal = 650;
-  const growthPlanPrice = 119;
+  const growthPlanPrice = 999;
   const currentMRR = currentPaid * growthPlanPrice;
   const targetMRR = targetGoal * growthPlanPrice;
   const progressPercent = Math.min(100, Math.round((currentPaid / targetGoal) * 100));
@@ -83,7 +83,7 @@ export default function Sprint650Page() {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                Autonomous nationwide US acquisition campaign targeting 650 Growth Plan subscriptions ($119/mo).
+                Autonomous nationwide US acquisition campaign targeting 650 Growth Plan subscriptions ($999/mo).
               </p>
             </div>
 

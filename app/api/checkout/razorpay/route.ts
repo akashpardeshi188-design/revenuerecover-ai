@@ -15,7 +15,7 @@ import {
 
 export const runtime = 'nodejs';
 
-const PLAN_KEYS = ['growth', 'revenue_partner'] as const;
+const PLAN_KEYS = ['starter', 'growth', 'revenue_partner'] as const;
 type PlanKey = (typeof PLAN_KEYS)[number];
 
 type PreparedCheckout = {
@@ -49,12 +49,22 @@ function isUuid(value: unknown): value is string {
 }
 
 function razorpayPlanIdFor(planKey: PlanKey): string | null {
-  const envName = {
-    growth: 'RAZORPAY_PLAN_ID_GROWTH',
-    revenue_partner: 'RAZORPAY_PLAN_ID_REVENUE_PARTNER',
-  }[planKey];
+  const envMap: Record<PlanKey, string[]> = {
+    starter: ['RAZORPAY_PLAN_ID_STARTER', 'RAZORPAY_STARTER_PLAN_ID'],
+    growth: ['RAZORPAY_PLAN_ID_GROWTH', 'RAZORPAY_GROWTH_PLAN_ID'],
+    revenue_partner: [
+      'RAZORPAY_PLAN_ID_REVENUE_PARTNER',
+      'RAZORPAY_REVENUE_PLAN_ID',
+      'RAZORPAY_PLAN_ID_REVENUE',
+    ],
+  };
 
-  return process.env[envName]?.trim() || null;
+  const candidateNames = envMap[planKey] || [];
+  for (const name of candidateNames) {
+    const val = process.env[name]?.trim();
+    if (val) return val;
+  }
+  return null;
 }
 
 export async function POST(request: NextRequest) {

@@ -5,7 +5,7 @@ export class ObjectionKnowledgeBase {
     too_expensive: {
       objectionKey: 'too_expensive',
       prospectStatement: 'It costs too much / we do not have budget for software right now.',
-      rebuttal: 'I completely understand budget caution. Most contractors look at our Growth plan ($119/month) as an investment rather than an expense because a single recovered HVAC or plumbing repair job ($350–$1,400) pays for 3 to 12 months of the entire platform on Day 1.',
+      rebuttal: 'I completely understand budget caution. Most contractors look at our Growth plan ($999/month) as an investment rather than an expense because a single recovered HVAC or plumbing repair job ($350–$1,400) pays for 3 to 12 months of the entire platform on Day 1.',
       socialProofPoint: 'Summit Mechanical recovered $4,200 in their first 14 days simply by texting back 3 after-hours emergency calls they missed on a Saturday.',
       clarifyingQuestion: 'How many missed calls or unbooked service estimates do you estimate slip through during your peak weekly jobs?',
       recommendedCTA: 'Would you be open to running our free 14-day trial on 10 missed calls to see if it covers itself before you pay a dime?',
@@ -86,7 +86,7 @@ export class ObjectionKnowledgeBase {
     can_i_cancel: {
       objectionKey: 'can_i_cancel',
       prospectStatement: 'Am I locked into a contract? Can I cancel anytime?',
-      rebuttal: 'There are zero long-term lock-in contracts on our monthly plans ($59/mo Starter or $119/mo Growth). You can cancel anytime with 1 click directly inside your billing portal.',
+      rebuttal: 'There are zero long-term lock-in contracts on our monthly plans ($499/mo Starter or $999/mo Growth). You can cancel anytime with 1 click directly inside your billing portal.',
       socialProofPoint: 'We earn our clients’ business every single month through measurable recovered revenue logged transparently on your dashboard.',
       clarifyingQuestion: 'Would you prefer the flexibility of the monthly Growth plan, or the 30% discount on the Pro Annual VIP tier?',
       recommendedCTA: 'You can start your 14-day zero-risk trial today without being billed. Shall I activate your portal?',
@@ -104,7 +104,7 @@ export class ObjectionKnowledgeBase {
     what_is_the_roi: {
       objectionKey: 'what_is_the_roi',
       prospectStatement: 'What kind of return on investment (ROI) can we realistically expect?',
-      rebuttal: 'For an average home service contractor missing 12 calls a week with an average ticket of $450, you are losing ~$5,400 per week. Recovering just 2 of those missed calls per month generates $900 in new revenue against a $119/mo subscription—a 7.5x direct ROI.',
+      rebuttal: 'For an average home service contractor missing 12 calls a week with an average ticket of $450, you are losing ~$5,400 per week. Recovering just 2 of those missed calls per month generates $900 in new revenue against a $999/mo subscription—a 7.5x direct ROI.',
       socialProofPoint: 'Contractors using our full suite (missed call text-back + 90-day dormant reactivation + overdue invoice recovery) average a 24x to 35x monthly ROI.',
       clarifyingQuestion: 'What is your average ticket size for a repair vs. a full system replacement?',
       recommendedCTA: 'Would you like to plug your exact numbers into our live Interactive ROI Calculator on a quick 3-minute screen share?',

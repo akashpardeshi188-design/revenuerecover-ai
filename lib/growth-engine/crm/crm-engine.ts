@@ -96,7 +96,7 @@ export class CRMEngine {
       stageCounts[lead.stage] = (stageCounts[lead.stage] || 0) + 1;
       totalPipelineUSD += lead.estimatedRecoverableRevenueMonthlyUSD || 0;
       if (['CUSTOMER', 'ACTIVATED', 'RETENTION', 'EXPANSION'].includes(lead.stage)) {
-        totalMRR_USD += 119; // Standard growth plan MRR baseline
+        totalMRR_USD += 999; // Standard growth plan MRR baseline
       }
     }
 

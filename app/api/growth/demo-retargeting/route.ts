@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       business,
       leakage,
       stage,
-      discount: '60% OFF ($597.50 -> $239 / $297.50 -> $119)',
+      discount: 'Official plans: Starter $499/mo | Growth $999/mo | Revenue Partner $1,299/mo',
     }, { actorAgent: 'SalesAgent' });
 
     return NextResponse.json({

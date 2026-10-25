@@ -82,7 +82,7 @@ export class ExperimentationEngine {
       id: 'exp_003',
       name: 'Pricing Presentation: Annual Discount Toggle Placement',
       category: 'pricing',
-      hypothesis: 'Defaulting to Annual (Save 20%) with prominent monthly equivalent ($119/mo) increases LTV.',
+      hypothesis: 'Defaulting to Annual (Save 20%) with prominent monthly equivalent ($999/mo) increases LTV.',
       controlVariant: {
         description: 'Default Monthly ($149/mo) with small annual toggle',
         impressions: 1600,
@@ -90,7 +90,7 @@ export class ExperimentationEngine {
         conversionRate: 15.0,
       },
       testVariant: {
-        description: 'Default Annual ($119/mo billed annually) with "Save 20%" badge',
+        description: 'Default Annual ($999/mo billed annually) with "Save 20%" badge',
         impressions: 1650,
         conversions: 396,
         conversionRate: 24.0,

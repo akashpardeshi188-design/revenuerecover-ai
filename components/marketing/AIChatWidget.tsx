@@ -67,7 +67,7 @@ export function AIChatWidget() {
         ctaType = 'growth';
       } else if (lower.includes('price') || lower.includes('cost') || lower.includes('plan') || lower.includes('partner')) {
         aiReply =
-          'We offer two official monthly recurring subscription plans: Growth at $999/mo and Revenue Partner at $1,299/mo. Both plans feature dual recurring billing via Razorpay (Primary) or PayPal (Secondary):';
+          'We offer three official monthly recurring subscription plans: Starter at $499/mo, Growth at $999/mo, and Revenue Partner at $1,299/mo. All plans feature dual recurring billing via Razorpay (Primary) or PayPal (Secondary):';
         hasCta = true;
         ctaType = lower.includes('partner') || lower.includes('enterprise') ? 'revenue_partner' : 'growth';
       } else if (lower.includes('servicetitan') || lower.includes('housecall') || lower.includes('crm')) {

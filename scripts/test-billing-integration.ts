@@ -43,6 +43,12 @@ async function runBillingTests() {
   console.log('\n--- 1. Authoritative Plan Pricing Checks ---');
 
   assert(
+    RAZORPAY_PLAN_AMOUNTS.starter?.usd === 499 &&
+      RAZORPAY_PLAN_AMOUNTS.starter?.cents === 49900,
+    'Starter plan is exactly $499 USD/month (49,900 cents)'
+  );
+
+  assert(
     RAZORPAY_PLAN_AMOUNTS.growth?.usd === 999 &&
       RAZORPAY_PLAN_AMOUNTS.growth?.cents === 99900,
     'Growth plan is exactly $999 USD/month (99,900 cents)'
@@ -54,15 +60,11 @@ async function runBillingTests() {
     'Revenue Partner plan is exactly $1,299 USD/month (129,900 cents)'
   );
 
-  assert(
-    !('starter' in RAZORPAY_PLAN_AMOUNTS),
-    'Legacy starter tier is removed from active purchase plan amounts'
-  );
-
-  const staleAmounts = [119, 990, 497, 1997];
+  const staleAmounts = [119, 149, 497, 990, 997, 1997];
   for (const stale of staleAmounts) {
     assert(
-      RAZORPAY_PLAN_AMOUNTS.growth.usd !== stale &&
+      RAZORPAY_PLAN_AMOUNTS.starter.usd !== stale &&
+        RAZORPAY_PLAN_AMOUNTS.growth.usd !== stale &&
         RAZORPAY_PLAN_AMOUNTS.revenue_partner.usd !== stale,
       `Stale price $${stale} is not present in active plan configurations`
     );

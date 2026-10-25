@@ -6,33 +6,54 @@ import { Navbar, Footer } from '@/components/marketing/Navbar';
 
 const plans = [
   {
-    planKey: 'growth',
-    name: 'Growth',
-    price: 999,
-    description: 'For growing service businesses and trade contractors managing high lead and invoice volume.',
-    highlight: true,
+    planKey: 'starter',
+    name: 'Starter',
+    price: 499,
+    description:
+      'For small and growing service businesses ready to automate revenue recovery and lead follow-up.',
+    highlight: false,
     features: [
       'Automated revenue recovery & quote reactivation',
       'AI missed-call & SMS lead recovery workflows',
-      'Full CRM integrations (ServiceTitan, Jobber, Housecall Pro)',
-      'TCPA compliance, quiet hours, and 1-click human kill switch',
-      'Multi-channel follow-ups (SMS, Email, Phone AI Agent)',
+      'CRM integration support',
+      'TCPA compliance, quiet hours, and human kill switch',
+      'Multi-channel follow-ups',
+      'Monthly recovery analytics & ROI reporting',
+    ],
+  },
+  {
+    planKey: 'growth',
+    name: 'Growth',
+    price: 999,
+    description:
+      'For growing HVAC, plumbing, and service businesses managing high lead and invoice volume.',
+    highlight: true,
+    features: [
+      'Everything in Starter',
+      'Full ServiceTitan, Jobber & Housecall Pro integrations',
+      'AI-powered quote and estimate reactivation',
+      'Multi-channel SMS, Email & Phone AI Agent',
+      'Automated failed-payment recovery',
       'Weekly executive recovery analytics & ROI report',
+      'Priority support',
     ],
   },
   {
     planKey: 'revenue_partner',
     name: 'Revenue Partner',
     price: 1299,
-    description: 'For high-volume multi-location contractors requiring customized recovery engines and dedicated account oversight.',
+    description:
+      'For high-volume and multi-location contractors requiring a customized revenue recovery engine.',
     highlight: false,
     features: [
-      'Everything in Growth Plan',
+      'Everything in Growth',
       'Multi-location & franchise territory routing',
-      'Custom objection handling & tailored brand scripts',
-      'Dedicated revenue engineer & VIP concierge onboarding',
-      'Priority 24/7 technical support & SLA guarantee',
-      'Custom webhook triggers & billing gateway synchronization',
+      'Custom objection handling & brand scripts',
+      'Dedicated revenue engineer',
+      'VIP concierge onboarding',
+      'Priority 24/7 technical support',
+      'Custom webhook triggers & billing synchronization',
+      'Advanced revenue recovery strategy',
     ],
   },
 ] as const;
@@ -45,17 +66,21 @@ export default function PricingPage() {
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-12">
         <header className="text-center max-w-3xl mx-auto space-y-4">
           <p className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300">
-            <Zap className="w-3.5 h-3.5" /> Two Authoritative Monthly Subscription Plans
+            <Zap className="w-3.5 h-3.5" />
+            Revenue Recovery Subscription Plans
           </p>
+
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Predictable Monthly Revenue Recovery
+            Turn Lost Revenue Into Recovered Revenue
           </h1>
+
           <p className="text-slate-300 text-sm sm:text-base">
-            Choose your plan, create your account, complete company onboarding, and activate recurring billing via our primary gateway Razorpay or secondary gateway PayPal.
+            Choose the plan that fits your business. Activate your AI Revenue
+            Recovery Employee with secure recurring monthly billing.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
           {plans.map((plan) => (
             <article
               key={plan.planKey}
@@ -66,31 +91,36 @@ export default function PricingPage() {
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 font-black text-xs uppercase tracking-wider shadow-md">
-                  Most Popular for Contractors
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 font-black text-xs uppercase tracking-wider shadow-md whitespace-nowrap">
+                  Most Popular
                 </div>
               )}
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold text-white">{plan.name}</h2>
-                  <p className="text-sm text-slate-400 min-h-[44px]">{plan.description}</p>
+                  <h2 className="text-2xl font-bold text-white">
+                    {plan.name}
+                  </h2>
+
+                  <p className="text-sm text-slate-400 min-h-[66px]">
+                    {plan.description}
+                  </p>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800">
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight">
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        maximumFractionDigits: 0,
-                      }).format(plan.price)}
+                      ${plan.price.toLocaleString('en-US')}
                     </span>
-                    <span className="text-sm font-semibold text-slate-400">/ month</span>
+
+                    <span className="text-sm font-semibold text-slate-400">
+                      / month
+                    </span>
                   </div>
+
                   <p className="text-xs text-slate-400 pt-2 flex items-center gap-1.5">
                     <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
-                    Billed monthly via Razorpay (primary) or PayPal (secondary)
+                    Recurring monthly subscription
                   </p>
                 </div>
 
@@ -98,12 +128,17 @@ export default function PricingPage() {
                   <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
                     Included Capabilities
                   </span>
+
                   <ul className="space-y-3">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
+                      <li
+                        key={feature}
+                        className="flex items-start gap-3 text-sm text-slate-300"
+                      >
                         <span className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                           <Check className="w-2.5 h-2.5 stroke-[3]" />
                         </span>
+
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -120,16 +155,18 @@ export default function PricingPage() {
                       : 'bg-slate-800 hover:bg-slate-700 text-white'
                   }`}
                 >
-                  Start with {plan.name} <ArrowRight className="w-4 h-4" />
+                  Start with {plan.name}
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <div className="text-center space-y-1">
                   <p className="text-[11px] text-slate-300 font-semibold flex items-center justify-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    Verified server-side recurring subscription flow
+                    Secure recurring subscription
                   </p>
+
                   <p className="text-[10px] leading-4 text-slate-500">
-                    No one-time links. Single active subscription enforced per tenant. Cancel anytime in dashboard.
+                    Cancel anytime from your customer dashboard.
                   </p>
                 </div>
               </div>

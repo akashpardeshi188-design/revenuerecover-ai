@@ -16,38 +16,16 @@ export interface ProductKnowledge {
     painSignals: string[];
   };
   pricingTiers: {
-    starter: { name: string; monthly: number; annual: number; limit: string };
-    growth: { name: string; monthly: number; annual: number; limit: string };
-    pro: { name: string; monthly: number; annual: number; limit: string };
-  };
-  guarantees: string[];
-  differentiators: string[];
-  certifiedIntegrations: string[];
-  objectionsAndAnswers: Array<{ objection: string; answer: string; evidence: string }>;
-  verifiedBenchmarks: Array<{ metric: string; value: string; verificationSource: string }>;
-}
-
-export const productKnowledgeBase: ProductKnowledge = {
-  productName: 'RevenueRecover AI',
-  tagline: 'Turn Lost Leads Into Confirmed Recovered Revenue',
-  corePromise: 'Find lost revenue in 60 seconds. Text back missed calls in 45 seconds. Follow up on quotes automatically.',
-  icp: {
-    primaryTrades: ['HVAC & AC Repair', 'Plumbing & Drain', 'Electrical Contracting', 'Roofing & Solar', 'Commercial Mechanical'],
-    companySize: '3 to 50 technicians / trucks',
-    revenueRange: '$500,000 to $15,000,000 annual GMV',
-    targetStates: ['Texas', 'Florida', 'Arizona', 'California', 'North Carolina', 'Georgia', 'Ohio', 'Colorado', 'Nevada', 'Tennessee'],
-    decisionMakerRoles: ['Owner', 'Founder', 'President', 'General Manager', 'Operations Director'],
-    painSignals: [
-      'High monthly inquiry volume (>80 leads/mo) with busy dispatcher bottlenecks',
-      'High average job value ($1,200 - $8,500 replacement tickets)',
-      'Unanswered after-hours calls after 6:00 PM and on weekends',
-      'Delivered PDF estimates left uncontacted after 48 hours',
-      'Credit card decline losses on past-due service invoices',
-    ],
+    starter: { name: 'Starter', monthly: 499, annual: 499, limit: 'Automated recovery, missed-call SMS text-back & CRM sync' },
+    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows, local trade leads & full CRM integrations' },
+    revenue_partner: { name: 'Revenue Partner', monthly: 1299, annual: 1299, limit: 'Multi-location dispatcher routing, custom webhook triggers & VIP support' },
   },
   pricingTiers: {
-    starter: { name: 'Starter', monthly: 49, annual: 39, limit: 'Up to 50 recovery opportunities/mo' },
-    growth: { name: 'Growth', monthly: 149, annual: 119, limit: 'Unlimited recovery workflows & CRM sync' },
+    starter: { name: 'Starter', monthly: 499, annual: 499, limit: 'Automated recovery, missed-call SMS text-back & CRM sync' },
+    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows, local trade leads & full CRM integrations' },
+    revenue_partner: { name: 'Revenue Partner', monthly: 1299, annual: 1299, limit: 'Multi-location dispatcher routing, custom webhook triggers & VIP support' },
+  },
+    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows & CRM sync' },
     pro: { name: 'Pro', monthly: 299, annual: 239, limit: 'Multi-location automated dispatch & dedicated rep' },
   },
   guarantees: [
@@ -86,7 +64,7 @@ export const productKnowledgeBase: ProductKnowledge = {
     {
       objection: 'How fast do we see return on investment (ROI)?',
       answer: 'Most contractors recover their entire annual subscription cost on their very first recovered AC replacement or water heater install.',
-      evidence: 'Average contractor ticket is $1,400+ vs $119/mo subscription.',
+      evidence: 'Average contractor ticket is $1,400+ vs $999/mo subscription.',
     },
   ],
   verifiedBenchmarks: [

@@ -27,7 +27,7 @@ class TelemetryEngine {
       { stage: 'visitor', source: 'organic_search', timestamp: new Date().toISOString() },
       { stage: 'scanner', businessName: 'Lone Star Climate', revenuePotential: 24800, timestamp: new Date().toISOString() },
       { stage: 'qualified', businessName: 'Lone Star Climate', revenuePotential: 24800, timestamp: new Date().toISOString() },
-      { stage: 'paid', businessName: 'Lone Star Climate', metadata: { plan: 'Growth', mrr: 119 }, timestamp: new Date().toISOString() }
+      { stage: 'paid', businessName: 'Lone Star Climate', metadata: { plan: 'Growth', mrr: 999 }, timestamp: new Date().toISOString() }
     );
   }
 
@@ -57,7 +57,7 @@ class TelemetryEngine {
         { stage: 'Qualified Leads', count: totalQualified, conversionRate: `${((totalQualified / totalScans) * 100).toFixed(1)}%` },
         { stage: 'Interactive Demo', count: totalDemos, conversionRate: `${((totalDemos / totalQualified) * 100).toFixed(1)}%` },
         { stage: 'Trial / Pilot', count: totalTrials, conversionRate: `${((totalTrials / totalDemos) * 100).toFixed(1)}%` },
-        { stage: 'Paid Customer ($119/mo)', count: totalPaid, conversionRate: `${((totalPaid / totalTrials) * 100).toFixed(1)}%` },
+        { stage: 'Paid Customer ($999/mo)', count: totalPaid, conversionRate: `${((totalPaid / totalTrials) * 100).toFixed(1)}%` },
         { stage: 'Activated (Phone Sync)', count: totalActivated, conversionRate: `${((totalActivated / totalPaid) * 100).toFixed(1)}%` },
         { stage: 'Retained Customer', count: totalRetained, conversionRate: `${((totalRetained / totalPaid) * 100).toFixed(1)}%` },
       ],

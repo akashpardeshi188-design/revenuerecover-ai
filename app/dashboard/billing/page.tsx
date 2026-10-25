@@ -41,11 +41,25 @@ const PLANS: Array<{
   features: string[];
 }> = [
   {
+    key: 'starter',
+    name: 'Starter',
+    amount: 499,
+    description: 'For small and growing service businesses ready to automate revenue recovery and lead follow-up.',
+    features: [
+      'Automated revenue recovery & quote reactivation',
+      'AI missed-call & SMS lead recovery workflows',
+      'CRM integration support',
+      'TCPA compliance, quiet hours, and human kill switch',
+      'Monthly recovery analytics & ROI reporting',
+    ],
+  },
+  {
     key: 'growth',
     name: 'Growth',
     amount: 999,
     description: 'For growing trade contractors needing automated recovery, missed-call SMS text-back, and lead enrichment.',
     features: [
+      'Everything in Starter',
       '45-second missed-call recovery engine',
       'Pre-loaded local homeowner trade leads',
       'SMS, Voice & Email automated recovery workflows',

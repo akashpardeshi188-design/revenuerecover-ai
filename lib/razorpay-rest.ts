@@ -11,6 +11,7 @@ export type RazorpayConfig = {
 };
 
 export const RAZORPAY_PLAN_AMOUNTS: Record<string, { usd: number; cents: number }> = {
+  starter: { usd: 499, cents: 49900 },
   growth: { usd: 999, cents: 99900 },
   revenue_partner: { usd: 1299, cents: 129900 },
 };
@@ -90,7 +91,7 @@ export type RazorpayPlanDetails = {
 /**
  * Server-side authoritative verification of a Razorpay plan.
  * Checks that the plan exists on Razorpay, is billed monthly in USD,
- * and matches exactly $999 or $1,299 USD (in cents: 99900 or 129900).
+ * and matches exactly $499, $999, or $1,299 USD (in cents: 49900, 99900, or 129900).
  */
 export async function verifyRazorpayPlan(
   config: RazorpayConfig,

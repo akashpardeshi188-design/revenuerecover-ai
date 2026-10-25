@@ -27,7 +27,7 @@ export default function DailyRevenueAcceleratorPage() {
   const [currentSubscribers, setCurrentSubscribers] = useState(126);
   const [batchDispatched, setBatchDispatched] = useState(false);
 
-  const growthPlanMonthlyRate = 119;
+  const growthPlanMonthlyRate = 999;
   const inrRate = 83.5;
 
   // Mode Targets
@@ -304,7 +304,7 @@ export default function DailyRevenueAcceleratorPage() {
                 <span className="text-xs font-bold text-white flex items-center gap-1.5">🇬🇧 United Kingdom</span>
                 <div className="text-xl font-black text-amber-400 font-mono">1,200 Clients</div>
                 <div className="text-[11px] text-slate-400">₹30 Lakhs/wk • ₹1.19 Cr/mo</div>
-                <div className="text-[10px] text-slate-500">0-Day Instant (£99/mo)</div>
+                <div className="text-[10px] text-slate-500">0-Day Instant (/mo)</div>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:billing": "node scripts/test-billing-integration.mjs"
   },
   "dependencies": {
     "@types/canvas-confetti": "^1.9.0",

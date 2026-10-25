@@ -64,11 +64,11 @@ BEGIN
     RAISE EXCEPTION 'Invalid subscription plan' USING ERRCODE = '22023';
   END IF;
 
-  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $497 (legacy)
+  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $499
   v_amount := CASE p_plan_key
     WHEN 'growth' THEN 999
     WHEN 'revenue_partner' THEN 1299
-    WHEN 'starter' THEN 497
+    WHEN 'starter' THEN 499
     ELSE 999
   END;
 
@@ -140,11 +140,11 @@ BEGIN
     RAISE EXCEPTION 'Complete company onboarding before selecting a subscription' USING ERRCODE = '42501';
   END IF;
 
-  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $497
+  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $499
   v_amount := CASE p_plan_key
     WHEN 'growth' THEN 999
     WHEN 'revenue_partner' THEN 1299
-    WHEN 'starter' THEN 497
+    WHEN 'starter' THEN 499
     ELSE 999
   END;
 
@@ -243,11 +243,11 @@ BEGIN
     RAISE EXCEPTION 'Complete company onboarding before selecting a subscription' USING ERRCODE = '42501';
   END IF;
 
-  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $497
+  -- Canonical pricing: Growth $999, Revenue Partner $1,299, Starter $499
   v_amount := CASE p_plan_key
     WHEN 'growth' THEN 999
     WHEN 'revenue_partner' THEN 1299
-    WHEN 'starter' THEN 497
+    WHEN 'starter' THEN 499
     ELSE 999
   END;
 
