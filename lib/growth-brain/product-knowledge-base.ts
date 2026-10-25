@@ -20,14 +20,6 @@ export interface ProductKnowledge {
     growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows, local trade leads & full CRM integrations' },
     revenue_partner: { name: 'Revenue Partner', monthly: 1299, annual: 1299, limit: 'Multi-location dispatcher routing, custom webhook triggers & VIP support' },
   },
-  pricingTiers: {
-    starter: { name: 'Starter', monthly: 499, annual: 499, limit: 'Automated recovery, missed-call SMS text-back & CRM sync' },
-    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows, local trade leads & full CRM integrations' },
-    revenue_partner: { name: 'Revenue Partner', monthly: 1299, annual: 1299, limit: 'Multi-location dispatcher routing, custom webhook triggers & VIP support' },
-  },
-    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows & CRM sync' },
-    pro: { name: 'Pro', monthly: 299, annual: 239, limit: 'Multi-location automated dispatch & dedicated rep' },
-  },
   guarantees: [
     '14-Day Risk-Free Trial (No credit card required to run scan)',
     'Recover at least $2,000 in your first 14 days or pay $0',
