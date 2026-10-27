@@ -31,8 +31,7 @@ async function hasMxRecord(website: string | null): Promise<boolean> {
   }
 }
 
-async function websiteHasAiCompetitorSignals(website: string | null): Promise<boolean> {
-  if (!website) return false;
+async function websiteHasAiCompetitorSignals(website: string): Promise<boolean> {
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 3500);
@@ -49,10 +48,10 @@ async function websiteHasAiCompetitorSignals(website: string | null): Promise<bo
   }
 }
 
-function scoreLead(reviewCount: number, rating: number, website: string | null, aiDetected: boolean) {
+function scoreLead(reviewCount: number, rating: number, website: string, aiDetected: boolean) {
   const breakdown = {
     reviews: reviewCount > 20 ? 20 : 0,
-    website: website ? 20 : 0,
+    website: 20,
     rating: rating > 4.5 ? 20 : 0,
     ai_competitor_not_detected: aiDetected ? 0 : 40,
   };
@@ -60,7 +59,7 @@ function scoreLead(reviewCount: number, rating: number, website: string | null, 
 }
 
 function estimateOpportunity(reviewCount: number) {
-  // This is an opportunity model, not a claim about actual missed calls.
+  // Model only: this does not claim the business actually missed this many calls.
   const estimatedMissedCalls = Math.max(1, Math.round(reviewCount * 0.1));
   return { estimatedMissedCalls, estimatedLostRevenue: estimatedMissedCalls * 350 };
 }
@@ -86,9 +85,8 @@ async function googlePlaces(input: LeadInput): Promise<LeadCandidate[]> {
     const website = typeof place.websiteUri === 'string' ? place.websiteUri : null;
     const reviews = Number(place.userRatingCount ?? 0);
     const rating = Number(place.rating ?? 0);
-    if (!phone || reviews <= 10 || rating <= 4.0) continue;
-    const mx = await hasMxRecord(website);
-    if (website && !mx) continue;
+    if (!phone || !website || reviews <= 10 || rating <= 4.0) continue;
+    if (!(await hasMxRecord(website))) continue;
     const aiDetected = await websiteHasAiCompetitorSignals(website);
     const { score, breakdown } = scoreLead(reviews, rating, website, aiDetected);
     if (score <= 70) continue;
@@ -116,6 +114,9 @@ async function googlePlaces(input: LeadInput): Promise<LeadCandidate[]> {
 }
 
 async function yelp(input: LeadInput): Promise<LeadCandidate[]> {
+  // Yelp Fusion search is retained as an enrichment source, but its search payload
+  // does not provide a contractor-owned website field. We therefore do not promote
+  // Yelp-only records into the qualified set until an owned domain can be verified.
   const key = process.env.YELP_FUSION_API_KEY;
   if (!key) return [];
   const industry = input.industry === 'plumbing' ? 'plumbing' : 'hvac';
@@ -125,34 +126,9 @@ async function yelp(input: LeadInput): Promise<LeadCandidate[]> {
   url.searchParams.set('limit', String(Math.min(input.limit ?? 20, 50)));
   const response = await fetch(url, { headers: { authorization: `Bearer ${key}` } });
   if (!response.ok) throw new Error(`Yelp Fusion error: ${response.status}`);
-  const data = await response.json() as { businesses?: Array<Record<string, unknown>> };
-  const results: LeadCandidate[] = [];
-  for (const business of data.businesses ?? []) {
-    const phone = normalizeUsPhone(business.phone);
-    const website = typeof business.url === 'string' ? business.url : null;
-    const reviews = Number(business.review_count ?? 0);
-    const rating = Number(business.rating ?? 0);
-    if (!phone || reviews <= 10 || rating <= 4.0) continue;
-    const { score, breakdown } = scoreLead(reviews, rating, website, false);
-    if (score <= 70) continue;
-    const opportunity = estimateOpportunity(reviews);
-    results.push({
-      business_name: String(business.name ?? 'Unnamed business'),
-      phone,
-      owner_name: null,
-      website,
-      review_count: reviews,
-      rating,
-      city: input.city,
-      state: input.state,
-      estimated_missed_calls: opportunity.estimatedMissedCalls,
-      estimated_lost_revenue: opportunity.estimatedLostRevenue,
-      score,
-      score_breakdown: breakdown,
-      source: 'yelp',
-    });
-  }
-  return results;
+  // Intentionally return no qualified records until owned-domain verification is available.
+  await response.json();
+  return [];
 }
 
 export async function findQualifiedLeads(input: LeadInput): Promise<LeadCandidate[]> {
@@ -161,7 +137,11 @@ export async function findQualifiedLeads(input: LeadInput): Promise<LeadCandidat
   if (!city || !['TX', 'FL', 'TEXAS', 'FLORIDA'].includes(state)) {
     throw new Error('V2 Lead Engine currently supports Texas (TX) and Florida (FL) only.');
   }
-  const normalized: LeadInput = { ...input, state: state === 'TEXAS' ? 'TX' : state === 'FLORIDA' ? 'FL' : state, city };
+  const normalized: LeadInput = {
+    ...input,
+    state: state === 'TEXAS' ? 'TX' : state === 'FLORIDA' ? 'FL' : state,
+    city,
+  };
   const [google, yelpResults] = await Promise.all([googlePlaces(normalized), yelp(normalized)]);
   const unique = new Map<string, LeadCandidate>();
   for (const lead of [...google, ...yelpResults]) unique.set(lead.phone, lead);
