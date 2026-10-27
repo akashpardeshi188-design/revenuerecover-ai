@@ -39,7 +39,7 @@ export function UrgencyCountdownBanner() {
             <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> 60% OFF ENDS TODAY
           </span>
           <span className="font-extrabold text-white text-xs sm:text-sm tracking-tight">
-            FINAL CALL: Founding Member Pricing ($597.50 → $239 / $297.50 → $119)
+            OFFICIAL PLANS: Starter /mo | Growth /mo | Revenue Partner ,299/mo
           </span>
           <span className="text-[11px] bg-red-950/60 px-2 py-0.5 rounded text-red-200 hidden md:inline">
             🚨 Only 3 Territory Licenses Left

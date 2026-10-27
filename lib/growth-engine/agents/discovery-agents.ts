@@ -28,7 +28,7 @@ export class CEOOrchestratorAgent {
           'Filter leads through verification engine & calculate explainable revenue leakage scores',
           'Deploy personalized multi-step email & SMS drip sequences to Tier-A ICP matches',
           'AI SDR handles inbound responses using 12 objection playbooks and books interactive demos',
-          'Capture PayPal USD orders ($119/mo Growth) & trigger automated 60-second onboarding'
+          'Capture PayPal USD orders ($999/mo Growth) & trigger automated 60-second onboarding'
         ],
         targetMRRUSD: 5950
       },

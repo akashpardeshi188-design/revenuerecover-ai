@@ -29,7 +29,7 @@ export class LeadDeduplicationEngine {
   static processLeadTouchpoint(lead: Lead, event: LeadSourceEvent): MasterOpportunity {
     const custId = this.getCustomerIdentifier(lead.customerPhoneE164, lead.customerEmail);
 
-    let opp = Array.from(opportunitiesStore.values()).find(
+    const opp = Array.from(opportunitiesStore.values()).find(
       (o) => o.tenantId === lead.tenantId && o.customerIdentifier === custId && o.stage !== 'ARCHIVED'
     );
 

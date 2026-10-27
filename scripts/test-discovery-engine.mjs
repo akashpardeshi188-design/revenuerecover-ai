@@ -3,14 +3,14 @@
  * Validates Adapters, Deduplication, Verification, AI Scoring, Matching, Compliance & Security.
  */
 
-import { GLOBAL_SOURCE_REGISTRY, getSourceRegistry } from '../lib/discovery/registry.js';
-import { GlobalBusinessIdentityEngine } from '../lib/discovery/identity-engine.js';
-import { BusinessVerificationEngine } from '../lib/discovery/verification-engine.js';
-import { AILeadScorer } from '../lib/discovery/ai-lead-scorer.js';
-import { ContractorMatchingEngine } from '../lib/discovery/contractor-matcher.js';
-import { ComplianceGuard } from '../lib/discovery/compliance-guard.js';
-import { LeadDeduplicationEngine } from '../lib/discovery/lead-deduplication.js';
-import { DataQualityEngine } from '../lib/discovery/data-quality-engine.js';
+import { GLOBAL_SOURCE_REGISTRY, getSourceRegistry } from '../lib/discovery/registry.ts';
+import { GlobalBusinessIdentityEngine } from '../lib/discovery/identity-engine.ts';
+import { BusinessVerificationEngine } from '../lib/discovery/verification-engine.ts';
+import { AILeadScorer } from '../lib/discovery/ai-lead-scorer.ts';
+import { ContractorMatchingEngine } from '../lib/discovery/contractor-matcher.ts';
+import { ComplianceGuard } from '../lib/discovery/compliance-guard.ts';
+import { LeadDeduplicationEngine } from '../lib/discovery/lead-deduplication.ts';
+import { DataQualityEngine } from '../lib/discovery/data-quality-engine.ts';
 
 console.log(`
 ========================================================================

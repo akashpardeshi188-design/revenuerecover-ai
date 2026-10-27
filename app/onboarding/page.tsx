@@ -24,44 +24,77 @@ export default function OnboardingPage() {
   const { state, updateBusinessRules } = useAppStore();
 
   const [step, setStep] = useState(1);
-  const [businessName, setBusinessName] = useState(state.organization.name || 'Summit HVAC & Plumbing');
+  const [businessName, setBusinessName] = useState('');
   const [industry, setIndustry] = useState('HVAC & Plumbing Services');
-  const [website, setWebsite] = useState('https://summithvacpros.com');
-  const [businessPhone, setBusinessPhone] = useState('(214) 555-0142');
-  const [businessEmail, setBusinessEmail] = useState('dave@summithvacpros.com');
+  const [website, setWebsite] = useState('');
+  const [businessPhone, setBusinessPhone] = useState('');
+  const [businessEmail, setBusinessEmail] = useState('');
   const [startTime, setStartTime] = useState('08:00');
   const [endTime, setEndTime] = useState('18:00');
   const [selectedCrm, setSelectedCrm] = useState('ServiceTitan');
+  const [city, setCity] = useState('');
+  const [stateName, setStateName] = useState('');
+  const [formError, setFormError] = useState('');
   const [autopilotMode, setAutopilotMode] = useState<'copilot' | 'supervised' | 'autopilot'>('supervised');
   const [isActivating, setIsActivating] = useState(false);
 
-  const handleCompleteOnboarding = () => {
+  const handleCompleteOnboarding = async () => {
     setIsActivating(true);
-    updateBusinessRules({
-      autopilot_mode: autopilotMode,
-      business_hours: {
-        start: startTime,
-        end: endTime,
-        timezone: 'America/Chicago',
-        work_days: [1, 2, 3, 4, 5, 6],
-      },
-      kill_switch_active: false,
-    });
+    setFormError('');
 
     try {
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.5 },
+      const response = await fetch('/api/onboarding/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessName,
+          industry,
+          website,
+          city,
+          state: stateName,
+          businessPhone,
+          businessEmail,
+          startTime,
+          endTime,
+          selectedCrm,
+        }),
       });
-    } catch {
-      // confetti
-    }
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        warning?: string | null;
+      };
 
-    setTimeout(() => {
+      if (!response.ok) {
+        throw new Error(payload.error || 'Could not save onboarding. Please try again.');
+      }
+
+      updateBusinessRules({
+        autopilot_mode: autopilotMode,
+        business_hours: {
+          start: startTime,
+          end: endTime,
+          timezone: 'America/Chicago',
+          work_days: [1, 2, 3, 4, 5, 6],
+        },
+        kill_switch_active: false,
+      });
+
+      if (payload.warning) console.warn(payload.warning);
+      try {
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+      } catch {
+        // Confetti is decorative; persistence succeeds without it.
+      }
+
+      const requestedPlan = new URLSearchParams(window.location.search).get('plan');
+      const hasValidPlan = requestedPlan === 'starter' || requestedPlan === 'growth' || requestedPlan === 'revenue_partner';
+      router.replace(hasValidPlan ? `/dashboard/billing?plan=${requestedPlan}` : '/dashboard');
+      router.refresh();
+    } catch (error: unknown) {
+      setFormError(error instanceof Error ? error.message : 'Could not save onboarding.');
+    } finally {
       setIsActivating(false);
-      router.push('/dashboard');
-    }, 1500);
+    }
   };
 
   return (
@@ -110,8 +143,23 @@ export default function OnboardingPage() {
                   type="text"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
+                  required
+                  maxLength={160}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">City</label>
+                  <input type="text" value={city} onChange={(e) => setCity(e.target.value)} maxLength={100} placeholder="e.g. Dallas"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">State</label>
+                  <input type="text" value={stateName} onChange={(e) => setStateName(e.target.value)} maxLength={100} placeholder="e.g. Texas"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
               </div>
 
               <div className="flex justify-end">
@@ -303,7 +351,7 @@ export default function OnboardingPage() {
             <div className="space-y-6 animate-in fade-in duration-150">
               <div className="space-y-1">
                 <h3 className="text-xl font-bold text-white">Step 7: Select Primary CRM & Field Software</h3>
-                <p className="text-xs text-slate-400">Pre-connected with certified adapters (Demo mode active).</p>
+                <p className="text-xs text-slate-400">Choose your primary CRM. Actual connection will be configured after the account is created.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -319,7 +367,7 @@ export default function OnboardingPage() {
                     }`}
                   >
                     <div className="font-semibold text-sm">{crmOption}</div>
-                    <div className="text-[10px] text-emerald-400">✓ Adapter Connected</div>
+                    <div className="text-[10px] text-emerald-400">{selectedCrm === crmOption ? "Selected for setup" : "Connection setup later"}</div>
                   </button>
                 ))}
               </div>
@@ -381,6 +429,12 @@ export default function OnboardingPage() {
                   <p className="text-[11px] leading-relaxed">Autonomous execution within strict business rules.</p>
                 </div>
               </div>
+
+              {formError && (
+                <p role="alert" className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+                  {formError}
+                </p>
+              )}
 
               <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
                 <button onClick={() => setStep(7)} className="text-xs text-slate-400 hover:text-white">← Back</button>

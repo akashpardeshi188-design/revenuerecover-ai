@@ -76,7 +76,7 @@ export class RevenueLeakScanner {
       recommendedPlan = 'PRO_ANNUAL';
     }
 
-    const pitch = `Based on our audit of ${input.businessName} in ${input.city}, ${input.stateProvince}, your team is likely leaving ~$${expectedRecoveryUSD.toLocaleString()}/month on the table in missed emergency calls, dormant seasonal clients, and uncollected invoices. RevenueRecover AI automates this recovery on complete autopilot for just $119/month—delivering a projected ${(expectedRecoveryUSD / 119).toFixed(0)}x monthly ROI.`;
+    const pitch = `Based on our audit of ${input.businessName} in ${input.city}, ${input.stateProvince}, your team is likely leaving ~$${expectedRecoveryUSD.toLocaleString()}/month on the table in missed emergency calls, dormant seasonal clients, and uncollected invoices. RevenueRecover AI automates this recovery on complete autopilot for just $999/month—delivering a projected ${(expectedRecoveryUSD / 999).toFixed(0)}x monthly ROI.`;
 
     return {
       scanId,

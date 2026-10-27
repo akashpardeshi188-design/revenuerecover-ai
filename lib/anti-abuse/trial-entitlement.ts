@@ -185,7 +185,7 @@ export class TrialEntitlementService {
         success: false,
         leadsUsed: entitlement.leadsUsed,
         leadsRemaining: entitlement.leadsRemaining,
-        error: `Insufficient trial quota. Remaining: ${entitlement.leadsRemaining} leads (Month ${entitlement.currentDecayCycle}: ${entitlement.decayPercentage}% decayed). Upgrade to $119/mo Growth plan for unlimited capacity.`,
+        error: `Insufficient trial quota. Remaining: ${entitlement.leadsRemaining} leads (Month ${entitlement.currentDecayCycle}: ${entitlement.decayPercentage}% decayed). Upgrade to $999/mo Growth plan for unlimited capacity.`,
       };
     }
 

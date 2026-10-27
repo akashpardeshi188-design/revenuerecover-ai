@@ -45,7 +45,7 @@ export class CustomerSuccessAgent {
   public static readonly agentName = 'Customer Success Agent';
 
   public static evaluateHealth(monthlyRecoveriesUSD: number, activeIntegrations: number): AgentExecutionResult<{ healthScore: number; status: 'HEALTHY' | 'WARNING' | 'CRITICAL'; recommendation: string }> {
-    const healthScore = Math.min(100, Math.round((monthlyRecoveriesUSD / 119) * 12 + activeIntegrations * 10));
+    const healthScore = Math.min(100, Math.round((monthlyRecoveriesUSD / 999) * 12 + activeIntegrations * 10));
     const status = healthScore >= 75 ? 'HEALTHY' : healthScore >= 50 ? 'WARNING' : 'CRITICAL';
     const recommendation = status === 'HEALTHY'
       ? 'Account operating at optimal ROI. Recommend enabling 90-day dormant reactivation campaign for expansion.'
@@ -102,7 +102,7 @@ export class UpsellAgent {
 
   public static evaluateExpansion(technicianCount: number, monthlyRecoveriesUSD: number): AgentExecutionResult<{ eligibleForProAnnual: boolean; estimatedAnnualSavingsUSD: number; pitch: string }> {
     const eligible = technicianCount >= 4 || monthlyRecoveriesUSD >= 6000;
-    const savings = (119 * 12) - 990; // $438 saved per year
+    const savings = (999 * 12) - 9900; // $438 saved per year
 
     return {
       success: true,
@@ -131,10 +131,10 @@ export class AnalyticsAgent {
   public static readonly agentName = 'Analytics Agent';
 
   public static generateGrowthSummary(totalLeads: number, activeCustomers: number, totalRecoveredUSD: number): AgentExecutionResult<{ mrrUSD: number; pipelineUSD: number; avgCACUSD: number; customerLTVUSD: number }> {
-    const mrr = activeCustomers * 119;
+    const mrr = activeCustomers * 999;
     const pipeline = totalLeads * 3800 * 0.15;
     const cac = 142; // Blended CAC benchmark
-    const ltv = 119 * 14; // 14-month average contractor retention
+    const ltv = 999 * 14; // 14-month average contractor retention
 
     return {
       success: true,

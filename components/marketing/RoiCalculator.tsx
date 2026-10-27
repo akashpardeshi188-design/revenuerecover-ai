@@ -13,7 +13,7 @@ export function RoiCalculator() {
   const totalLostMonthly = missedLeadsCount * avgJobValue;
   const recoveredMonthly = Math.round(totalLostMonthly * 0.42);
   const recoveredAnnual = recoveredMonthly * 12;
-  const growthPlanCost = 149;
+  const growthPlanCost = 999;
   const roiMultiple = Math.round(recoveredMonthly / growthPlanCost);
 
   return (
@@ -131,7 +131,7 @@ export function RoiCalculator() {
             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-900 text-xs">
               <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                 <div className="text-slate-400">Software Cost</div>
-                <div className="text-base font-bold text-white mt-0.5">$149/mo</div>
+                <div className="text-base font-bold text-white mt-0.5">$999/mo</div>
                 <div className="text-[10px] text-slate-400">Growth Plan</div>
               </div>
               <div className="bg-slate-900/60 p-3 rounded-xl border border-emerald-500/20">

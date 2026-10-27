@@ -125,7 +125,7 @@ export class DailyGrowthOperationsScheduler {
       demosBooked: 1,
       trialsStarted: 1,
       newCustomers: 1,
-      mrrAddedUSD: 119,
+      mrrAddedUSD: 999,
       totalPipelineValueUSD: funnel.totalPipelineUSD,
       totalAICostUSD: 0.0024,
       topOpportunities: topOpps,

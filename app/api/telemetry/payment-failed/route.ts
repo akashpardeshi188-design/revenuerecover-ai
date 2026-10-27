@@ -11,7 +11,7 @@ export interface FailedPaymentRecord {
   contactEmail: string;
   contactPhone: string;
   amountUSD: number;
-  gateway: 'paypal' | 'cards' | 'skydo';
+  gateway: 'razorpay' | 'paypal' | 'cards' | 'skydo';
   failureReason: string;
   timestamp: string;
   recoveryStatus: 'PENDING_RETRY' | 'RECOVERY_SENT' | 'RECOVERED';
@@ -25,36 +25,36 @@ export const failedPaymentsStore: FailedPaymentRecord[] = [
     businessName: 'Apex Plumbing & Rooter LLC (Texas)',
     contactEmail: 'billing@apexplumbing-tx.com',
     contactPhone: '+1 (817) 555-0144',
-    amountUSD: 119,
-    gateway: 'paypal',
-    failureReason: 'Card issuer security block (3DS timeout)',
+    amountUSD: 999,
+    gateway: 'razorpay',
+    failureReason: 'Card issuer 3DS verification timeout',
     timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
     recoveryStatus: 'PENDING_RETRY',
-    suggestedAction: 'Send direct 1-click PayPal invoice link via SMS',
+    suggestedAction: 'Send direct 1-click Razorpay retry link via SMS',
   },
   {
     id: 'FAIL-8842',
     businessName: 'Summit Air & Mechanical (Florida)',
     contactEmail: 'owner@summitairfl.com',
     contactPhone: '+1 (305) 555-0812',
-    amountUSD: 990,
+    amountUSD: 1299,
     gateway: 'cards',
     failureReason: 'Daily international card transaction limit exceeded',
     timestamp: new Date(Date.now() - 75 * 60 * 1000).toISOString(),
     recoveryStatus: 'RECOVERY_SENT',
-    suggestedAction: 'Sent Skydo US ACH domestic transfer details',
+    suggestedAction: 'Sent secondary PayPal retry subscription link',
   },
   {
     id: 'FAIL-7923',
     businessName: 'BlueWave Heating & Cooling (California)',
     contactEmail: 'accounts@bluewavehvac.com',
     contactPhone: '+1 (415) 555-0391',
-    amountUSD: 119,
+    amountUSD: 999,
     gateway: 'paypal',
     failureReason: 'Insufficient PayPal wallet balance (Prompted card backup)',
     timestamp: new Date(Date.now() - 140 * 60 * 1000).toISOString(),
     recoveryStatus: 'PENDING_RETRY',
-    suggestedAction: 'Trigger automated 24-hr discount re-engagement',
+    suggestedAction: 'Trigger automated 24-hr payment re-engagement',
   },
 ];
 
@@ -75,17 +75,17 @@ export async function POST(req: NextRequest) {
       businessName: body.businessName || 'Anonymous Contractor',
       contactEmail: body.contactEmail || 'unregistered@checkout.com',
       contactPhone: body.contactPhone || 'Unknown Phone',
-      amountUSD: body.amountUSD || 119,
-      gateway: body.gateway || 'paypal',
-      failureReason: body.failureReason || 'Declined by bank partner',
+      amountUSD: body.amountUSD || 999,
+      gateway: body.gateway || 'razorpay',
+      failureReason: body.failureReason || 'Declined by payment partner',
       timestamp: new Date().toISOString(),
       recoveryStatus: 'PENDING_RETRY',
-      suggestedAction: 'Send direct WhatsApp / PayPal payment link',
+      suggestedAction: 'Send direct WhatsApp / SMS subscription retry link',
     };
 
     failedPaymentsStore.unshift(newRecord);
     return NextResponse.json({ success: true, record: newRecord });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json({ error: 'Failed to record failed payment' }, { status: 500 });
   }
 }

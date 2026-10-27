@@ -24,7 +24,7 @@ export default function FaqPage() {
     },
     {
       q: 'How much does it cost, and what is the ROI?',
-      a: 'Plans start at $49/mo (Starter) and $149/mo (Growth). Because average home service tickets range from $1,200 to $8,000+, recovering even a single unbooked job or missed emergency call per month pays for an entire year of the software (typical 15x to 50x ROI). All plans include a 14-day free trial.',
+      a: 'We offer three straightforward monthly subscription plans: Starter at /mo, Growth at /mo, and Revenue Partner at ,299/mo. Because average home service tickets range from ,200 to ,000+, recovering even a single unbooked job or missed emergency call per month pays for the software multiple times over. Cancel anytime directly from your dashboard.',
       cat: 'Pricing & Billing',
     },
     {

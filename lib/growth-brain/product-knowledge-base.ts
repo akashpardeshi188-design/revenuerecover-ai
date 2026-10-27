@@ -18,7 +18,7 @@ export interface ProductKnowledge {
   pricingTiers: {
     starter: { name: string; monthly: number; annual: number; limit: string };
     growth: { name: string; monthly: number; annual: number; limit: string };
-    pro: { name: string; monthly: number; annual: number; limit: string };
+    revenue_partner: { name: string; monthly: number; annual: number; limit: string };
   };
   guarantees: string[];
   differentiators: string[];
@@ -46,9 +46,9 @@ export const productKnowledgeBase: ProductKnowledge = {
     ],
   },
   pricingTiers: {
-    starter: { name: 'Starter', monthly: 49, annual: 39, limit: 'Up to 50 recovery opportunities/mo' },
-    growth: { name: 'Growth', monthly: 149, annual: 119, limit: 'Unlimited recovery workflows & CRM sync' },
-    pro: { name: 'Pro', monthly: 299, annual: 239, limit: 'Multi-location automated dispatch & dedicated rep' },
+    starter: { name: 'Starter', monthly: 499, annual: 499, limit: 'Automated recovery, missed-call SMS text-back & CRM sync' },
+    growth: { name: 'Growth', monthly: 999, annual: 999, limit: 'Unlimited recovery workflows, local trade leads & full CRM integrations' },
+    revenue_partner: { name: 'Revenue Partner', monthly: 1299, annual: 1299, limit: 'Multi-location dispatcher routing, custom webhook triggers & VIP support' },
   },
   guarantees: [
     '14-Day Risk-Free Trial (No credit card required to run scan)',
@@ -86,7 +86,7 @@ export const productKnowledgeBase: ProductKnowledge = {
     {
       objection: 'How fast do we see return on investment (ROI)?',
       answer: 'Most contractors recover their entire annual subscription cost on their very first recovered AC replacement or water heater install.',
-      evidence: 'Average contractor ticket is $1,400+ vs $119/mo subscription.',
+      evidence: 'Average contractor ticket is $1,400+ vs $999/mo subscription.',
     },
   ],
   verifiedBenchmarks: [

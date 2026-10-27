@@ -121,7 +121,7 @@ export class GlobalBusinessIdentityEngine {
     const masterList: BusinessMaster[] = [];
 
     for (const record of records) {
-      let matchedMaster = masterList.find((m) => this.evaluateMatch(record, m).isMatch);
+      const matchedMaster = masterList.find((m) => this.evaluateMatch(record, m).isMatch);
 
       if (matchedMaster) {
         // Merge attributes into existing master entity

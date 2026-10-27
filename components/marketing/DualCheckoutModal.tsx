@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   ShieldCheck,
   CreditCard,
@@ -10,15 +11,14 @@ import {
   ArrowRight,
   Zap,
   Globe2,
-  Building2,
   X,
-  Flame,
 } from 'lucide-react';
 
 interface DualCheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   planName?: string;
+  planKey?: 'growth' | 'revenue_partner';
   amountUSD?: number;
   businessName?: string;
 }
@@ -27,63 +27,21 @@ export function DualCheckoutModal({
   isOpen,
   onClose,
   planName = 'Growth Plan',
-  amountUSD = 119,
+  planKey = 'growth',
+  amountUSD = 999,
   businessName = 'Your Business',
 }: DualCheckoutModalProps) {
-  const [selectedGateway, setSelectedGateway] = useState<'paypal' | 'skydo' | 'razorpay'>('paypal');
+  const router = useRouter();
+  const [selectedGateway, setSelectedGateway] = useState<'razorpay' | 'paypal'>('razorpay');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [skydoInvoice, setSkydoInvoice] = useState<any>(null);
 
   if (!isOpen) return null;
 
-  const handleExecutePayment = async () => {
+  const handleExecutePayment = () => {
     setIsProcessing(true);
-
-    try {
-      if (selectedGateway === 'skydo') {
-        const res = await fetch('/api/checkout/skydo', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            planId: planName.toLowerCase().replace(' ', '_'),
-            currency: 'USD',
-            businessName,
-            amountUSD,
-          }),
-        });
-        const data = await res.json();
-        setSkydoInvoice(data);
-        setIsProcessing(false);
-        setIsSuccess(true);
-      } else if (selectedGateway === 'razorpay') {
-        const res = await fetch('/api/checkout/razorpay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            planId: planName.toLowerCase().replace(' ', '_'),
-            currency: 'USD',
-            businessName,
-          }),
-        });
-        setTimeout(() => {
-          setIsProcessing(false);
-          setIsSuccess(true);
-        }, 1200);
-      } else {
-        // Direct PayPal Payment Links — REAL INSTANT PAYMENTS
-        // Annual ($990): https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J
-        // Monthly ($119): https://www.paypal.com/ncp/payment/GFXAWMG4S227E
-        const paypalLink = amountUSD >= 239
-          ? 'https://www.paypal.com/ncp/payment/ZKXHXXNDN4D7J'  // $990 Annual
-          : 'https://www.paypal.com/ncp/payment/GFXAWMG4S227E'; // $119 Monthly
-        window.open(paypalLink, '_blank');
-        setIsProcessing(false);
-      }
-    } catch (e) {
-      console.warn(e);
-      setIsProcessing(false);
-    }
+    // Direct users to secure authenticated registration and subscription onboarding
+    onClose();
+    router.push(`/signup?plan=${planKey}&gateway=${selectedGateway}`);
   };
 
   return (
@@ -97,189 +55,119 @@ export function DualCheckoutModal({
           <X className="w-4 h-4" />
         </button>
 
-        {isSuccess ? (
-          <div className="text-center py-6 space-y-4">
-            <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/40">
-              <CheckCircle2 className="w-7 h-7" />
-            </div>
+        {/* Header */}
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-black uppercase">
+            <Sparkles className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" /> MONTHLY RECURRING SUBSCRIPTION
+          </div>
+          <h3 className="text-xl font-bold text-white tracking-tight">
+            Activate Subscription: {planName}
+          </h3>
+          <p className="text-xs text-slate-300">
+            For <strong>{businessName}</strong>. Select your payment gateway to initiate verified recurring billing. Cancel anytime from your dashboard.
+          </p>
+        </div>
 
-            {selectedGateway === 'skydo' && skydoInvoice ? (
-              <div className="space-y-3 text-left bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-                <div className="font-bold text-white text-sm border-b border-slate-800 pb-2 flex items-center justify-between">
-                  <span>🇺🇸 Skydo US Receiving Bank Details</span>
-                  <span className="text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded">Invoice {skydoInvoice.invoiceId}</span>
-                </div>
-                <div className="space-y-1 text-slate-300 font-mono text-[11px]">
-                  <div><span className="text-slate-500 font-sans">Beneficiary:</span> <strong>AKASH BHAGWANSINGH PARDESHI</strong></div>
-                  <div><span className="text-slate-500 font-sans">Bank Country:</span> United States (USA)</div>
-                  <div><span className="text-slate-500 font-sans">Payment Mode:</span> ACH / Fedwire / Domestic Wire</div>
-                  <div><span className="text-slate-500 font-sans">Amount:</span> ${amountUSD} USD (Zero Fee)</div>
-                </div>
-                <p className="text-[10px] text-slate-400 pt-1">
-                  Transfer from your US/UK bank account. Once processed, funds settle directly into our verified account.
-                </p>
-              </div>
-            ) : (
-              <>
-                <h3 className="text-2xl font-bold text-white">Payment Authorized Successfully!</h3>
-                <p className="text-xs text-slate-300 max-w-xs mx-auto">
-                  Your AI Revenue Recovery Employee for <strong>{businessName}</strong> is pre-configured and live.
-                </p>
-              </>
-            )}
+        {/* Price Summary */}
+        <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+          <div>
+            <span className="text-xs text-slate-400 block">Subscription Tier</span>
+            <span className="text-sm font-bold text-white">{planName} (Monthly)</span>
+          </div>
+          <div className="text-right">
+            <span className="text-2xl font-black text-emerald-400 font-mono">${amountUSD}</span>
+            <span className="text-xs text-slate-400">/mo USD</span>
+          </div>
+        </div>
 
+        {/* GATEWAY SELECTOR (RAZORPAY #1 PRIMARY VS PAYPAL #2 SECONDARY) */}
+        <div className="space-y-3">
+          <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block flex items-center justify-between">
+            <span>Select Billing Gateway:</span>
+            <span className="text-[10px] text-emerald-400 font-bold">RECURRING MONTHLY</span>
+          </span>
+
+          <div className="grid grid-cols-2 gap-3">
+            {/* Razorpay Primary Gateway */}
             <button
-              onClick={() => {
-                onClose();
-                window.location.href = '/dashboard';
-              }}
-              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 font-black text-xs shadow-lg transition active:scale-95"
+              type="button"
+              onClick={() => setSelectedGateway('razorpay')}
+              className={`p-4 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 relative overflow-hidden ${
+                selectedGateway === 'razorpay'
+                  ? 'bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-slate-900 border-emerald-400 shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400'
+                  : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+              }`}
             >
-              Go to Founder Dashboard <ArrowRight className="w-4 h-4 inline ml-1" />
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-emerald-300 flex items-center gap-1.5">
+                  <CreditCard className="w-4 h-4 text-emerald-400" /> Razorpay
+                </span>
+                <span className="text-[9px] bg-emerald-500/30 text-emerald-300 font-bold px-1.5 py-0.5 rounded">
+                  Primary
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-300 leading-tight">
+                Cards, International Credit/Debit &amp; NetBanking
+              </span>
+            </button>
+
+            {/* PayPal Secondary Gateway */}
+            <button
+              type="button"
+              onClick={() => setSelectedGateway('paypal')}
+              className={`p-4 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 relative overflow-hidden ${
+                selectedGateway === 'paypal'
+                  ? 'bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-slate-900 border-cyan-400 shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400'
+                  : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-cyan-300 flex items-center gap-1.5">
+                  <Globe2 className="w-4 h-4 text-cyan-400" /> PayPal
+                </span>
+                <span className="text-[9px] bg-cyan-500/30 text-cyan-300 font-bold px-1.5 py-0.5 rounded">
+                  Secondary
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-300 leading-tight">
+                PayPal Wallet &amp; Saved Cards
+              </span>
             </button>
           </div>
-        ) : (
-          <>
-            {/* Header */}
-            <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-black uppercase">
-                <Sparkles className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" /> 1-CLICK TRIAL • 150–200 LEADS UNLOCKED ON DAY 1
-              </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">
-                1-Click Trial Activation: {planName}
-              </h3>
-              <p className="text-xs text-slate-300">
-                1-Click to activate. Instantly unlocks <strong>150–200 verified customer leads & missed-call recoveries</strong> in your local service area. Cancel anytime with 1-click.
-              </p>
-            </div>
+        </div>
 
-            {/* Price Summary */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-              <div>
-                <span className="text-xs text-slate-400 block">Subscription Tier</span>
-                <span className="text-sm font-bold text-white">{planName} (Global Access)</span>
-              </div>
-              <div className="text-right">
-                <span className="text-xs text-slate-500 line-through mr-1.5">$297.50</span>
-                <span className="text-2xl font-black text-emerald-400 font-mono">${amountUSD}</span>
-                <span className="text-xs text-slate-400">/mo</span>
-              </div>
-            </div>
-
-            {/* GATEWAY SELECTOR (PAYPAL #1 VS SKYDO VS OTHER) */}
-            <div className="space-y-3">
-              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block flex items-center justify-between">
-                <span>Select Your Preferred Payment Method:</span>
-                <span className="text-[10px] text-amber-400 font-bold">★ INSTANT ACTIVATION</span>
+        {/* Action CTA */}
+        <div className="space-y-3 pt-2">
+          <button
+            type="button"
+            onClick={handleExecutePayment}
+            disabled={isProcessing}
+            className={`w-full py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl transition active:scale-95 ${
+              selectedGateway === 'razorpay'
+                ? 'bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 text-slate-950 shadow-emerald-500/20'
+                : 'bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 text-slate-950 shadow-cyan-500/20'
+            }`}
+          >
+            {isProcessing ? (
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 animate-spin" /> Preparing Checkout...
               </span>
+            ) : (
+              <>
+                <Zap className="w-4 h-4 fill-slate-950" /> Continue to Secure Subscription ($
+                {amountUSD}/mo) <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
 
-              <div className="grid grid-cols-3 gap-2">
-                {/* PayPal International #1 FEATURED */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedGateway('paypal')}
-                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 relative overflow-hidden ${
-                    selectedGateway === 'paypal'
-                      ? 'bg-gradient-to-br from-amber-500/20 via-cyan-500/10 to-slate-900 border-amber-400 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[11px] text-amber-300 flex items-center gap-1">
-                      <Globe2 className="w-3.5 h-3.5 text-amber-400" /> PayPal 1-Click
-                    </span>
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                  </div>
-                  <span className="text-[9px] text-amber-200/80 font-medium leading-tight">
-                    🇺🇸 USA / 🇬🇧 UK Cards & Balance (Recommended)
-                  </span>
-                </button>
-
-                {/* Skydo US Direct ACH & Wire */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedGateway('skydo')}
-                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 ${
-                    selectedGateway === 'skydo'
-                      ? 'bg-indigo-500/10 border-indigo-400 shadow-lg shadow-indigo-500/10'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[11px] text-indigo-300 flex items-center gap-1">
-                      <Building2 className="w-3.5 h-3.5 text-indigo-400" /> Skydo
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                  </div>
-                  <span className="text-[9px] text-slate-400 leading-tight">
-                    🇺🇸 US ACH & Wire (Zero Fee)
-                  </span>
-                </button>
-
-                {/* Direct Card Gateway */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedGateway('razorpay')}
-                  className={`p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-1.5 ${
-                    selectedGateway === 'razorpay'
-                      ? 'bg-emerald-500/10 border-emerald-500 shadow-lg shadow-emerald-500/10'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[11px] text-white flex items-center gap-1">
-                      <CreditCard className="w-3.5 h-3.5 text-emerald-400" /> Cards
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  </div>
-                  <span className="text-[9px] text-slate-400 leading-tight">
-                    AMEX, Visa, Apple Pay
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Action CTA */}
-            <div className="space-y-3 pt-2">
-              <button
-                type="button"
-                onClick={handleExecutePayment}
-                disabled={isProcessing}
-                className={`w-full py-4 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-xl transition active:scale-95 ${
-                  selectedGateway === 'razorpay'
-                    ? 'bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 text-slate-950 shadow-emerald-500/20'
-                    : selectedGateway === 'paypal'
-                    ? 'bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 text-slate-950 shadow-cyan-500/20'
-                    : 'bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-500 text-slate-950 shadow-indigo-500/20'
-                }`}
-              >
-                {isProcessing ? (
-                  <span className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 animate-spin" /> Authorizing with{' '}
-                    {selectedGateway === 'razorpay'
-                      ? 'Razorpay Secure'
-                      : selectedGateway === 'paypal'
-                      ? 'PayPal Global'
-                      : 'Skydo Virtual Accounts'}...
-                  </span>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4 fill-slate-950" /> Start 1-Click Trial & Unlock 150–200 Leads ($
-                    {amountUSD}/mo)
-                  </>
-                )}
-              </button>
-
-              <div className="flex items-center justify-center gap-4 text-[10px] text-slate-400 font-medium">
-                <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
-                </span>
-                <span>•</span>
-                <span>150–200 Leads Ingested on Day 1 • Cancel Anytime</span>
-              </div>
-            </div>
-          </>
-        )}
+          <div className="flex items-center justify-center gap-4 text-[10px] text-slate-400 font-medium">
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
+            </span>
+            <span>•</span>
+            <span>Verified Server-Side Recurring Subscription</span>
+          </div>
+        </div>
       </div>
     </div>
   );

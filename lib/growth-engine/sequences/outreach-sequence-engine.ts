@@ -34,7 +34,7 @@ export class OutreachSequenceEngine {
       channel: 'EMAIL',
       purpose: 'ROI_CASE_STUDY',
       subjectTemplate: 'The math on missed calls for {{company_name}}',
-      bodyTemplate: 'Hi {{contact_name}},\n\nHere is the simple math for {{industry}} businesses with your crew size in {{city}}:\n\n• Estimated missed calls: ~12/week\n• Avg ticket value: ${{avg_job_value}}\n• Monthly lost opportunity: ~${{estimated_lost_revenue}}\n\nAt $119/month for our Growth tier, converting just 1 single missed job pays for the entire year.\n\nCan I show you our live interactive ROI calculator for 3 minutes?\n\nBest,\nRevenueRecover AI',
+      bodyTemplate: 'Hi {{contact_name}},\n\nHere is the simple math for {{industry}} businesses with your crew size in {{city}}:\n\n• Estimated missed calls: ~12/week\n• Avg ticket value: ${{avg_job_value}}\n• Monthly lost opportunity: ~${{estimated_lost_revenue}}\n\nAt $999/month for our Growth tier, converting just 1 single missed job pays for the entire year.\n\nCan I show you our live interactive ROI calculator for 3 minutes?\n\nBest,\nRevenueRecover AI',
       requiresReview: false
     },
     {
