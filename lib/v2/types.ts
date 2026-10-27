@@ -46,12 +46,17 @@ export const V2_STAGES = [
   'new_lead',
   'verified',
   'enriched',
+  'qualified',
   'contacted',
+  'replied',
+  'interested',
   'demo_booked',
+  'proposal_sent',
   'closed_won',
   'onboarding',
   'active',
   'at_risk',
+  'rescue',
   'churned',
 ] as const;
 
