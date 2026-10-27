@@ -128,7 +128,7 @@ export default function DemoLeadsRetargetingPage() {
             <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 space-y-1 shadow-xl">
               <span className="text-xs text-slate-400 font-semibold uppercase">Paid Subscribers</span>
               <div className="text-3xl font-black text-cyan-400 font-mono">{totalConverted}</div>
-              <span className="text-[10px] text-emerald-400 font-medium">Growth Plan ($119/mo)</span>
+              <span className="text-[10px] text-emerald-400 font-medium">Growth Plan ($999/mo)</span>
             </div>
 
             <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 space-y-1 shadow-xl">

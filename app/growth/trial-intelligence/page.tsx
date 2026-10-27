@@ -50,7 +50,7 @@ export default function TrialIntelligencePage() {
       identityConfidence: 0.95,
       reason: 'Existing Paid Customer attempted secondary free trial signup.',
       status: 'DENIED',
-      signals: ['Existing Paid Customer ($119/mo Growth)', 'Exact domain match: apexplumbingpros.com'],
+      signals: ['Existing Paid Customer ($999/mo Growth)', 'Exact domain match: apexplumbingpros.com'],
       createdAt: '2026-09-02T23:30:00Z',
     },
     {
@@ -173,7 +173,7 @@ export default function TrialIntelligencePage() {
             <div className="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/40 space-y-1">
               <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Month 2 (Days 31–60)</span>
               <div className="text-xl font-black text-white font-mono">150 Leads <span className="text-xs text-amber-400 font-normal">(25% Decayed)</span></div>
-              <p className="text-[10px] text-slate-400 leading-tight">Capacity naturally reduces by 25% if not upgraded to $119/mo.</p>
+              <p className="text-[10px] text-slate-400 leading-tight">Capacity naturally reduces by 25% if not upgraded to $999/mo.</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-950/80 border border-orange-500/40 space-y-1">

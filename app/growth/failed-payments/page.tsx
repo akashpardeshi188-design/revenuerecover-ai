@@ -10,7 +10,6 @@ import {
   CheckCircle2,
   PhoneCall,
   Mail,
-  ArrowRight,
   ShieldAlert,
   Clock,
   DollarSign,
@@ -23,7 +22,7 @@ interface FailedPaymentItem {
   contactEmail: string;
   contactPhone: string;
   amountUSD: number;
-  gateway: 'paypal' | 'cards' | 'skydo';
+  gateway: 'razorpay' | 'paypal' | 'cards' | 'skydo';
   failureReason: string;
   timestamp: string;
   recoveryStatus: 'PENDING_RETRY' | 'RECOVERY_SENT' | 'RECOVERED';
@@ -37,41 +36,41 @@ export default function FailedPaymentsPage() {
       businessName: 'Apex Plumbing & Rooter LLC (Texas)',
       contactEmail: 'billing@apexplumbing-tx.com',
       contactPhone: '+1 (817) 555-0144',
-      amountUSD: 119,
-      gateway: 'paypal',
-      failureReason: 'Card issuer security block (3DS timeout)',
+      amountUSD: 999,
+      gateway: 'razorpay',
+      failureReason: 'Card issuer 3DS verification timeout',
       timestamp: '25 mins ago',
       recoveryStatus: 'PENDING_RETRY',
-      suggestedAction: 'Send direct 1-click PayPal invoice link via SMS',
+      suggestedAction: 'Send automated Razorpay retry link via SMS',
     },
     {
       id: 'FAIL-8842',
       businessName: 'Summit Air & Mechanical (Florida)',
       contactEmail: 'owner@summitairfl.com',
       contactPhone: '+1 (305) 555-0812',
-      amountUSD: 990,
+      amountUSD: 1299,
       gateway: 'cards',
       failureReason: 'Daily international card transaction limit exceeded',
       timestamp: '1 hour ago',
       recoveryStatus: 'RECOVERY_SENT',
-      suggestedAction: 'Sent Skydo US ACH domestic transfer details',
+      suggestedAction: 'Sent secondary PayPal retry subscription link',
     },
     {
       id: 'FAIL-7923',
       businessName: 'BlueWave Heating & Cooling (California)',
       contactEmail: 'accounts@bluewavehvac.com',
       contactPhone: '+1 (415) 555-0391',
-      amountUSD: 119,
+      amountUSD: 999,
       gateway: 'paypal',
       failureReason: 'Insufficient PayPal wallet balance (Prompted card backup)',
       timestamp: '2 hours ago',
       recoveryStatus: 'PENDING_RETRY',
-      suggestedAction: 'Trigger automated 24-hr discount re-engagement',
+      suggestedAction: 'Trigger automated 24-hr payment re-engagement',
     },
   ]);
 
   const [recoveredCount, setRecoveredCount] = useState(4);
-  const [recoveredAmountUSD, setRecoveredAmountUSD] = useState(836);
+  const [recoveredAmountUSD, setRecoveredAmountUSD] = useState(2298);
 
   const handleSendRecovery = (id: string) => {
     setRecords((prev) =>
@@ -98,13 +97,13 @@ export default function FailedPaymentsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl">
           <div>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-wider">
-              <AlertOctagon className="w-3.5 h-3.5" /> Failed Payment Telemetry & Dunning Recovery
+              <AlertOctagon className="w-3.5 h-3.5" /> Failed Payment Telemetry &amp; Dunning Recovery
             </span>
             <h1 className="text-2xl sm:text-3xl font-black text-white mt-2">
-              Payment Declines & Instant Recovery Hub
+              Payment Declines &amp; Instant Recovery Hub
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-              Real-time capture of declined card swipes, PayPal timeouts, and failed checkout attempts. Recover lost revenue in 1-click before contractors leave.
+              Real-time capture of declined card swipes, Razorpay retries, and failed subscription attempts. Recover lost revenue before contractors churn.
             </p>
           </div>
 
@@ -126,7 +125,7 @@ export default function FailedPaymentsPage() {
               <ShieldAlert className="w-4 h-4 text-red-400" />
             </div>
             <div className="text-2xl font-black text-red-400 font-mono">3 Attempts</div>
-            <div className="text-[10px] text-slate-400">$1,228 USD at risk</div>
+            <div className="text-[10px] text-slate-400">$3,297 USD at risk</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
@@ -134,8 +133,8 @@ export default function FailedPaymentsPage() {
               <span>Recovered Revenue</span>
               <DollarSign className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-2xl font-black text-emerald-400 font-mono">${recoveredAmountUSD} USD</div>
-            <div className="text-[10px] text-emerald-400 font-semibold">₹69,800 INR Recovered</div>
+            <div className="text-2xl font-black text-emerald-400 font-mono">${recoveredAmountUSD.toLocaleString()} USD</div>
+            <div className="text-[10px] text-emerald-400 font-semibold">{recoveredCount} accounts recovered</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
@@ -144,7 +143,7 @@ export default function FailedPaymentsPage() {
               <Zap className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-black text-amber-300 font-mono">72.5%</div>
-            <div className="text-[10px] text-slate-400">Via automated 1-click PayPal links</div>
+            <div className="text-[10px] text-slate-400">Via automated Razorpay &amp; PayPal retries</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
@@ -165,7 +164,7 @@ export default function FailedPaymentsPage() {
                 <AlertOctagon className="w-4 h-4 text-red-400" /> Live Failed Checkout Log
               </h3>
               <p className="text-xs text-slate-400">
-                Shows exact customer contact details and reasons why payment was declined.
+                Shows exact customer contact details and reasons why subscription was declined.
               </p>
             </div>
             <span className="text-xs text-slate-400 font-mono">
@@ -177,7 +176,7 @@ export default function FailedPaymentsPage() {
             <table className="w-full text-left text-xs text-slate-300">
               <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                 <tr>
-                  <th className="p-3">Business & Contact</th>
+                  <th className="p-3">Business &amp; Contact</th>
                   <th className="p-3">Amount</th>
                   <th className="p-3">Gateway</th>
                   <th className="p-3">Failure Reason</th>
@@ -228,16 +227,15 @@ export default function FailedPaymentsPage() {
                     <td className="p-3 text-right">
                       {item.recoveryStatus !== 'RECOVERED' && (
                         <div className="flex items-center justify-end gap-2">
-                          <a
-                            href={`https://www.paypal.com/ncp/payment/GFXAWMG4S227E`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            type="button"
                             onClick={() => handleSendRecovery(item.id)}
                             className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-[11px] font-bold transition flex items-center gap-1"
                           >
-                            <Zap className="w-3 h-3 fill-slate-950" /> Send PayPal Link
-                          </a>
+                            <Zap className="w-3 h-3 fill-slate-950" /> Send Retry Link
+                          </button>
                           <button
+                            type="button"
                             onClick={() => handleMarkRecovered(item.id, item.amountUSD)}
                             className="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold transition"
                           >

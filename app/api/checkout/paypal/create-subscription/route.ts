@@ -71,13 +71,22 @@ function isUuid(value: unknown): value is string {
 }
 
 function payPalPlanIdFor(planKey: PlanKey): string | null {
-  const envName = {
-    starter: 'PAYPAL_PLAN_ID_STARTER',
-    growth: 'PAYPAL_PLAN_ID_GROWTH',
-    revenue_partner: 'PAYPAL_PLAN_ID_REVENUE_PARTNER',
-  }[planKey];
+  const envMap: Record<PlanKey, string[]> = {
+    starter: ['PAYPAL_PLAN_ID_STARTER', 'PAYPAL_STARTER_PLAN_ID'],
+    growth: ['PAYPAL_PLAN_ID_GROWTH', 'PAYPAL_GROWTH_PLAN_ID'],
+    revenue_partner: [
+      'PAYPAL_PLAN_ID_REVENUE_PARTNER',
+      'PAYPAL_REVENUE_PLAN_ID',
+      'PAYPAL_PLAN_ID_REVENUE',
+    ],
+  };
 
-  return process.env[envName]?.trim() || null;
+  const candidateNames = envMap[planKey] || [];
+  for (const name of candidateNames) {
+    const val = process.env[name]?.trim();
+    if (val) return val;
+  }
+  return null;
 }
 
 async function readRpcPayload<T>(
